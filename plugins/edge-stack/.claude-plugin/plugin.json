@@ -26,5 +26,6 @@
     "mcp",
     "ai-powered",
     "workflow-automation"
-  ]
+  ],
+  "hooks": "./hooks/hooks.json"
 }

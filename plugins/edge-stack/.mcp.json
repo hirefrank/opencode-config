@@ -3,8 +3,8 @@
     "cloudflare-docs": {
       "type": "http",
       "url": "https://docs.mcp.cloudflare.com/mcp",
-      "enabled": true,
-      "description": "Cloudflare documentation search, bindings management, observability, and account context"
+      "enabled": false,
+      "description": "Cloudflare documentation search, bindings management, observability, and account context (docs redundant with context7)"
     },
     "shadcn": {
       "command": "npx",
@@ -34,8 +34,8 @@
       "type": "sse",
       "command": "npx",
       "args": ["-y", "mcp-remote", "https://gitmcp.io/TanStack/router"],
-      "enabled": true,
-      "description": "TanStack Router documentation for type-safe routing patterns and loaders"
+      "enabled": false,
+      "description": "TanStack Router documentation for type-safe routing patterns and loaders (redundant with context7)"
     },
     "tailwindcss": {
       "command": "npx",
@@ -48,7 +48,7 @@
       "args": ["-y", "@context7/mcp"],
       "type": "stdio",
       "enabled": true,
-      "description": "Instant documentation lookup for 100+ frameworks including React, TanStack Router, Next.js, Vue, Django, Laravel"
+      "description": "Instant documentation lookup for 100+ frameworks including Cloudflare (Workers, KV, R2, D1, Pages), TanStack Router, React, Next.js, Vue, Django, Laravel"
     },
     "polar": {
       "type": "http",
