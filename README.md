@@ -32,7 +32,7 @@ Complete full-stack development toolkit optimized for edge computing. Build mode
 - **27 specialized agents** (all with MCP integration) - [View all agents](./plugins/edge-stack/agents/)
 - **14 autonomous SKILLs** (continuous validation) - [View all skills](./plugins/edge-stack/skills/)
 - **26 workflow commands** (including setup wizards, test generation, verification, and community tools) - [View all commands](./plugins/edge-stack/commands/)
-- **9 bundled MCP servers** (Cloudflare, shadcn/ui, better-auth, Playwright, Package Registry, TanStack Router, Tailwind CSS, Context7, Polar) - no manual setup required
+- **9 bundled MCP servers** (6 active by default: shadcn/ui, better-auth, Playwright, Package Registry, Tailwind CSS, Context7) - no manual setup required
 - **E2E testing** with Playwright and automated test generation
 - **Email integration** with Resend for transactional and marketing emails
 - **Bundled statusline** - at-a-glance development context

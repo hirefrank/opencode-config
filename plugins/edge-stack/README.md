@@ -74,49 +74,58 @@ The plugin includes a `.mcp.json` file that automatically configures these serve
     "cloudflare-docs": {
       "type": "http",
       "url": "https://docs.mcp.cloudflare.com/mcp",
-      "enabled": true
+      "enabled": false,
+      "description": "Cloudflare documentation (docs redundant with context7)"
     },
     "shadcn": {
       "command": "npx",
       "args": ["shadcn@latest", "mcp"],
-      "enabled": true
+      "enabled": true,
+      "description": "shadcn/ui component documentation"
     },
     "better-auth": {
       "type": "http",
       "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
-      "enabled": true
+      "enabled": true,
+      "description": "Better Auth documentation"
     },
     "playwright": {
       "command": "npx",
       "args": ["@playwright/mcp@latest"],
-      "enabled": true
+      "enabled": true,
+      "description": "Playwright browser automation"
     },
     "package-registry": {
       "command": "npx",
       "args": ["-y", "package-registry-mcp"],
-      "enabled": true
+      "enabled": true,
+      "description": "NPM, PyPI, Cargo package search"
     },
     "tanstack-router": {
       "type": "sse",
       "command": "npx",
       "args": ["-y", "mcp-remote", "https://gitmcp.io/TanStack/router"],
-      "enabled": true
+      "enabled": false,
+      "description": "TanStack Router documentation (redundant with context7)"
     },
     "tailwindcss": {
       "command": "npx",
       "args": ["-y", "tailwindcss-mcp-server"],
-      "enabled": true
+      "enabled": true,
+      "description": "Tailwind CSS utilities"
     },
     "context7": {
       "command": "npx",
       "args": ["-y", "@context7/mcp"],
       "type": "stdio",
-      "enabled": true
+      "enabled": true,
+      "description": "Documentation for 100+ frameworks"
     },
     "polar": {
       "type": "http",
       "url": "https://mcp.polar.sh/mcp/polar-mcp",
-      "enabled": false
+      "enabled": false,
+      "description": "Polar integration (requires authentication)"
     }
   }
 }
@@ -127,23 +136,25 @@ The plugin includes a `.mcp.json` file that automatically configures these serve
 # In Claude Code, run:
 /mcp
 
-# You should see:
-# ✓ cloudflare-docs (active)
+# You should see 6 active servers:
 # ✓ shadcn (active)
 # ✓ better-auth (active)
 # ✓ playwright (active)
 # ✓ package-registry (active)
-# ✓ tanstack-router (active)
 # ✓ tailwindcss (active)
 # ✓ context7 (active)
+
+# And 3 disabled servers:
+# ⚠ cloudflare-docs (disabled - documentation covered by context7)
+# ⚠ tanstack-router (disabled - documentation covered by context7)
 # ⚠ polar (disabled - requires authentication)
 ```
 
-**Note**: The Polar MCP is disabled by default because it requires authentication with your Polar.sh account. Enable it when you need billing features:
-
-1. **Enable Polar MCP**: Run `/mcp` and authenticate with Polar.sh
-2. **Or enable in config**: Edit `.mcp.json` and set `polar.enabled: true`
-3. **Use billing features**: Run `/es-billing-setup` for guided integration
+**Note**: Three MCPs are disabled by default:
+- **cloudflare-docs** and **tanstack-router**: Context7 provides comprehensive documentation for 100+ frameworks including Cloudflare and TanStack, making these specialized servers redundant
+- **polar**: Requires authentication with your Polar.sh account. Enable when needed:
+  1. Edit `.mcp.json` and set `polar.enabled: true`
+  2. Run `/es-billing-setup` for guided integration
 
 **MCP Server Features**:
 
@@ -559,16 +570,22 @@ See [LICENSE](./LICENSE) for full details.
 
 ## Resources
 
-**MCP Servers** (9 bundled with plugin):
-- [Cloudflare MCP](https://docs.mcp.cloudflare.com/mcp) - Account context + documentation
+**MCP Servers** (9 bundled - 6 active, 3 disabled):
+
+**Active by default**:
 - [shadcn/ui MCP](https://www.shadcn.io/api/mcp) - Component documentation
 - [better-auth MCP](https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp) - Authentication patterns
 - [Playwright MCP](https://github.com/microsoft/playwright-mcp) - Browser automation and E2E testing
 - [Package Registry MCP](https://github.com/zcaceres/package-registry-mcp) - NPM, Cargo, PyPI, NuGet search
-- [TanStack Router MCP](https://gitmcp.io/TanStack/router) - TanStack Router documentation
 - [Tailwind CSS MCP](https://github.com/modelcontextprotocol/servers/tree/main/src/tailwindcss) - Tailwind utilities and templates
 - [Context7 MCP](https://context7.com) - Instant documentation for 100+ frameworks
-- [Polar MCP](https://mcp.polar.sh/mcp/polar-mcp) - Billing integration
+
+**Disabled by default** (available in `.mcp.json`):
+- [Cloudflare MCP](https://docs.mcp.cloudflare.com/mcp) - Documentation covered by Context7
+- [TanStack Router MCP](https://gitmcp.io/TanStack/router) - Documentation covered by Context7
+- [Polar MCP](https://mcp.polar.sh/mcp/polar-mcp) - Requires authentication
+
+**Resources**:
 - [MCP Usage Examples](./docs/mcp-usage-examples.md) - Query patterns and workflows
 - [MCP Protocol](https://modelcontextprotocol.io) - Official MCP specification
 
