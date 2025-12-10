@@ -43,10 +43,10 @@ Complete full-stack development toolkit optimized for edge computing. Build mode
 - **Setup**: `/es-billing-setup`, `/es-auth-setup`, `/es-test-setup`, `/es-email-setup`
 - **Development**: `/es-tanstack-route`, `/es-tanstack-component`, `/es-component`, `/es-worker`
 - **Testing**: `/es-test-gen`, `/es-test-setup`
-- **Validation**: `/es-validate`, `/es-design-review`
+- **Validation**: `/es-validate`, `/es-verify-output`, `/es-design-review`
 - **Workflow**: `/es-commit`, `/es-review`, `/es-work`, `/es-resolve-parallel`
 - **Migration**: `/es-tanstack-migrate`, `/es-migrate`
-- **Utilities**: `/es-plan`, `/es-issue`, `/es-triage`, `/es-theme`, `/es-deploy`
+- **Utilities**: `/es-plan`, `/es-issue`, `/es-triage`, `/es-theme`, `/es-deploy`, `/es-report-bug`
 
 For detailed documentation on all agents, commands, skills, and MCP integration, see the [Edge Stack Plugin README](./plugins/edge-stack/README.md).
 
