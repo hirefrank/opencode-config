@@ -30,7 +30,10 @@ Optimized for Claude 4.5 Opus with token-efficient "Hard Tools".
 bin/                    # CLI workflow scripts
 ├── es-review.sh        # Code review workflow
 ├── es-worker.sh        # Worker scaffolding
-└── es-validate.sh      # Pre-deployment checks
+├── es-validate.sh      # Pre-deployment checks
+├── es-check-upstream.sh # Upstream template monitor
+├── es-research-blogs.sh # Blog update monitor
+└── es-release.sh       # Release workflow
 
 opencode.jsonc          # Main configuration (MCP, agents, permissions)
 ```
@@ -83,6 +86,33 @@ Heavy servers use `defer_loading` to prevent context overload:
 ./bin/es-validate.sh --strict  # Fail on warnings
 ```
 
+### Upstream Monitoring
+```bash
+./bin/es-check-upstream.sh                   # Check all 4 upstream sources
+./bin/es-check-upstream.sh --source every    # Check specific source
+./bin/es-check-upstream.sh --since 2025-01-01
+./bin/es-check-upstream.sh --create-issues   # Create GitHub issues
+```
+
+**Upstream sources tracked:**
+- **Every Inc** - Workflow patterns, multi-agent orchestration
+- **joelhooks/opencode-config** - Prompt engineering, persona architecture
+- **oh-my-opencode** - Shell integration patterns
+- **Anthropic** - Official Claude Code patterns
+
+### Blog Research
+```bash
+./bin/es-research-blogs.sh                   # Check Anthropic blogs
+./bin/es-research-blogs.sh --since 2025-01-01
+```
+
+### Release
+```bash
+./bin/es-release.sh            # Auto-detect version bump
+./bin/es-release.sh --minor    # Force minor bump
+./bin/es-release.sh --dry-run  # Preview without committing
+```
+
 ## Agent Usage
 
 In OpenCode, invoke agents with `@agent_name`:
@@ -119,6 +149,9 @@ node .opencode/tool/codify-feedback.js \
 | `/es-review 123` | `./bin/es-review.sh 123` |
 | `/es-worker api` | `./bin/es-worker.sh api` |
 | `/es-validate` | `./bin/es-validate.sh` |
+| `/check-upstream` | `./bin/es-check-upstream.sh` |
+| `/research-blog-updates` | `./bin/es-research-blogs.sh` |
+| `/release-plugin` | `./bin/es-release.sh` |
 | 27 markdown agents | 6 consolidated personas |
 | 14 SKILL.md files | 4 executable scripts |
 | Markdown orchestration | Shell + scripts |
