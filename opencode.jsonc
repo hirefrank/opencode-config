@@ -13,11 +13,6 @@
     "knowledge/model-strategy.md"
   ],
 
-  "skills": {
-    "path": "skills",
-    "enabled": true
-  },
-
   "command": {
     "work": {
       "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
@@ -50,7 +45,7 @@
   "mcp": {
     "context7": {
       "type": "local",
-      "command": ["npx", "-y", "@context7/mcp"],
+      "command": ["npx", "-y", "@upstash/context7-mcp"],
       "enabled": true
     },
     "shadcn": {
