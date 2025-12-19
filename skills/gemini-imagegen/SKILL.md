@@ -1,7 +1,19 @@
 ---
 name: gemini-imagegen
-description: Generate, edit, and compose images using Google's Gemini AI API for design workflows and visual content creation
-triggers: ["image generation", "visual content", "AI art", "image editing", "design automation"]
+description: Generate, edit, and compose images using Google's Gemini AI API for design workflows and visual content creation. Activates when creating marketing assets, UI mockups, illustrations, or image compositions.
+triggers:
+  [
+    "image generation",
+    "visual content",
+    "AI art",
+    "image editing",
+    "design automation",
+    "generate image",
+    "create image",
+    "edit image",
+    "compose images",
+    "gemini image",
+  ]
 ---
 
 # Gemini ImageGen SKILL
@@ -35,20 +47,24 @@ Get your API key from: https://makersuite.google.com/app/apikey
 Create new images from text descriptions.
 
 **Usage:**
+
 ```bash
 npx tsx scripts/generate-image.ts <prompt> <output-path> [options]
 ```
 
 **Arguments:**
+
 - `prompt`: Text description of the image to generate
 - `output-path`: Where to save the generated image (e.g., `./output.png`)
 
 **Options:**
+
 - `--width <number>`: Image width in pixels (default: 1024)
 - `--height <number>`: Image height in pixels (default: 1024)
 - `--model <string>`: Gemini model to use (default: 'gemini-2.0-flash-exp')
 
 **Examples:**
+
 ```bash
 # Basic usage
 GEMINI_API_KEY=xxx npx tsx scripts/generate-image.ts "a sunset over mountains" output.png
@@ -65,19 +81,23 @@ npm run generate "futuristic city skyline" city.png
 Modify existing images based on text instructions.
 
 **Usage:**
+
 ```bash
 npx tsx scripts/edit-image.ts <source-image> <prompt> <output-path> [options]
 ```
 
 **Arguments:**
+
 - `source-image`: Path to the image to edit
 - `prompt`: Text description of the desired changes
 - `output-path`: Where to save the edited image
 
 **Options:**
+
 - `--model <string>`: Gemini model to use (default: 'gemini-2.0-flash-exp')
 
 **Examples:**
+
 ```bash
 # Basic editing
 GEMINI_API_KEY=xxx npx tsx scripts/edit-image.ts photo.jpg "add a blue sky" edited.jpg
@@ -94,21 +114,25 @@ npm run edit photo.jpg "remove background" no-bg.png
 Combine multiple images into a single composition.
 
 **Usage:**
+
 ```bash
 npx tsx scripts/compose-images.ts <output-path> <image1> <image2> [image3...] [options]
 ```
 
 **Arguments:**
+
 - `output-path`: Where to save the composed image
 - `image1, image2, ...`: Paths to images to combine (2-4 images)
 
 **Options:**
+
 - `--layout <string>`: Layout pattern (horizontal, vertical, grid, custom) (default: 'grid')
 - `--prompt <string>`: Additional instructions for composition
 - `--width <number>`: Output width in pixels (default: auto)
 - `--height <number>`: Output height in pixels (default: auto)
 
 **Examples:**
+
 ```bash
 # Grid layout
 GEMINI_API_KEY=xxx npx tsx scripts/compose-images.ts collage.png img1.jpg img2.jpg img3.jpg img4.jpg
@@ -142,6 +166,7 @@ npm install
 ```
 
 This installs:
+
 - `@google/generative-ai`: Google's Gemini API SDK
 - `tsx`: TypeScript execution runtime
 - `typescript`: TypeScript compiler
@@ -149,6 +174,7 @@ This installs:
 ## Usage in Design Workflows
 
 ### Creating Marketing Assets
+
 ```bash
 # Generate hero image
 npm run generate "modern tech startup hero image, clean, professional" hero.png --width 1920 --height 1080
@@ -161,6 +187,7 @@ npm run compose social-post.png hero.png logo.png --layout horizontal
 ```
 
 ### Rapid Prototyping
+
 ```bash
 # Generate UI mockup
 npm run generate "mobile app login screen, minimalist design" mockup.png --width 375 --height 812
@@ -170,6 +197,7 @@ npm run edit mockup.png "add a gradient background" mockup-v2.png
 ```
 
 ### Content Creation
+
 ```bash
 # Generate illustrations
 npm run generate "technical diagram of cloud architecture" diagram.png
@@ -181,18 +209,21 @@ npm run compose infographic.png chart1.png chart2.png diagram.png --layout verti
 ## Technical Details
 
 ### Image Generation
+
 - Uses Gemini's imagen-3.0-generate-001 model
 - Supports text-to-image generation
 - Configurable output dimensions
 - Automatic format detection from file extension
 
 ### Image Editing
+
 - Uses Gemini's vision capabilities
 - Applies transformations based on natural language
 - Preserves original image quality where possible
 - Supports various editing operations (style, objects, colors, etc.)
 
 ### Image Composition
+
 - Intelligent layout algorithms
 - Automatic sizing and spacing
 - Seamless blending options

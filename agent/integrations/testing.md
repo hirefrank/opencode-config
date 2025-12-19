@@ -1,5 +1,6 @@
 ---
 name: testing
+tier: 3
 model: google/gemini-3-flash-preview
 allowed-tools: Read Grep Bash(playwright:*) Write(test/**/*,e2e/**/*)
 color: "#A855F7"

@@ -169,3 +169,133 @@ const largeData = JSON.parse(await request.text());
 // ✅ OPTIMIZED: Use streaming or chunked processing if possible
 // Or ensure logic is performant enough for 50ms window.
 ```
+
+---
+
+## Pattern: D1 MySQL Syntax Errors
+
+**Category**: Database
+**Confidence**: High
+**Source**: Cloudflare D1 Documentation
+
+### Problem
+
+D1 uses SQLite, not MySQL. Common MySQL syntax like `AUTO_INCREMENT`, `NOW()`, `ENUM`, and `ON UPDATE CURRENT_TIMESTAMP` will fail with syntax errors.
+
+### Solution
+
+Use SQLite-compatible syntax. Run `validate-d1.js` or the `validate_d1` tool before deploying migrations.
+
+### Example
+
+```sql
+-- ❌ BROKEN: MySQL syntax
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  status ENUM('active', 'inactive'),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- ✅ CORRECT: SQLite/D1 syntax
+CREATE TABLE users (
+  id INTEGER PRIMARY KEY,  -- Auto-increments automatically
+  status TEXT CHECK(status IN ('active', 'inactive')),
+  created_at TEXT DEFAULT (datetime('now'))
+);
+```
+
+### Validation
+
+Run: `node scripts/validate-d1.js migrations/` or use the `validate_d1` tool.
+
+---
+
+## Pattern: D1 Missing Indexes
+
+**Category**: Database
+**Confidence**: High
+**Source**: Cloudflare D1 Best Practices
+
+### Problem
+
+D1 queries without proper indexes cause full table scans, leading to slow queries and potential timeouts. Common missing indexes include email lookups, foreign key columns, and status filters.
+
+### Solution
+
+Create indexes for all columns used in `WHERE`, `JOIN`, and `ORDER BY` clauses.
+
+### Example
+
+```sql
+-- Required indexes for better-auth + Polar.sh integration
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_polar_customer ON users(polar_customer_id);
+CREATE INDEX idx_accounts_user ON accounts(user_id);
+CREATE INDEX idx_accounts_provider ON accounts(provider, provider_account_id);
+CREATE INDEX idx_sessions_user ON sessions(user_id);
+CREATE INDEX idx_subscriptions_customer ON subscriptions(polar_customer_id);
+CREATE INDEX idx_subscriptions_status ON subscriptions(status);
+```
+
+### Validation
+
+Run: `node scripts/validate-d1.js migrations/` to detect missing indexes.
+
+---
+
+## Pattern: D1 Required Fields for better-auth
+
+**Category**: Database
+**Confidence**: High
+**Source**: better-auth Documentation
+
+### Problem
+
+Missing required fields in the users/accounts/sessions tables will cause better-auth to fail at runtime with cryptic errors.
+
+### Solution
+
+Ensure all required fields are present in your D1 schema.
+
+### Example
+
+```sql
+-- Users table (better-auth compatible)
+CREATE TABLE users (
+  id TEXT PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  email_verified INTEGER DEFAULT 0,
+  password_hash TEXT,
+  name TEXT,
+  image TEXT,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+-- OAuth accounts (better-auth)
+CREATE TABLE accounts (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  provider TEXT NOT NULL,
+  provider_account_id TEXT NOT NULL,
+  access_token TEXT,
+  refresh_token TEXT,
+  expires_at INTEGER,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE(provider, provider_account_id)
+);
+
+-- Sessions (better-auth)
+CREATE TABLE sessions (
+  id TEXT PRIMARY KEY,
+  user_id TEXT NOT NULL,
+  expires_at TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+```
+
+### Validation
+
+Run: `node scripts/validate-d1.js migrations/` to check for missing fields.

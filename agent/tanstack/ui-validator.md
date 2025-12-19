@@ -1,5 +1,6 @@
 ---
 name: ui-validator
+tier: 3
 model: google/gemini-3-flash-preview
 allowed-tools: Read Grep
 color: "#3B82F6"

@@ -1,7 +1,18 @@
 ---
 name: shadcn-ui-design-validator
-description: Automatically validates frontend design patterns to prevent generic aesthetics (Inter fonts, purple gradients, minimal animations) and enforce distinctive, branded design during Tanstack Start (React) development with shadcn/ui
-triggers: ["tsx file creation", "component changes", "tailwind config changes", "shadcn component usage", "design system updates"]
+description: Automatically validates frontend design patterns to prevent generic aesthetics (Inter fonts, purple gradients, minimal animations) and enforce distinctive, branded design during Tanstack Start (React) development with shadcn/ui. Activates when creating components, modifying styles, or using shadcn/ui elements.
+triggers:
+  [
+    "tsx file creation",
+    "component changes",
+    "tailwind config changes",
+    "shadcn component usage",
+    "design system updates",
+    "font selection",
+    "color palette",
+    "animation patterns",
+    "generic design",
+  ]
 note: "Updated for Tanstack Start + shadcn/ui. Validates React/TSX components with shadcn/ui patterns."
 ---
 
@@ -10,6 +21,7 @@ note: "Updated for Tanstack Start + shadcn/ui. Validates React/TSX components wi
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - New `.tsx` React components are created
 - Tailwind configuration (`tailwind.config.ts`) is modified
 - Tanstack Start configuration (`app.config.ts`) is modified
@@ -20,6 +32,7 @@ This SKILL automatically activates when:
 ## Expertise Provided
 
 ### Design Pattern Validation
+
 - **Generic Pattern Detection**: Identifies default/overused design patterns
 - **Typography Analysis**: Ensures distinctive font choices and hierarchy
 - **Animation Validation**: Checks for engaging micro-interactions and transitions
@@ -29,6 +42,7 @@ This SKILL automatically activates when:
 ### Specific Checks Performed
 
 #### ❌ Critical Violations (Generic Design Patterns)
+
 ```tsx
 <!-- These patterns trigger alerts: -->
 
@@ -46,6 +60,7 @@ This SKILL automatically activates when:
 ```
 
 #### ✅ Correct Distinctive Patterns
+
 ```tsx
 <!-- These patterns are validated as correct: -->
 
@@ -70,11 +85,13 @@ This SKILL automatically activates when:
 ## Integration Points
 
 ### Complementary to Existing Components
+
 - **frontend-design-specialist agent**: Handles deep design analysis, SKILL provides immediate validation
 - **tanstack-ui-architect agent**: Component expertise, SKILL validates implementation
 - **es-design-review command**: SKILL provides continuous validation between explicit reviews
 
 ### Escalation Triggers
+
 - Complex design system questions → `frontend-design-specialist` agent
 - Component customization help → `tanstack-ui-architect` agent
 - Accessibility concerns → `accessibility-guardian` agent
@@ -83,6 +100,7 @@ This SKILL automatically activates when:
 ## Validation Rules
 
 ### P1 - Critical (Generic Patterns to Avoid)
+
 - **Default Fonts**: Inter, Roboto, Helvetica (in over 80% of sites)
 - **Purple Gradients**: `from-purple-*` to `to-purple-*` on white backgrounds
 - **Generic Grays**: `bg-gray-50`, `bg-gray-100` (overused neutrals)
@@ -90,6 +108,7 @@ This SKILL automatically activates when:
 - **Default Component Props**: Using shadcn/ui components with all default props
 
 ### P2 - Important (Polish and Engagement)
+
 - **Missing Hover States**: Buttons/links without hover effects
 - **No Loading States**: Async actions without loading feedback
 - **Inconsistent Spacing**: Not using Tailwind spacing scale consistently
@@ -97,6 +116,7 @@ This SKILL automatically activates when:
 - **Weak Typography Hierarchy**: Similar font sizes for different heading levels
 
 ### P3 - Best Practices
+
 - **Font Weight Variety**: Using only one or two font weights
 - **Limited Color Palette**: Not defining custom brand colors
 - **No Custom Tokens**: Not extending Tailwind theme with brand values
@@ -105,6 +125,7 @@ This SKILL automatically activates when:
 ## Remediation Examples
 
 ### Fixing Generic Fonts
+
 ```tsx
 <!-- ❌ Critical: Default Inter font -->
   <h1 className="text-4xl font-sans">Welcome</h1>
@@ -129,6 +150,7 @@ export default {
 ```
 
 ### Fixing Generic Colors
+
 ```tsx
 <!-- ❌ Critical: Purple gradient (overused) -->
   <div className="bg-gradient-to-r from-purple-500 to-purple-600">
@@ -161,6 +183,7 @@ export default {
 ```
 
 ### Fixing Missing Animations
+
 ```tsx
 <!-- ❌ Critical: No hover/transition effects -->
   <Button onClick="handleSubmit">
@@ -183,6 +206,7 @@ export default {
 ```
 
 ### Fixing Default Component Usage
+
 ```tsx
 <!-- ❌ P2: All default props (generic appearance) -->
   <Card>
@@ -207,12 +231,14 @@ export default {
 ## MCP Server Integration
 
 When shadcn/ui MCP server is available:
+
 - Query component customization options before validation
 - Verify that suggested customizations use valid props
 - Get latest component API to prevent hallucination
 - Validate `ui` prop structure against actual schema
 
 **Example MCP Usage**:
+
 ```typescript
 // Validate Button customization
 const buttonDocs = await mcp.shadcn.get_component("Button");
@@ -223,12 +249,14 @@ const buttonDocs = await mcp.shadcn.get_component("Button");
 ## Benefits
 
 ### Immediate Impact
+
 - **Prevents Generic Design**: Catches overused patterns before they ship
 - **Enforces Brand Identity**: Ensures consistent, distinctive aesthetics
 - **Improves User Engagement**: Validates animations and interactions
 - **Educates Developers**: Clear explanations of design best practices
 
 ### Long-term Value
+
 - **Consistent Visual Identity**: All components follow brand guidelines
 - **Faster Design Iterations**: Immediate feedback on design choices
 - **Better User Experience**: Polished animations and interactions
@@ -237,24 +265,28 @@ const buttonDocs = await mcp.shadcn.get_component("Button");
 ## Usage Examples
 
 ### During Component Creation
+
 ```tsx
 // Developer creates: <div className="font-sans bg-purple-500">
 // SKILL immediately activates: "⚠️ WARNING: Using default 'font-sans' (Inter) and purple gradient. Consider custom brand fonts and colors for distinctive design."
 ```
 
 ### During Styling
+
 ```tsx
 // Developer adds: <Button>Click me</Button>
 // SKILL immediately activates: "⚠️ P2: Button lacks hover animations. Add transition utilities for better engagement: class='transition-all duration-300 hover:scale-105'"
 ```
 
 ### During Configuration
+
 ```typescript
 // Developer modifies tailwind.config.ts with default Inter
 // SKILL immediately activates: "⚠️ P1: Using Inter font (appears in 80%+ of sites). Replace with distinctive font choices like Space Grotesk, Archivo, or other brand-appropriate fonts."
 ```
 
 ### Before Deployment
+
 ```tsx
 // SKILL runs comprehensive check: "✅ Design validation passed. Custom fonts, distinctive colors, engaging animations, and customized components detected."
 ```
@@ -266,6 +298,7 @@ This SKILL implements the core insight from Claude's "Improving Frontend Design 
 > "Think about frontend design the way a frontend engineer would. The more you can map aesthetic improvements to implementable frontend code, the better Claude can execute."
 
 **Key Mappings**:
+
 - **Typography** → Tailwind `fontFamily` config + utility classes
 - **Animations** → Tailwind `transition-*`, `hover:*`, `duration-*` utilities
 - **Background effects** → Custom gradient combinations, `backdrop-*` utilities
@@ -274,6 +307,7 @@ This SKILL implements the core insight from Claude's "Improving Frontend Design 
 ## Distinctive vs Generic Patterns
 
 ### ❌ Generic Patterns (What to Avoid)
+
 ```tsx
 <!-- The "AI default aesthetic" -->
 <div className="bg-white">
@@ -285,6 +319,7 @@ This SKILL implements the core insight from Claude's "Improving Frontend Design 
 ```
 
 **Problems**:
+
 - Inter font (default)
 - Purple gradient (overused)
 - Gray backgrounds (generic)
@@ -292,6 +327,7 @@ This SKILL implements the core insight from Claude's "Improving Frontend Design 
 - Default components (no customization)
 
 ### ✅ Distinctive Patterns (What to Strive For)
+
 ```tsx
 <!-- Brand-distinctive aesthetic -->
 <div className="bg-gradient-to-br from-brand-cream via-white to-brand-ocean/10">
@@ -323,6 +359,7 @@ This SKILL implements the core insight from Claude's "Improving Frontend Design 
 ```
 
 **Strengths**:
+
 - Custom fonts (Archivo Black for headings)
 - Brand-specific colors (coral, ocean, sunset)
 - Atmospheric gradients (multiple layers)

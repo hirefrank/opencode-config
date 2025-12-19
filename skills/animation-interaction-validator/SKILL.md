@@ -1,7 +1,19 @@
 ---
 name: animation-interaction-validator
-description: Ensures engaging user experience through validation of animations, transitions, micro-interactions, and feedback states, preventing flat/static interfaces that lack polish and engagement. Works with Tanstack Start (React) + shadcn/ui components.
-triggers: ["interactive element creation", "event handler addition", "state changes", "async actions", "form submissions"]
+description: Ensures engaging user experience through validation of animations, transitions, micro-interactions, and feedback states, preventing flat/static interfaces that lack polish and engagement. Works with Tanstack Start (React) + shadcn/ui components. Activates when creating interactive elements, buttons, forms, or state changes.
+triggers:
+  [
+    "interactive element creation",
+    "event handler addition",
+    "state changes",
+    "async actions",
+    "form submissions",
+    "hover state",
+    "loading state",
+    "transition animation",
+    "micro-interaction",
+    "focus state",
+  ]
 note: "Code examples use React/TSX with shadcn/ui components (Button, Card, Input). Adapt patterns to your component library."
 ---
 
@@ -10,6 +22,7 @@ note: "Code examples use React/TSX with shadcn/ui components (Button, Card, Inpu
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - Interactive elements are created (buttons, links, forms, inputs)
 - Click, hover, or focus event handlers are added
 - Component state changes (loading, success, error)
@@ -21,6 +34,7 @@ This SKILL automatically activates when:
 ## Expertise Provided
 
 ### Animation & Interaction Validation
+
 - **Transition Detection**: Ensures smooth state changes with CSS transitions
 - **Hover State Validation**: Checks for hover feedback on interactive elements
 - **Loading State Validation**: Ensures async actions have visual feedback
@@ -31,6 +45,7 @@ This SKILL automatically activates when:
 ### Specific Checks Performed
 
 #### ❌ Critical Issues (Missing Feedback)
+
 ```tsx
 // These patterns trigger alerts:
 
@@ -54,6 +69,7 @@ This SKILL automatically activates when:
 ```
 
 #### ✅ Correct Interactive Patterns
+
 ```tsx
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -135,12 +151,14 @@ import { cn } from "@/lib/utils"
 ## Integration Points
 
 ### Complementary to Existing Components
+
 - **frontend-design-specialist agent**: Provides design direction, SKILL validates implementation
 - **component-aesthetic-checker**: Validates component customization, SKILL validates interactions
 - **shadcn-ui-design-validator**: Catches generic patterns, SKILL ensures engagement
 - **accessibility-guardian agent**: Validates a11y, SKILL validates visual feedback
 
 ### Escalation Triggers
+
 - Complex animation sequences → `frontend-design-specialist` agent
 - Component interaction patterns → `tanstack-ui-architect` agent
 - Performance concerns → `edge-performance-oracle` agent
@@ -149,6 +167,7 @@ import { cn } from "@/lib/utils"
 ## Validation Rules
 
 ### P1 - Critical (Missing User Feedback)
+
 - **No Hover States**: Buttons/links without hover effects
 - **No Loading States**: Async actions without loading indicators
 - **Jarring State Changes**: Content appearing/disappearing without transitions
@@ -156,6 +175,7 @@ import { cn } from "@/lib/utils"
 - **Silent Errors**: Form errors without visual feedback
 
 ### P2 - Important (Enhanced Engagement)
+
 - **No Micro-interactions**: Icons/elements without subtle animations
 - **Static Navigation**: Page transitions without animations
 - **Abrupt Modals**: Dialogs opening without enter/exit transitions
@@ -163,6 +183,7 @@ import { cn } from "@/lib/utils"
 - **No Disabled States**: Buttons during processing without visual change
 
 ### P3 - Polish (Delightful UX)
+
 - **Limited Animation Variety**: Using only scale/opacity (no rotate, translate)
 - **Generic Durations**: Not tuning animation speed for context
 - **No Stagger**: List items appearing simultaneously (no stagger effect)
@@ -172,6 +193,7 @@ import { cn } from "@/lib/utils"
 ## Remediation Examples
 
 ### Fixing Missing Hover States
+
 ```tsx
 <!-- ❌ Critical: No hover feedback -->
   <Button onClick="handleClick">
@@ -199,6 +221,7 @@ import { cn } from "@/lib/utils"
 ```
 
 ### Fixing Missing Loading States
+
 ```tsx
 <!-- ❌ Critical: No loading feedback during async action -->
 const submitForm = async () => {
@@ -268,6 +291,7 @@ const submitForm = async () => {
 ```
 
 ### Fixing Jarring State Changes
+
 ```tsx
 <!-- ❌ Critical: Content appears/disappears abruptly -->
   <div>
@@ -305,6 +329,7 @@ const submitForm = async () => {
 ```
 
 ### Fixing Missing Focus States
+
 ```tsx
 <!-- ❌ Critical: No visible focus state -->
   <nav>
@@ -358,6 +383,7 @@ const submitForm = async () => {
 ```
 
 ### Adding Micro-interactions
+
 ```tsx
 <!-- ❌ P2: Static icons without micro-interactions -->
   <Button icon="i-heroicons-heart">
@@ -400,11 +426,13 @@ const toggleLike = () => {
 ### Performance-First Animations
 
 ✅ **Performant Properties** (GPU-accelerated):
+
 - `transform` (translate, scale, rotate)
 - `opacity`
 - `filter` (backdrop-blur, etc.)
 
 ❌ **Avoid Animating** (causes reflow/repaint):
+
 - `width`, `height`
 - `top`, `left`, `right`, `bottom`
 - `margin`, `padding`
@@ -465,6 +493,7 @@ const toggleLike = () => {
 ## Advanced Interaction Patterns
 
 ### Staggered List Animations
+
 ```tsx
 const items = ref([1, 2, 3, 4, 5]);
 
@@ -509,45 +538,47 @@ const items = ref([1, 2, 3, 4, 5]);
 ```
 
 ### Success Celebration Animation
+
 ```tsx
 const showSuccess = ref(false);
 
 const celebrate = () => {
   showSuccess.value = true;
   // Confetti or celebration animation here
-  setTimeout(() => showSuccess.value = false, 3000);
+  setTimeout(() => (showSuccess.value = false), 3000);
 };
 
-  <div>
-    <Button
-      onClick="celebrate"
-      className="transition-all duration-300 hover:scale-110 hover:rotate-3"
-    >
-      Complete Task
-    </Button>
+<div>
+  <Button
+    onClick="celebrate"
+    className="transition-all duration-300 hover:scale-110 hover:rotate-3"
+  >
+    Complete Task
+  </Button>
 
-    <Transition
-      enter-active-className="transition-all duration-500 ease-out"
-      enter-from-className="opacity-0 scale-0 rotate-180"
-      enter-to-className="opacity-100 scale-100 rotate-0"
+  <Transition
+    enter-active-className="transition-all duration-500 ease-out"
+    enter-from-className="opacity-0 scale-0 rotate-180"
+    enter-to-className="opacity-100 scale-100 rotate-0"
+  >
+    <div
+      if="showSuccess"
+      className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm"
     >
-      <div
-        if="showSuccess"
-        className="fixed inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm"
-      >
-        <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl">
-          <Icon
-            name="i-heroicons-check-circle"
-            className="w-16 h-16 text-green-500 animate-bounce"
-          />
-          <p className="mt-4 text-xl font-heading">Success!</p>
-        </div>
+      <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-2xl">
+        <Icon
+          name="i-heroicons-check-circle"
+          className="w-16 h-16 text-green-500 animate-bounce"
+        />
+        <p className="mt-4 text-xl font-heading">Success!</p>
       </div>
-    </Transition>
-  </div>
+    </div>
+  </Transition>
+</div>;
 ```
 
 ### Loading Skeleton with Pulse
+
 ```tsx
   <div if="loading" className="space-y-4">
     <div className="animate-pulse">
@@ -578,12 +609,14 @@ While this SKILL doesn't directly use MCP servers, it complements MCP-enhanced a
 ## Benefits
 
 ### Immediate Impact
+
 - **Prevents Flat UI**: Ensures engaging, polished interactions
 - **Improves Perceived Performance**: Loading states make waits feel shorter
 - **Better Accessibility**: Focus states improve keyboard navigation
 - **Professional Polish**: Micro-interactions signal quality
 
 ### Long-term Value
+
 - **Higher User Engagement**: Delightful animations encourage interaction
 - **Reduced Bounce Rate**: Polished UI keeps users engaged
 - **Better Brand Perception**: Professional animations signal quality
@@ -592,24 +625,28 @@ While this SKILL doesn't directly use MCP servers, it complements MCP-enhanced a
 ## Usage Examples
 
 ### During Button Creation
+
 ```tsx
 // Developer adds: <Button onClick="submit">Submit</Button>
 // SKILL immediately activates: "⚠️ P1: Button lacks hover state. Add transition utilities: class='transition-all duration-300 hover:scale-105'"
 ```
 
 ### During Async Action
+
 ```tsx
 // Developer creates: const submitForm = async () => { await api.call(); }
 // SKILL immediately activates: "⚠️ P1: Async action without loading state. Add :loading and :disabled props to button."
 ```
 
 ### During State Toggle
+
 ```tsx
 // Developer adds: <div if="show">Content</div>
 // SKILL immediately activates: "⚠️ P1: Content appears abruptly. Wrap with <Transition> for smooth state changes."
 ```
 
 ### Before Deployment
+
 ```tsx
 // SKILL runs comprehensive check: "✅ Animation validation passed. 45 interactive elements with hover states, 12 async actions with loading feedback, 8 smooth transitions detected."
 ```

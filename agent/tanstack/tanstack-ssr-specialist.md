@@ -1,5 +1,6 @@
 ---
 name: tanstack-ssr-specialist
+tier: 1
 description: Expert in Tanstack Start server-side rendering, streaming, server functions, and Cloudflare Workers integration. Optimizes SSR performance and implements type-safe server-client communication.
 model: anthropic/claude-sonnet-4-5
 color: "#22C55E"

@@ -7,6 +7,7 @@ This file defines the rules and conventions for AI agents working on this projec
 ## Project Overview
 
 **Edge Stack** is a Cloudflare Workers-first development framework optimized for:
+
 - Edge-first architecture (Workers, KV, R2, D1, Durable Objects)
 - Modern React stack (Tanstack Start, shadcn/ui, Tailwind 4)
 - Token-efficient AI workflows ("Hard Tools" over "Soft Instructions")
@@ -16,34 +17,42 @@ This file defines the rules and conventions for AI agents working on this projec
 ## Framework Preferences (STRICT)
 
 ### UI Framework
+
 - **USE**: Tanstack Start (React 19) with Server Functions
 - **NOT**: Next.js, Remix, plain React, Vue, Svelte
 
 ### Component Library
+
 - **USE**: shadcn/ui (Radix UI primitives + Tailwind)
 - **NOT**: Material UI, Chakra, Ant Design, custom components
 
 ### Styling
+
 - **USE**: Tailwind CSS utilities, cn() helper
 - **NOT**: CSS modules, styled-components, SASS, custom CSS files
 
 ### Backend
+
 - **USE**: Hono (lightweight, edge-optimized)
 - **NOT**: Express, Fastify, Koa, NestJS
 
 ### AI Integration
+
 - **USE**: Vercel AI SDK + Cloudflare AI Gateway
 - **NOT**: LangChain, direct OpenAI/Anthropic SDKs
 
 ### Authentication
+
 - **USE**: better-auth (D1 compatible)
 - **NOT**: Lucia, Auth.js, Passport, Clerk, Supabase Auth
 
 ### Billing
+
 - **USE**: Polar.sh
 - **NOT**: Stripe direct, Paddle, Lemon Squeezy
 
 ### Deployment
+
 - **USE**: Cloudflare Workers with static assets
 - **NOT**: Cloudflare Pages, Vercel, Netlify
 
@@ -52,6 +61,7 @@ This file defines the rules and conventions for AI agents working on this projec
 ## Cloudflare Workers Rules
 
 ### 1. Workers Are Stateless
+
 ```typescript
 // ❌ FORBIDDEN: In-memory state
 let cache = new Map(); // Dies between requests
@@ -60,11 +70,12 @@ let cache = new Map(); // Dies between requests
 export default {
   async fetch(request: Request, env: Env) {
     const value = await env.KV.get("key");
-  }
-}
+  },
+};
 ```
 
 ### 2. Use env Parameter, Not process.env
+
 ```typescript
 // ❌ FORBIDDEN
 const apiKey = process.env.API_KEY;
@@ -73,36 +84,38 @@ const apiKey = process.env.API_KEY;
 export default {
   async fetch(request: Request, env: Env) {
     const apiKey = env.API_KEY;
-  }
-}
+  },
+};
 ```
 
 ### 3. Web APIs Only (No Node.js)
+
 ```typescript
 // ❌ FORBIDDEN: Node.js APIs
-import fs from 'fs';
-import { Buffer } from 'buffer';
-const path = require('path');
+import fs from "fs";
+import { Buffer } from "buffer";
+const path = require("path");
 
 // ✅ REQUIRED: Web APIs
 const encoder = new TextEncoder();
-const hash = await crypto.subtle.digest('SHA-256', data);
+const hash = await crypto.subtle.digest("SHA-256", data);
 const response = await fetch(url);
 ```
 
 ### 4. Right Resource for Right Job
 
-| Use Case | Resource | Reason |
-|----------|----------|--------|
-| Read-heavy cache | KV | Eventually consistent, fast reads |
-| User sessions | KV | Simple key-value, TTL support |
-| Rate limiting | Durable Objects | Strong consistency required |
-| WebSockets | Durable Objects | Stateful connections |
-| File storage | R2 | Large objects, S3-compatible |
-| Relational data | D1 | SQL queries, joins |
-| Coordination | Durable Objects | Single-threaded consistency |
+| Use Case         | Resource        | Reason                            |
+| ---------------- | --------------- | --------------------------------- |
+| Read-heavy cache | KV              | Eventually consistent, fast reads |
+| User sessions    | KV              | Simple key-value, TTL support     |
+| Rate limiting    | Durable Objects | Strong consistency required       |
+| WebSockets       | Durable Objects | Stateful connections              |
+| File storage     | R2              | Large objects, S3-compatible      |
+| Relational data  | D1              | SQL queries, joins                |
+| Coordination     | Durable Objects | Single-threaded consistency       |
 
 ### 5. Always Define Env Interface
+
 ```typescript
 // src/env.d.ts
 interface Env {
@@ -128,21 +141,25 @@ interface Env {
 ## Design Anti-Patterns (FORBIDDEN)
 
 ### Typography
+
 - ❌ Inter font (80%+ of websites use it)
 - ❌ Roboto font
 - ✅ Space Grotesk, Archivo Black, JetBrains Mono
 
 ### Colors
+
 - ❌ Purple gradients (#8B5CF6 range)
 - ❌ Default Tailwind gray palette
 - ✅ Custom brand colors with semantic naming
 
 ### Animations
+
 - ❌ No hover states on interactive elements
 - ❌ Static buttons and cards
 - ✅ transition-all, hover:scale-105, micro-interactions
 
 ### Components
+
 - ❌ Default shadcn/ui props only
 - ❌ className="" with no customization
 - ✅ Deep customization via cn() utility
@@ -154,9 +171,11 @@ See `knowledge/design-anti-patterns.md` for complete patterns.
 ## Code Style
 
 ### TypeScript Required
+
 All code must be TypeScript with strict mode enabled.
 
 ### Conventional Commits
+
 ```
 <type>(<scope>): <description>
 
@@ -168,18 +187,20 @@ All code must be TypeScript with strict mode enabled.
 Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
 
 ### Error Handling
+
 ```typescript
 // Always use try/catch with appropriate HTTP status
 try {
   const result = await operation();
   return new Response(JSON.stringify(result), { status: 200 });
 } catch (error) {
-  console.error('Operation failed:', error);
-  return new Response('Internal error', { status: 500 });
+  console.error("Operation failed:", error);
+  return new Response("Internal error", { status: 500 });
 }
 ```
 
 ### Secrets Management
+
 ```bash
 # ❌ FORBIDDEN: Hardcoded secrets
 const API_KEY = "sk-live-xxx";
@@ -195,16 +216,19 @@ wrangler secret put API_KEY
 Always run before committing:
 
 1. **Hard Tools Validation**
+
    ```bash
    ./bin/es-validate.sh
    ```
 
 2. **Type Check**
+
    ```bash
    pnpm typecheck
    ```
 
 3. **Lint**
+
    ```bash
    pnpm lint
    ```
@@ -223,16 +247,17 @@ Use MCP servers for ground truth:
 
 ```typescript
 // shadcn/ui components
-shadcn.get_component("Button") // Get real props, not guessed
+shadcn.get_component("Button"); // Get real props, not guessed
 
 // Framework docs
-context7.resolve("cloudflare workers kv") // Get current docs
+context7.resolve("cloudflare workers kv"); // Get current docs
 
 // Auth patterns
-better-auth.getProviderSetup("github") // Get real setup
+better - auth.getProviderSetup("github"); // Get real setup
 ```
 
 ### Never Trust AI Memory
+
 AI can hallucinate component props and API patterns.
 Hard Tools and MCP servers provide ground truth.
 
@@ -242,10 +267,10 @@ Hard Tools and MCP servers provide ground truth.
 
 This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
 
-| Tool | Scope | When |
-|------|-------|------|
+| Tool          | Scope          | When                                      |
+| ------------- | -------------- | ----------------------------------------- |
 | **TodoWrite** | Single session | Real-time progress visibility (automatic) |
-| **beads** | Cross-session | Everything persistent |
+| **beads**     | Cross-session  | Everything persistent                     |
 
 ### beads Commands
 
@@ -284,6 +309,7 @@ See `knowledge/beads-patterns.md` for detailed usage.
 7. **Hand off** - Provide context for next session
 
 **CRITICAL RULES:**
+
 - Work is NOT complete until `git push` succeeds
 - NEVER stop before pushing - that leaves work stranded locally
 - NEVER say "ready to push when you are" - YOU must push
@@ -293,30 +319,112 @@ See `knowledge/beads-patterns.md` for detailed usage.
 
 ## Quick Reference
 
-| Task | Command |
-|------|---------|
-| Code review | `/es-review` |
-| Start work | `/es-work` |
-| Validate | `/es-validate` |
-| New worker | `/es-worker` |
-| Release | `/es-release` |
+| Task           | Command        |
+| -------------- | -------------- |
+| Code review    | `/es-review`   |
+| Start work     | `/es-work`     |
+| Validate       | `/es-validate` |
+| New worker     | `/es-worker`   |
+| Release        | `/es-release`  |
 | Check upstream | `/es-upstream` |
 
 ### Code Search
 
-| Search Type | Tool | Example |
-|-------------|------|---------|
-| Exact match | `grep` | `grep "TODO" src/` |
+| Search Type     | Tool    | Example                        |
+| --------------- | ------- | ------------------------------ |
+| Exact match     | `grep`  | `grep "TODO" src/`             |
 | Semantic/intent | `mgrep` | `mgrep "error handling logic"` |
 
 Use mgrep for intent-based queries ("find rate limiting"), grep for exact patterns.
 
-| Agent | Purpose |
-|-------|---------|
-| @architect | High-level design decisions |
-| @reviewer | Code review with confidence scoring |
-| @runtime-guardian | Workers runtime compatibility |
-| @durable-objects | DO patterns and state management |
+---
+
+## Agent Architecture
+
+### Model Tiering System
+
+Agents are organized by model tier to optimize for cost, quality, and quota management.
+See `knowledge/model-strategy.md` for the full bucket philosophy.
+
+| Tier       | Model        | Purpose                  | Quota               |
+| ---------- | ------------ | ------------------------ | ------------------- |
+| **Tier 1** | Opus 4.5     | Gold standard reasoning  | Anthropic Max       |
+| **Tier 2** | Gemini Pro   | High-quality alternative | Google subscription |
+| **Tier 3** | Gemini Flash | Fast parallel work       | Google subscription |
+| **Tier 4** | Big Pickle   | Script-like validation   | Free                |
+
+### Tier 1: Gold Standard (Opus 4.5)
+
+Use when quality is the ONLY priority. Consumes Anthropic Max quota.
+
+| Agent                         | Purpose                                  |
+| ----------------------------- | ---------------------------------------- |
+| `@architect`                  | High-level design decisions              |
+| `@reviewer`                   | Deep code review with confidence scoring |
+| `@feedback-codifier`          | Extracts patterns from feedback          |
+| `@durable-objects`            | DO patterns and state management         |
+| `@frontend-design-specialist` | Prevents generic UI patterns             |
+| `@tanstack-ui-architect`      | TanStack Start architecture              |
+| `@plan`                       | Reliable task breakdown                  |
+| `@explore`                    | High-precision codebase navigation       |
+
+### Tier 2: Independent High-Reasoning (Gemini Pro)
+
+High-quality alternatives using Google quota instead of Anthropic.
+
+| Agent                             | Purpose                                |
+| --------------------------------- | -------------------------------------- |
+| `@architect-alt`                  | Cloudflare architecture (quota saving) |
+| `@reviewer-alt`                   | Smart code review (quota saving)       |
+| `@feedback-codifier-alt`          | Pattern extraction (quota saving)      |
+| `@frontend-design-specialist-alt` | UI pattern enforcement                 |
+| `@tanstack-migration-specialist`  | TanStack migration patterns            |
+| `@tanstack-ssr-specialist`        | SSR and Server Functions               |
+| `@better-auth-specialist`         | better-auth D1 integration             |
+| `@polar-billing-specialist`       | Polar.sh billing integration           |
+| `@general-alt`                    | High-reasoning conversation            |
+
+### Tier 3: Fast & Lightweight (Gemini Flash)
+
+Default for general chat, parallel workers, and quick tasks.
+
+| Agent                            | Purpose                         |
+| -------------------------------- | ------------------------------- |
+| `@reviewer-fast`                 | Instant sanity checks           |
+| `@explainer-fast`                | Quick code/pattern explanations |
+| `@testing`                       | E2E test generation             |
+| `@ui-validator`                  | shadcn/ui component validation  |
+| `@tanstack-routing-specialist`   | TanStack Router patterns        |
+| `@accessibility-guardian`        | WCAG compliance validation      |
+| `@mcp-efficiency-specialist`     | MCP token optimization          |
+| `@playwright-testing-specialist` | Playwright E2E patterns         |
+| `@resend-email-specialist`       | Resend email integration        |
+| `@git-history-analyzer`          | Git history analysis            |
+| `@build`                         | Implementation muscle           |
+| `@compaction`                    | Context management              |
+| `@summary`                       | Fast session handoffs           |
+
+**Review Swarm Workers** (parallel execution):
+
+- `@review-security` - Security-focused review
+- `@review-performance` - Performance-focused review
+- `@review-cloudflare` - Cloudflare patterns review
+- `@review-design` - Design/UI review
+
+### Tier 4: Validation Scripts (Big Pickle)
+
+Free tier for deterministic validation. Script-like behavior.
+
+| Agent               | Purpose                        |
+| ------------------- | ------------------------------ |
+| `@runtime-guardian` | Workers runtime compatibility  |
+| `@binding-analyzer` | wrangler.toml binding analysis |
+
+### Quota Protection
+
+1. **Opus capped?** → Use `-alt` agents (switches Bucket A → B)
+2. **Flash capped?** → Falls back to Sonnet 4.5 (switches Bucket B → A)
+3. **Both capped?** → Use Tier 4 agents or wait for reset
 
 ---
 
@@ -332,30 +440,3 @@ opencode.jsonc   # Main configuration
 
 bin/                 # Workflow shell scripts
 ```
-
-## Landing the Plane (Session Completion)
-
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
-
-**MANDATORY WORKFLOW:**
-
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd sync
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
-
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
-Use 'bd' for task tracking

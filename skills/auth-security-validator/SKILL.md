@@ -1,7 +1,19 @@
 ---
 name: auth-security-validator
-description: Autonomous validation of authentication security. Checks password hashing, cookie configuration, CSRF protection, and session management for OWASP compliance.
-triggers: ["auth file changes", "session config changes", "security-related modifications", "pre-deployment"]
+description: Autonomous validation of authentication security. Checks password hashing, cookie configuration, CSRF protection, and session management for OWASP compliance. Activates when modifying auth code, cookies, sessions, or password handling.
+triggers:
+  [
+    "auth file changes",
+    "session config changes",
+    "security-related modifications",
+    "pre-deployment",
+    "password hashing",
+    "cookie security",
+    "CSRF protection",
+    "session management",
+    "argon2",
+    "better-auth",
+  ]
 ---
 
 # Auth Security Validator SKILL
@@ -9,6 +21,7 @@ triggers: ["auth file changes", "session config changes", "security-related modi
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - Files matching `**/auth/**` are created/modified
 - Session configuration files modified (app.config.ts, auth.ts)
 - Password hashing code changes
@@ -20,32 +33,38 @@ This SKILL automatically activates when:
 ### P1 - Critical (Block Operations)
 
 **Password Hashing**:
+
 - ✅ Uses Argon2id (`@node-rs/argon2`)
 - ❌ NOT using: bcrypt, MD5, SHA-256, plain text
 - ✅ Memory cost ≥ 19456 KB
 - ✅ Time cost ≥ 2 iterations
 
 **Cookie Security**:
+
 - ✅ `secure: true` (HTTPS-only)
 - ✅ `httpOnly: true` (XSS prevention)
 - ✅ `sameSite: 'lax'` or `'strict'` (CSRF mitigation)
 
 **Session Configuration**:
+
 - ✅ Session password/secret ≥ 32 characters
 - ✅ Max age configured (not infinite)
 
 ### P2 - Important (Warn)
 
 **CSRF Protection**:
+
 - ⚠️ CSRF protection enabled (automatic in better-auth)
 - ⚠️ No custom form handlers bypassing CSRF
 
 **Rate Limiting**:
+
 - ⚠️ Rate limiting on login endpoint
 - ⚠️ Rate limiting on register endpoint
 - ⚠️ Rate limiting on password reset
 
 **Input Validation**:
+
 - ⚠️ Email format validation
 - ⚠️ Password minimum length (8+ characters)
 - ⚠️ Input sanitization
@@ -84,6 +103,7 @@ This SKILL automatically activates when:
 ## Security Patterns Detected
 
 **Good Patterns** ✅:
+
 ```typescript
 // Argon2id with correct params
 const hash = await argon2.hash(password, {
@@ -102,6 +122,7 @@ cookie: {
 ```
 
 **Bad Patterns** ❌:
+
 ```typescript
 // Weak hashing
 const hash = crypto.createHash('sha256').update(password).digest('hex'); // ❌
@@ -119,6 +140,7 @@ password: '12345' // ❌ Too short
 ## Escalation
 
 Complex scenarios escalate to `better-auth-specialist` agent:
+
 - Custom authentication flows
 - Advanced OAuth configuration
 - Passkey implementation

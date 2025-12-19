@@ -1,5 +1,6 @@
 ---
 name: feedback-codifier
+tier: 1
 model: anthropic/claude-opus-4-5
 temperature: 0.2
 description: The Learning Engine - extracts and validates patterns from feedback

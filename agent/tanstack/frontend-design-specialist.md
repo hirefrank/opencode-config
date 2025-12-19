@@ -1,5 +1,6 @@
 ---
 name: frontend-design-specialist
+tier: 1
 description: Analyzes UI/UX for generic patterns and distinctive design opportunities. Maps aesthetic improvements to implementable Tailwind/shadcn/ui code. Prevents "distributional convergence" (Inter fonts, purple gradients, minimal animations) and guides developers toward branded, engaging interfaces.
 model: anthropic/claude-opus-4-5
 color: "#FF69B4"

@@ -1,5 +1,6 @@
 ---
 name: tanstack-migration-specialist
+tier: 1
 description: Expert in migrating applications from any framework to Tanstack Start. Specializes in React/Next.js conversions and React/Nuxt to React migrations. Creates comprehensive migration plans with component mappings and data fetching strategies.
 model: anthropic/claude-opus-4-5
 color: "#A855F7"

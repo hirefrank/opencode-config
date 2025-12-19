@@ -1,9 +1,23 @@
 ---
 name: agent-native-architecture
 description: Build AI agents on Cloudflare's edge using prompt-native architecture where features are defined in prompts, not code. Use when creating autonomous agents with Durable Objects, designing Workers services, implementing self-modifying systems, or adopting the "trust the agent's intelligence" philosophy on the edge.
+triggers:
+  [
+    "agent architecture",
+    "autonomous agent",
+    "prompt-native",
+    "agent-native",
+    "durable objects agent",
+    "self-modifying agent",
+    "ai agent design",
+    "multi-agent system",
+    "agent state management",
+    "edge agent",
+  ]
 ---
 
 <essential_principles>
+
 ## The Prompt-Native Philosophy for Cloudflare Edge
 
 Agent native engineering inverts traditional software architecture. Instead of writing code that the agent executes, you define outcomes in prompts and let the agent figure out HOW to achieve them using Cloudflare's edge primitives.
@@ -44,21 +58,25 @@ Pure primitives are better, but domain primitives (like `store_agent_state`) are
 The edge is ideal for agent-native systems:
 
 **Durable Objects = Agent State**
+
 - Each agent instance gets a Durable Object
 - State persists between events
 - Built-in coordination and consistency
 
 **Workers = Event Handlers**
+
 - Lightweight, event-driven execution
 - Agent responds to HTTP, Queue, Cron events
 - Fast cold starts enable on-demand agent activation
 
 **Queues = Agent Messaging**
+
 - Agents communicate via message passing
 - Async workflows without blocking
 - Guaranteed delivery and retry
 
 **Service Bindings = Agent Collaboration**
+
 - Zero-latency RPC between agents
 - Type-safe inter-agent communication
 - Compose multi-agent systems
@@ -144,9 +162,9 @@ Multiple independent tasks can run simultaneously.
 ```typescript
 // Orchestrator agent spawns specialized subagents
 const [analysis, generation, review] = await Promise.all([
-  env.ANALYZER.analyze(data),      // Subagent
-  env.GENERATOR.generate(prompt),   // Subagent
-  env.REVIEWER.review(content),     // Subagent
+  env.ANALYZER.analyze(data), // Subagent
+  env.GENERATOR.generate(prompt), // Subagent
+  env.REVIEWER.review(content), // Subagent
 ]);
 ```
 
@@ -178,9 +196,10 @@ When tasks should NOT share context (security, separation of concerns):
 - **Deterministic requirements** - exact same output every time
 - **Cost-sensitive scenarios** - when API costs would be prohibitive vs CPU
 - **Cold start sensitive** - though Cloudflare Workers are very fast
-</essential_principles>
+  </essential_principles>
 
 <cloudflare_patterns>
+
 ## Cloudflare-Specific Patterns
 
 ### Event-Driven Agent with Workers
@@ -204,7 +223,7 @@ export default {
       // Agent responds to queued events
       await processAgentEvent(message.body, env);
     }
-  }
+  },
 };
 ```
 
@@ -217,7 +236,7 @@ export class AgentState extends DurableObject {
     const event = await request.json();
 
     // Load state
-    const state = await this.ctx.storage.get('agentState') || {};
+    const state = (await this.ctx.storage.get("agentState")) || {};
 
     // Agent decides what to do via prompt
     const result = await runAgent({
@@ -227,11 +246,11 @@ export class AgentState extends DurableObject {
       tools: [
         tool("update_state", { key: z.string(), value: z.any() }),
         tool("get_state", { key: z.string() }),
-      ]
+      ],
     });
 
     // State changes committed atomically
-    await this.ctx.storage.put('agentState', result.newState);
+    await this.ctx.storage.put("agentState", result.newState);
 
     return Response.json(result);
   }
@@ -253,9 +272,7 @@ export class OrchestratorAgent extends DurableObject {
     });
 
     // Call specialized agent via binding
-    const result = await this.env.ANALYZER_AGENT.analyze(
-      agentDecision.data
-    );
+    const result = await this.env.ANALYZER_AGENT.analyze(agentDecision.data);
 
     return result;
   }
@@ -282,9 +299,10 @@ export default {
       const agent = env.AGENT_STATE.get(agentId);
       await agent.handleMessage(msg.body.message);
     }
-  }
+  },
 };
 ```
+
 </cloudflare_patterns>
 
 <intake>
@@ -301,27 +319,38 @@ What aspect of agent-native architecture on Cloudflare do you need help with?
 </intake>
 
 <quick_start>
+
 ## Build a Cloudflare Prompt-Native Agent
 
 **Step 1: Define Cloudflare primitive tools**
+
 ```typescript
 const tools = [
-  tool("durable_object_get", "Read from Durable Object storage",
-    { key: z.string() }),
-  tool("durable_object_put", "Write to Durable Object storage",
-    { key: z.string(), value: z.any() }),
-  tool("queue_send", "Send message to Queue",
-    { queue: z.string(), message: z.any() }),
-  tool("kv_get", "Read from KV",
-    { key: z.string() }),
-  tool("service_call", "Call another Worker via binding",
-    { service: z.string(), method: z.string(), data: z.any() }),
+  tool("durable_object_get", "Read from Durable Object storage", {
+    key: z.string(),
+  }),
+  tool("durable_object_put", "Write to Durable Object storage", {
+    key: z.string(),
+    value: z.any(),
+  }),
+  tool("queue_send", "Send message to Queue", {
+    queue: z.string(),
+    message: z.any(),
+  }),
+  tool("kv_get", "Read from KV", { key: z.string() }),
+  tool("service_call", "Call another Worker via binding", {
+    service: z.string(),
+    method: z.string(),
+    data: z.any(),
+  }),
 ];
 ```
 
 **Step 2: Write behavior in the system prompt**
+
 ```markdown
 ## Your Responsibilities
+
 You are an agent running on Cloudflare's edge. When processing events:
 
 1. Load your state from Durable Object storage
@@ -330,6 +359,7 @@ You are an agent running on Cloudflare's edge. When processing events:
 4. Use your judgment about coordination patterns
 
 Available tools:
+
 - Durable Object storage for your state
 - Queues for async messaging to other agents
 - Service bindings for RPC to specialized agents
@@ -339,6 +369,7 @@ You decide the workflow. Make it efficient.
 ```
 
 **Step 3: Deploy as Durable Object + Worker**
+
 ```typescript
 export class Agent extends DurableObject {
   async fetch(request: Request): Promise<Response> {
@@ -349,7 +380,7 @@ export class Agent extends DurableObject {
       options: {
         systemPrompt,
         tools,
-      }
+      },
     });
 
     return Response.json(result);
@@ -361,9 +392,10 @@ export default {
     const agentId = env.AGENT.idFromName("agent-1");
     const agent = env.AGENT.get(agentId);
     return agent.fetch(request);
-  }
+  },
 };
 ```
+
 </quick_start>
 
 <examples>
@@ -372,28 +404,33 @@ export default {
 See `examples/` directory for detailed implementations:
 
 **Durable Objects State Management:** `examples/durable-objects-state.md`
+
 - Event-driven agent state with atomic storage
 - State transitions based on agent decisions
 - Rollback and versioning patterns
 
 **Workers Event-Driven Architecture:** `examples/workers-event-driven.md`
+
 - HTTP, Queue, and Cron triggered agents
 - Multi-event source coordination
 - Cold start optimization strategies
 
 **Queue-Based Messaging:** `examples/queue-messaging.md`
+
 - Agent-to-agent communication patterns
 - Workflow orchestration via messages
 - Error handling and retry strategies
 
 **Verification Patterns:** `examples/verification-patterns.md`
+
 - Rules-based verification (linting, type checking, validation)
 - Visual verification (screenshots, Browser Rendering)
 - LLM-as-judge patterns (when and how to use)
 - Cloudflare Workers-specific verification strategies
-</examples>
+  </examples>
 
 <anti_patterns>
+
 ## What NOT to Do on Cloudflare
 
 **THE CARDINAL SIN: Agent executes your Worker code instead of figuring things out**
@@ -464,6 +501,7 @@ tool("store_data", { data }, async ({ data }) => {
 tool("durable_object_put", { objectName, key, value }, ...);
 // System prompt tells agent which DO to use
 ```
+
 </anti_patterns>
 
 <success_criteria>
@@ -477,44 +515,51 @@ You've built a prompt-native Cloudflare agent when:
 - [ ] The agent can surprise you with clever edge patterns you didn't anticipate
 - [ ] You could add a feature by writing a prompt section, not new Workers code
 - [ ] The system leverages Cloudflare's distributed nature (edge execution, DO consistency)
-</success_criteria>
+      </success_criteria>
 
 <cloudflare_best_practices>
+
 ## Edge-Specific Best Practices
 
 **Durable Objects for Agent State**
+
 - One Durable Object per agent instance
 - Use atomic storage transactions for state consistency
 - Leverage SQLite storage API for complex queries
 - Implement state versioning for rollback capability
 
 **Workers for Event Handling**
+
 - Keep Workers stateless, state goes in Durable Objects
 - Use Service Bindings for zero-latency agent RPC
 - Implement Circuit Breaker pattern for external calls
 - Cache frequently used data in Workers KV
 
 **Queues for Async Coordination**
+
 - Use Queues for agent-to-agent messaging
 - Implement idempotency for queue consumers
 - Set appropriate retry policies per workflow
 - Use Dead Letter Queues for error handling
 
 **Multi-Region Considerations**
+
 - Durable Objects provide global consistency
 - Use KV replication for read-heavy shared data
 - Consider location hints for latency-sensitive agents
 - Design for eventual consistency across regions
 
 **Cost Optimization**
+
 - Batch operations in Durable Objects to reduce billable time
 - Use KV for static/shared data to reduce DO reads
 - Implement smart caching to minimize external API calls
 - Monitor and optimize cold start patterns
 
 **Observability**
+
 - Use Logpush for agent decision logs
 - Implement structured logging for agent actions
 - Set up Analytics Engine for agent metrics
 - Use Tail Workers for real-time debugging
-</cloudflare_best_practices>
+  </cloudflare_best_practices>

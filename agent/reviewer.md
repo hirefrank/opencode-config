@@ -1,5 +1,6 @@
 ---
 name: reviewer
+tier: 1
 model: anthropic/claude-opus-4-5
 description: Swarm coordinator for parallel code review with confidence scoring
 ---

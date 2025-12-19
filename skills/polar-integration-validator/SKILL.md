@@ -1,7 +1,17 @@
 ---
 name: polar-integration-validator
-description: Autonomous validation of Polar.sh billing integration. Checks webhook endpoints, signature verification, subscription middleware, and environment configuration.
-triggers: ["webhook file changes", "subscription code changes", "wrangler.toml updates", "billing-related modifications"]
+description: Autonomous validation of Polar.sh billing integration. Checks webhook endpoints, signature verification, subscription middleware, and environment configuration. Activates when modifying billing code, webhooks, or subscription-related files.
+triggers:
+  [
+    "webhook file changes",
+    "subscription code changes",
+    "wrangler.toml updates",
+    "billing-related modifications",
+    "polar webhook",
+    "polar billing",
+    "subscription middleware",
+    "checkout completed",
+  ]
 ---
 
 # Polar Integration Validator SKILL
@@ -9,6 +19,7 @@ triggers: ["webhook file changes", "subscription code changes", "wrangler.toml u
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - Files matching `**/webhooks/polar.*` are created/modified
 - Files containing "subscription" or "polar" in path are modified
 - `wrangler.toml` is updated
@@ -20,15 +31,18 @@ This SKILL automatically activates when:
 ### P1 - Critical (Block Operations)
 
 **Webhook Endpoint**:
+
 - ✅ Webhook handler exists (`server/api/webhooks/polar.ts` or similar)
 - ✅ Signature verification implemented (`polar.webhooks.verify`)
 - ✅ All critical events handled: `checkout.completed`, `subscription.created`, `subscription.updated`, `subscription.canceled`
 
 **Environment Variables**:
+
 - ✅ `POLAR_ACCESS_TOKEN` configured (check `.dev.vars` or secrets)
 - ✅ `POLAR_WEBHOOK_SECRET` in wrangler.toml
 
 **Database**:
+
 - ✅ Users table has `polar_customer_id` column
 - ✅ Subscriptions table exists
 - ✅ Foreign key relationship configured
@@ -36,11 +50,13 @@ This SKILL automatically activates when:
 ### P2 - Important (Warn)
 
 **Event Handling**:
+
 - ⚠️ `subscription.past_due` handler exists
 - ⚠️ Database updates in all event handlers
 - ⚠️ Error logging implemented
 
 **Subscription Middleware**:
+
 - ⚠️ Subscription check function exists
 - ⚠️ Used on protected routes
 - ⚠️ Checks `subscription_status === 'active'`
@@ -80,6 +96,7 @@ This SKILL automatically activates when:
 ## Escalation
 
 Complex scenarios escalate to `polar-billing-specialist` agent:
+
 - Custom webhook processing logic
 - Multi-tenant subscription architecture
 - Usage-based billing implementation

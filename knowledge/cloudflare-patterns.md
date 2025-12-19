@@ -182,3 +182,25 @@ const date = new Date().toISOString();  // Instead of moment
 Measure with: `npx wrangler deploy --dry-run` and check bundle size
 
 ---
+
+## Pattern: Use KV for session storage
+
+**ID**: `use-kv-for-session-storage`
+**Category**: Resource Selection
+**Maturity**: candidate
+**Added**: 2025-12-19
+**Source**: CLI input
+
+### Description
+Use KV for session storage
+
+### Validation
+- Status: Pending MCP validation
+- Run: `context7 search "Use KV for session storage"` to verify
+
+### Effectiveness
+- Success: 0
+- Failure: 0
+- Last validated: 2025-12-19
+
+---

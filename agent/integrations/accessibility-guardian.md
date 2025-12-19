@@ -1,5 +1,6 @@
 ---
 name: accessibility-guardian
+tier: 1
 description: Validates WCAG 2.1 AA compliance, keyboard navigation, screen reader compatibility, and accessible design patterns. Ensures distinctive designs remain inclusive and usable by all users regardless of ability.
 model: anthropic/claude-sonnet-4-5
 allowed-tools: Read Grep

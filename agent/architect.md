@@ -1,5 +1,6 @@
 ---
 name: architect
+tier: 1
 model: anthropic/claude-opus-4-5
 temperature: 0.3
 description: Senior Cloudflare Architect - edge-first design, resource selection, Workers patterns

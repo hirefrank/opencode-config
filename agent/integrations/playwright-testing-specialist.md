@@ -1,5 +1,6 @@
 ---
 name: playwright-testing-specialist
+tier: 1
 description: Expert in Playwright E2E testing for Tanstack Start applications on Cloudflare Workers. Specializes in testing server functions, Cloudflare bindings, TanStack Router routes, and edge performance.
 model: anthropic/claude-sonnet-4-5
 allowed-tools: Read Grep Bash(playwright:*) Write(test/**/*,e2e/**/*)

@@ -1,5 +1,6 @@
 ---
 name: review-performance
+tier: 3
 model: google/gemini-3-flash-preview
 allowed-tools: Read Grep
 color: "#F59E0B"

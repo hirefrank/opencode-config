@@ -1,5 +1,6 @@
 ---
 name: tanstack-ui-architect
+tier: 1
 description: Deep expertise in shadcn/ui and Radix UI primitives for Tanstack Start projects. Validates component selection, prop usage, and customization patterns. Prevents prop hallucination through MCP integration. Ensures design system consistency.
 model: anthropic/claude-sonnet-4-5
 color: "#3B82F6"

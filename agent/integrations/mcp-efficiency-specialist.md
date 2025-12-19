@@ -1,5 +1,6 @@
 ---
 name: mcp-efficiency-specialist
+tier: 1
 description: Optimizes MCP server usage for token efficiency. Teaches agents to use code execution instead of direct tool calls, achieving 85-95% token savings through progressive disclosure and data filtering.
 model: anthropic/claude-sonnet-4-5
 color: "#22C55E"

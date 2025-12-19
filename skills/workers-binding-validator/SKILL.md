@@ -1,7 +1,18 @@
 ---
 name: workers-binding-validator
-description: Automatically validates Cloudflare Workers binding configuration, ensuring code references match wrangler.toml setup and TypeScript interfaces are accurate
-triggers: ["env parameter usage", "wrangler.toml changes", "TypeScript interface updates", "binding references"]
+description: Automatically validates Cloudflare Workers binding configuration, ensuring code references match wrangler.toml setup and TypeScript interfaces are accurate. Activates when using env bindings, modifying wrangler.toml, or updating Env interfaces.
+triggers:
+  [
+    "env parameter usage",
+    "wrangler.toml changes",
+    "TypeScript interface updates",
+    "binding references",
+    "KV namespace",
+    "R2 bucket",
+    "D1 database",
+    "Durable Object binding",
+    "env.* access",
+  ]
 ---
 
 # Workers Binding Validator SKILL
@@ -9,6 +20,7 @@ triggers: ["env parameter usage", "wrangler.toml changes", "TypeScript interface
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - `env` parameter is used in Workers code
 - wrangler.toml file is modified
 - TypeScript `Env` interface is defined or updated
@@ -18,6 +30,7 @@ This SKILL automatically activates when:
 ## Expertise Provided
 
 ### Binding Configuration Validation
+
 - **Binding Consistency**: Ensures code references match wrangler.toml configuration
 - **TypeScript Interface Validation**: Validates `Env` interface matches actual bindings
 - **Binding Type Accuracy**: Ensures correct binding types (KV, R2, D1, Durable Objects)
@@ -27,25 +40,27 @@ This SKILL automatically activates when:
 ### Specific Checks Performed
 
 #### ❌ Critical Binding Mismatches
+
 ```typescript
 // These patterns trigger immediate alerts:
 // Code references binding that doesn't exist in wrangler.toml
-const user = await env.USER_DATA.get(id);  // USER_DATA not configured
+const user = await env.USER_DATA.get(id); // USER_DATA not configured
 
 // TypeScript interface doesn't match wrangler.toml
 interface Env {
-  USERS: KVNamespace;     // Code expects USERS
+  USERS: KVNamespace; // Code expects USERS
   // wrangler.toml has USER_DATA (mismatch!)
 }
 ```
 
 #### ✅ Correct Binding Patterns
+
 ```typescript
 // These patterns are validated as correct:
 // Matching wrangler.toml and TypeScript interface
 interface Env {
-  USER_DATA: KVNamespace;  // Matches wrangler.toml binding name
-  API_BUCKET: R2Bucket;    // Correct R2 binding type
+  USER_DATA: KVNamespace; // Matches wrangler.toml binding name
+  API_BUCKET: R2Bucket; // Correct R2 binding type
 }
 
 // Proper usage in code
@@ -56,11 +71,13 @@ const object = await env.API_BUCKET.get(key);
 ## Integration Points
 
 ### Complementary to Existing Components
+
 - **binding-context-analyzer agent**: Handles complex binding analysis, SKILL provides immediate validation
 - **workers-runtime-validator SKILL**: Complements runtime checks with binding validation
 - **cloudflare-security-checker SKILL**: Ensures secret bindings are properly configured
 
 ### Escalation Triggers
+
 - Complex binding architecture questions → `binding-context-analyzer` agent
 - Migration between binding types → `cloudflare-architecture-strategist` agent
 - Binding performance issues → `edge-performance-oracle` agent
@@ -68,23 +85,27 @@ const object = await env.API_BUCKET.get(key);
 ## Validation Rules
 
 ### P1 - Critical (Will Fail at Runtime)
+
 - **Missing Bindings**: Code references bindings not in wrangler.toml
 - **Type Mismatches**: Wrong binding types in TypeScript interface
 - **Name Mismatches**: Different names in code vs configuration
 - **Missing Env Interface**: No TypeScript interface for bindings
 
 ### P2 - High (Configuration Issues)
+
 - **Remote Binding Missing**: Development bindings without `remote = true`
 - **Secret vs Var Confusion**: Secrets in [vars] section or vice versa
 - **Incomplete Interface**: Missing bindings in TypeScript interface
 
 ### P3 - Medium (Best Practices)
+
 - **Binding Documentation**: Missing JSDoc comments for bindings
 - **Binding Organization**: Poor organization of related bindings
 
 ## Remediation Examples
 
 ### Fixing Missing Bindings
+
 ```typescript
 // ❌ Critical: Code references binding not in wrangler.toml
 export default {
@@ -112,6 +133,7 @@ id = "user-data"
 ```
 
 ### Fixing TypeScript Interface Mismatches
+
 ```typescript
 // ❌ Critical: Interface doesn't match wrangler.toml
 interface Env {
@@ -145,6 +167,7 @@ id = "session-data"
 ```
 
 ### Fixing Binding Type Mismatches
+
 ```typescript
 // ❌ Critical: Wrong binding type
 interface Env {
@@ -174,6 +197,7 @@ binding = "MY_DB"
 ```
 
 ### Fixing Remote Binding Configuration
+
 ```typescript
 // ❌ High: Missing remote binding for development
 // wrangler.toml
@@ -190,6 +214,7 @@ remote = true  # Enables remote binding for development
 ```
 
 ### Fixing Secret vs Environment Variable Confusion
+
 ```typescript
 // ❌ High: Secret in [vars] section (visible in git)
 // wrangler.toml
@@ -215,6 +240,7 @@ interface Env {
 ## MCP Server Integration
 
 When Cloudflare MCP server is available:
+
 - Query actual binding configuration from Cloudflare account
 - Verify bindings exist and are accessible
 - Check binding permissions and limits
@@ -223,11 +249,13 @@ When Cloudflare MCP server is available:
 ## Benefits
 
 ### Immediate Impact
+
 - **Prevents Runtime Failures**: Catches binding mismatches before deployment
 - **Reduces Debugging Time**: Immediate feedback on configuration issues
 - **Ensures Type Safety**: Validates TypeScript interfaces match reality
 
 ### Long-term Value
+
 - **Consistent Configuration**: Ensures all code uses correct binding patterns
 - **Better Developer Experience**: Clear error messages for binding issues
 - **Reduced Deployment Issues**: Configuration validation prevents failed deployments
@@ -235,18 +263,21 @@ When Cloudflare MCP server is available:
 ## Usage Examples
 
 ### During Binding Usage
+
 ```typescript
 // Developer types: const data = await env.CACHE.get(key);
 // SKILL immediately activates: "❌ CRITICAL: CACHE binding not found in wrangler.toml. Add [[kv_namespaces]] binding = 'CACHE' or check spelling."
 ```
 
 ### During Interface Definition
+
 ```typescript
 // Developer types: interface Env { USERS: R2Bucket; }
 // SKILL immediately activates: "⚠️ HIGH: USERS binding type mismatch. wrangler.toml shows USERS as KVNamespace, not R2Bucket."
 ```
 
 ### During Configuration Changes
+
 ```typescript
 // Developer modifies wrangler.toml binding name
 // SKILL immediately activates: "⚠️ HIGH: Binding name changed from USER_DATA to USERS. Update TypeScript interface and code references."
@@ -255,6 +286,7 @@ When Cloudflare MCP server is available:
 ## Binding Type Reference
 
 ### KV Namespace
+
 ```typescript
 interface Env {
   MY_KV: KVNamespace;
@@ -263,6 +295,7 @@ interface Env {
 ```
 
 ### R2 Bucket
+
 ```typescript
 interface Env {
   MY_BUCKET: R2Bucket;
@@ -271,6 +304,7 @@ interface Env {
 ```
 
 ### D1 Database
+
 ```typescript
 interface Env {
   MY_DB: D1Database;
@@ -279,6 +313,7 @@ interface Env {
 ```
 
 ### Durable Object
+
 ```typescript
 interface Env {
   MY_DO: DurableObjectNamespace;
@@ -287,6 +322,7 @@ interface Env {
 ```
 
 ### AI Binding
+
 ```typescript
 interface Env {
   AI: Ai;
@@ -295,6 +331,7 @@ interface Env {
 ```
 
 ### Vectorize
+
 ```typescript
 interface Env {
   VECTORS: VectorizeIndex;

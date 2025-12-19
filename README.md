@@ -8,10 +8,12 @@ Personal OpenCode configuration optimized for Edge-first development.
 
 ## ⚡ Quick Start
 
-### 1. Clone & Install
+### 1. Clone & Configure
 ```bash
-git clone https://github.com/hirefrank/opencode-config ~/.config/opencode
-cd ~/.config/opencode
+git clone https://github.com/hirefrank/opencode-config ~/Projects/opencode-config
+
+# Add to your shell profile (.bashrc, .zshrc, etc.)
+export OPENCODE_CONFIG=~/Projects/opencode-config
 ```
 
 ### 2. Verify
@@ -19,13 +21,16 @@ cd ~/.config/opencode
 opencode doctor
 ```
 
+> **Note:** This repo uses `OPENCODE_CONFIG` export instead of symlinking to `~/.config/opencode/`. This allows `tool/`, `agent/`, `command/`, and `skills/` directories to live at the repo root (matching Joel Hooks' structure) while keeping the repo in your preferred location.
+
 ---
 
 ## 🏗️ Structure
 
 - **`agent/`**: 18 specialized agent definitions (36 config entries with tier variants).
 - **`command/`**: 29 workflow commands (setup, development, validation).
-- **`skills/`**: 19 dormant SKILLs (awaiting OpenCode skills support).
+- **`tool/`**: 5 custom OpenCode tools (git-context, repo-autopsy, typecheck, ubs).
+- **`skills/`**: 19 SKILLs for continuous validation.
 - **`knowledge/`**: Context-triggers and edge development patterns.
 - **`scripts/`**: 4 Hard Tools (JS validators) for runtime and UI checks.
 - **`plugin/`**: Pre-tool-use hooks and validation scripts.

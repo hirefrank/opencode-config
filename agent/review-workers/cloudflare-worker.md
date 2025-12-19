@@ -1,5 +1,6 @@
 ---
 name: review-cloudflare
+tier: 3
 model: google/gemini-3-flash-preview
 allowed-tools: Read Grep
 color: "#F97316"

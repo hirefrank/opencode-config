@@ -1,7 +1,18 @@
 ---
 name: component-aesthetic-checker
-description: Validates shadcn/ui component customization depth, ensuring components aren't used with default props and checking for consistent design system implementation across Tanstack Start applications
-triggers: ["shadcn ui component usage", "component prop changes", "design token updates", "className customization", "cn() utility usage"]
+description: Validates shadcn/ui component customization depth, ensuring components aren't used with default props and checking for consistent design system implementation across Tanstack Start applications. Activates when using shadcn/ui components, customizing props, or applying design tokens.
+triggers:
+  [
+    "shadcn ui component usage",
+    "component prop changes",
+    "design token updates",
+    "className customization",
+    "cn() utility usage",
+    "default props",
+    "ui prop",
+    "component customization",
+    "design system consistency",
+  ]
 note: "Updated for Tanstack Start (React) + shadcn/ui. Code examples use React/TSX with className and cn() utility for styling."
 ---
 
@@ -10,6 +21,7 @@ note: "Updated for Tanstack Start (React) + shadcn/ui. Code examples use React/T
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - shadcn/ui components (`Button`, `Card`, `Input`, etc.) are used in `.react` files
 - Component props are added or modified
 - The `ui` prop is customized for component variants
@@ -20,6 +32,7 @@ This SKILL automatically activates when:
 ## Expertise Provided
 
 ### Component Customization Depth Analysis
+
 - **Default Prop Detection**: Identifies components using only default values
 - **UI Prop Validation**: Ensures `ui` prop is used for deep customization
 - **Design System Consistency**: Validates consistent pattern usage across components
@@ -30,6 +43,7 @@ This SKILL automatically activates when:
 ### Specific Checks Performed
 
 #### ❌ Critical Issues (Insufficient Customization)
+
 ```tsx
 <!-- These patterns trigger alerts: -->
 
@@ -51,6 +65,7 @@ This SKILL automatically activates when:
 ```
 
 #### ✅ Correct Customized Patterns
+
 ```tsx
 <!-- These patterns are validated as correct: -->
 
@@ -106,11 +121,13 @@ This SKILL automatically activates when:
 ## Integration Points
 
 ### Complementary to Existing Components
+
 - **tanstack-ui-architect agent**: Handles component selection and API guidance, SKILL validates implementation
 - **frontend-design-specialist agent**: Provides design direction, SKILL enforces consistency
 - **shadcn-ui-design-validator**: Catches generic patterns, SKILL ensures deep customization
 
 ### Escalation Triggers
+
 - Component API questions → `tanstack-ui-architect` agent (with MCP lookup)
 - Design consistency issues → `frontend-design-specialist` agent
 - Complex component composition → `/es-component` command
@@ -119,6 +136,7 @@ This SKILL automatically activates when:
 ## Validation Rules
 
 ### P1 - Critical (Default Component Usage)
+
 - **No UI Prop Customization**: Using shadcn/ui components without `ui` prop
 - **All Default Props**: No color, size, variant, or other prop customizations
 - **Missing Loading States**: Async actions without `:loading` prop
@@ -130,6 +148,7 @@ This SKILL automatically activates when:
 **These patterns indicate generic "AI-generated" aesthetics and MUST be flagged:**
 
 #### Font Anti-Patterns (Auto-Detect)
+
 ```tsx
 // ❌ CRITICAL: Generic fonts that dominate 80%+ of websites
 fontFamily: {
@@ -145,31 +164,35 @@ className="text-base"         // Flag: Generic sizing, consider custom scale
 ```
 
 **Recommended Font Alternatives** (suggest these in reports):
+
 - **Body**: Space Grotesk, Plus Jakarta Sans, IBM Plex Sans, Outfit, Satoshi
 - **Headings**: Archivo Black, Cabinet Grotesk, Clash Display, General Sans
 - **Mono**: JetBrains Mono, Fira Code, Source Code Pro
 
 #### Color Anti-Patterns (Auto-Detect)
+
 ```tsx
 // ❌ CRITICAL: Purple gradients (most common AI aesthetic)
-className="bg-gradient-to-r from-purple-500 to-purple-600"
-className="bg-gradient-to-r from-violet-500 to-purple-500"
-className="bg-purple-600"
-className="text-purple-500"
+className = "bg-gradient-to-r from-purple-500 to-purple-600";
+className = "bg-gradient-to-r from-violet-500 to-purple-500";
+className = "bg-purple-600";
+className = "text-purple-500";
 
 // ❌ CRITICAL: Default gray backgrounds without brand treatment
-className="bg-gray-50"        // Flag: "Consider brand-tinted background"
-className="bg-white"          // Flag: "Consider atmospheric gradient or texture"
-className="bg-slate-100"      // Flag if used extensively without brand colors
+className = "bg-gray-50"; // Flag: "Consider brand-tinted background"
+className = "bg-white"; // Flag: "Consider atmospheric gradient or texture"
+className = "bg-slate-100"; // Flag if used extensively without brand colors
 ```
 
 **Recommended Color Approaches** (suggest these in reports):
+
 - Use CSS variables with brand palette (`--brand-primary`, `--brand-accent`)
 - Tint grays with brand color: `bg-brand-gray-50` instead of `bg-gray-50`
 - Gradients: Use brand colors, not default purple
 - Atmospheric: Layer gradients with subtle brand tints
 
 #### Animation Anti-Patterns (Auto-Detect)
+
 ```tsx
 // ❌ CRITICAL: No transitions on interactive elements
 <Button>Click</Button>        // Flag: "Add transition-all duration-300"
@@ -180,25 +203,26 @@ className="hover:bg-blue-600" // Flag: "Consider hover:scale-105 or hover:-trans
 ```
 
 **Detection Rules** (implement in validation):
+
 ```typescript
 // Font detection
-const OVERUSED_FONTS = ['Inter', 'Roboto', 'Open Sans', 'Helvetica', 'Arial'];
-const hasBadFont = (config) => OVERUSED_FONTS.some(f =>
-  config.fontFamily?.sans?.includes(f)
-);
+const OVERUSED_FONTS = ["Inter", "Roboto", "Open Sans", "Helvetica", "Arial"];
+const hasBadFont = (config) =>
+  OVERUSED_FONTS.some((f) => config.fontFamily?.sans?.includes(f));
 
 // Purple gradient detection
 const PURPLE_PATTERN = /(?:purple|violet)-[4-6]00/;
 const hasPurpleGradient = (className) =>
-  className.includes('gradient') && PURPLE_PATTERN.test(className);
+  className.includes("gradient") && PURPLE_PATTERN.test(className);
 
 // Missing animation detection
-const INTERACTIVE_COMPONENTS = ['Button', 'Card', 'Link', 'Input'];
+const INTERACTIVE_COMPONENTS = ["Button", "Card", "Link", "Input"];
 const hasNoTransition = (className) =>
-  !className.includes('transition') && !className.includes('animate');
+  !className.includes("transition") && !className.includes("animate");
 ```
 
 ### P2 - Important (Design System Consistency)
+
 - **Random Spacing Values**: Not using Tailwind spacing scale (p-4, mt-6, etc.)
 - **Inconsistent Icon Sizing**: Icons with different sizes in similar contexts
 - **Mixed Color Approaches**: Some components use theme colors, others use arbitrary values
@@ -206,6 +230,7 @@ const hasNoTransition = (className) =>
 - **No Focus States**: Interactive elements without focus-visible styling
 
 ### P3 - Polish (Enhanced UX)
+
 - **Limited Prop Usage**: Only using 1-2 props when more would improve UX
 - **No Micro-interactions**: Missing subtle animations on state changes
 - **Generic Variants**: Using 'solid', 'outline' without brand customization
@@ -215,6 +240,7 @@ const hasNoTransition = (className) =>
 ## Remediation Examples
 
 ### Fixing Default Component Usage
+
 ```tsx
 <!-- ❌ Critical: Default props only -->
   <Button onClick="handleClick">
@@ -241,6 +267,7 @@ const hasNoTransition = (className) =>
 ```
 
 ### Fixing Missing Loading States
+
 ```tsx
 <!-- ❌ Critical: No loading feedback -->
 const handleSubmit = async () => {
@@ -279,6 +306,7 @@ const handleSubmit = async () => {
 ```
 
 ### Fixing Inconsistent Spacing
+
 ```tsx
 <!-- ❌ P2: Random spacing values -->
   <div className="p-3">
@@ -302,6 +330,7 @@ const handleSubmit = async () => {
 ```
 
 ### Fixing Design System Inconsistency
+
 ```tsx
 <!-- ❌ P2: Inconsistent component styling -->
   <div>
@@ -363,6 +392,7 @@ const buttonVariants = {
 ```
 
 ### Fixing Underutilized UI Prop
+
 ```tsx
 <!-- ❌ P3: Not using ui prop for customization -->
   <Card className="rounded-2xl shadow-xl p-8">
@@ -391,6 +421,7 @@ const buttonVariants = {
 When shadcn/ui MCP server is available:
 
 ### Component Prop Validation
+
 ```typescript
 // Before validating customization depth, get actual component API
 const componentDocs = await mcp.shadcn.get_component("Button");
@@ -399,14 +430,15 @@ const componentDocs = await mcp.shadcn.get_component("Button");
 // componentDocs.props: ['color', 'size', 'variant', 'icon', 'loading', 'disabled', ...]
 
 // Check for underutilized props
-const usedProps = ['color', 'size']; // From component code
+const usedProps = ["color", "size"]; // From component code
 const availableProps = componentDocs.props;
-const unutilizedProps = availableProps.filter(p => !usedProps.includes(p));
+const unutilizedProps = availableProps.filter((p) => !usedProps.includes(p));
 
 // Suggest: "Consider using 'icon' or 'loading' props for richer UX"
 ```
 
 ### UI Prop Structure Validation
+
 ```typescript
 // Validate ui prop structure against schema
 const uiSchema = componentDocs.ui_schema;
@@ -417,6 +449,7 @@ const uiSchema = componentDocs.ui_schema;
 ```
 
 ### Consistency Across Components
+
 ```typescript
 // Check multiple component instances
 const buttonInstances = findAllComponents("Button");
@@ -429,12 +462,14 @@ const buttonInstances = findAllComponents("Button");
 ## Benefits
 
 ### Immediate Impact
+
 - **Prevents Generic Appearance**: Ensures components are branded, not defaults
 - **Enforces Design Consistency**: Catches pattern drift across components
 - **Improves User Feedback**: Validates loading states and interactions
 - **Educates on Component API**: Shows developers full customization capabilities
 
 ### Long-term Value
+
 - **Consistent Component Library**: All components follow design system
 - **Faster Component Development**: Clear patterns and examples
 - **Better Code Maintainability**: Reusable component variants
@@ -443,24 +478,28 @@ const buttonInstances = findAllComponents("Button");
 ## Usage Examples
 
 ### During Component Usage
+
 ```tsx
 // Developer adds: <Button>Click me</Button>
 // SKILL immediately activates: "⚠️ P1: Button using all default props. Customize with color, size, variant, and ui prop for brand distinctiveness."
 ```
 
 ### During Async Actions
+
 ```tsx
 // Developer creates async button: <Button onClick="submitForm">Submit</Button>
 // SKILL immediately activates: "⚠️ P1: Button triggers async action but lacks :loading prop. Add loading state for user feedback."
 ```
 
 ### During Refactoring
+
 ```tsx
 // Developer adds 5th different button style
 // SKILL immediately activates: "⚠️ P2: Button used with 5 different customization patterns. Consider creating reusable variants for consistency."
 ```
 
 ### Before Deployment
+
 ```tsx
 // SKILL runs comprehensive check: "✅ Component aesthetic validation passed. 23 components with deep customization, consistent patterns, and proper loading states detected."
 ```
@@ -468,22 +507,27 @@ const buttonInstances = findAllComponents("Button");
 ## Design System Maturity Levels
 
 ### Level 0: Defaults Only (Avoid)
+
 ```tsx
 <Button>Action</Button>
 <Card><p>Content</p></Card>
 <Input value="value" />
 ```
+
 **Issues**: Generic appearance, no brand identity, inconsistent with custom design
 
 ### Level 1: Basic Props (Minimum)
+
 ```tsx
 <Button color="primary" size="lg">Action</Button>
 <Card className="shadow-lg"><p>Content</p></Card>
 <Input value="value" placeholder="Enter value" />
 ```
+
 **Better**: Some customization, but limited depth
 
 ### Level 2: UI Prop + Classes (Target)
+
 ```tsx
 <Button
   color="primary"
@@ -504,9 +548,11 @@ const buttonInstances = findAllComponents("Button");
   <p>Content</p>
 </Card>
 ```
+
 **Ideal**: Deep customization, brand-distinctive, consistent patterns
 
 ### Level 3: Design System (Advanced)
+
 ```tsx
 <!-- Reusable variants from composables -->
 <Button v-bind="designSystem.button.variants.primary">
@@ -517,6 +563,7 @@ const buttonInstances = findAllComponents("Button");
   <p>Content</p>
 </Card>
 ```
+
 **Advanced**: Centralized design system, maximum consistency
 
 ## Component Customization Checklist
