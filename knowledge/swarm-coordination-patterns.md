@@ -46,8 +46,94 @@ This file documents multi-agent coordination patterns based on the OpenCode Swar
 
 ---
 
+## 6. es-review Swarm Implementation
+
+**Pattern**: Code review using specialized parallel workers with coordinator synthesis.
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    @reviewer (Coordinator)                   │
+│                      Opus 4.5 (Smart)                        │
+├─────────────────────────────────────────────────────────────┤
+│  1. Parse PR, run Hard Tools                                │
+│  2. Spawn 4 focused workers in parallel                     │
+│  3. Merge results, apply confidence scoring                 │
+│  4. Generate unified report                                 │
+└─────────────────────────────────────────────────────────────┘
+                              │
+       ┌──────────────────────┼──────────────────────┐
+       │                      │                      │
+       ▼                      ▼                      ▼
+┌─────────────┐        ┌─────────────┐        ┌─────────────┐
+│@review-     │        │@review-     │        │@review-     │
+│security     │        │performance  │        │cloudflare   │
+│ Flash ($)   │        │  Flash ($)  │        │  Flash ($)  │
+└─────────────┘        └─────────────┘        └─────────────┘
+                              │
+                              ▼
+                       ┌─────────────┐
+                       │@review-     │
+                       │design       │
+                       │  Flash ($)  │
+                       └─────────────┘
+```
+
+### Worker Responsibilities
+
+| Worker                | Focus                          | Ignores               |
+| --------------------- | ------------------------------ | --------------------- |
+| `@review-security`    | Auth, secrets, injection, CORS | Performance, design   |
+| `@review-performance` | Bundle size, async, caching    | Security, design      |
+| `@review-cloudflare`  | Runtime, bindings, stateless   | Security, performance |
+| `@review-design`      | shadcn/ui, a11y, anti-patterns | Backend concerns      |
+
+### Context Injection
+
+Each worker receives:
+
+1. **Shared context**: PR metadata, Hard Tools output
+2. **Filtered files**: Only files relevant to their domain
+3. **Clear scope**: Explicit "do not review" boundaries
+4. **Output format**: Structured findings with confidence scores
+
+### Synthesis Rules
+
+1. **Deduplication**: Same file:line → keep highest confidence
+2. **Boost**: Issues flagged by multiple workers get +10 confidence
+3. **Filter**: Findings with confidence < 80 are hidden
+4. **Priority**: P1 (critical) > P2 (important) > P3 (nice-to-have)
+
+### Usage
+
+```bash
+# Full swarm review
+es-review 123
+
+# Local changes
+es-review --local
+
+# Sequential mode (one worker at a time)
+es-review --sequential
+
+# Fast mode (skip synthesis)
+es-review --fast
+```
+
+---
+
 ## Success Metrics (Target)
 
 - **Time Reduction**: ~75% (Parallel execution of 4 perspectives in 5 min vs 20 min sequential).
 - **Cost Reduction**: ~70% (1 expensive Coordinator + 4 cheap Workers vs 4 expensive sequential agents).
 - **Reliability**: Higher consistency through specialized focus and mandatory verification gates.
+
+### es-review Specific Metrics
+
+| Metric          | Sequential (Old)   | Swarm (New)               | Improvement   |
+| --------------- | ------------------ | ------------------------- | ------------- |
+| Time            | ~8 min             | ~2 min                    | 75% faster    |
+| Cost            | 4x Opus calls      | 1 Opus + 4 Flash          | ~70% cheaper  |
+| Coverage        | Single perspective | 4 specialized             | More thorough |
+| False positives | Higher             | Lower (confidence filter) | Better signal |

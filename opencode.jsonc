@@ -13,6 +13,11 @@
     "knowledge/model-strategy.md"
   ],
 
+  "skills": {
+    "path": "skills",
+    "enabled": true
+  },
+
   "command": {
     "work": {
       "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
@@ -90,12 +95,6 @@
     }
   },
 
-  "tool": {
-    "typecheck": "tool/typecheck.ts",
-    "git-context": "tool/git-context.ts",
-    "repo-autopsy": "tool/repo-autopsy.ts"
-  },
-
   "agent": {
     // TIER 1 (Opus 4.5)
     "architect": {
@@ -160,6 +159,24 @@
       "model": "google/gemini-3-pro-preview",
       "description": "Polar.sh billing integration (Gemini Pro)",
       "permission": { "bash": "ask" }
+    },
+
+    // REVIEW SWARM WORKERS (Gemini Flash - cheap parallel execution)
+    "review-security": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Security-focused review worker (swarm)"
+    },
+    "review-performance": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Performance-focused review worker (swarm)"
+    },
+    "review-cloudflare": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Cloudflare-patterns review worker (swarm)"
+    },
+    "review-design": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Design/UI review worker (swarm)"
     },
 
     // TIER 3 (Gemini Flash)
