@@ -158,7 +158,8 @@
     },
     "polar-billing-specialist": {
       "model": "google/gemini-3-pro-preview",
-      "description": "Polar.sh billing integration (Gemini Pro)"
+      "description": "Polar.sh billing integration (Gemini Pro)",
+      "permission": { "bash": "ask" }
     },
 
     // TIER 3 (Gemini Flash)
@@ -172,7 +173,8 @@
     },
     "testing": {
       "model": "google/gemini-3-flash-preview",
-      "description": "E2E testing with Playwright"
+      "description": "E2E testing with Playwright",
+      "permission": { "bash": "ask" }
     },
     "ui-validator": {
       "model": "google/gemini-3-flash-preview",
@@ -192,11 +194,13 @@
     },
     "playwright-testing-specialist": {
       "model": "google/gemini-3-flash-preview",
-      "description": "Playwright E2E test patterns (Gemini Flash)"
+      "description": "Playwright E2E test patterns (Gemini Flash)",
+      "permission": { "bash": "ask", "webfetch": "ask" }
     },
     "resend-email-specialist": {
       "model": "google/gemini-3-flash-preview",
-      "description": "Resend email integration (Gemini Flash)"
+      "description": "Resend email integration (Gemini Flash)",
+      "permission": { "bash": "ask" }
     },
     "git-history-analyzer": {
       "model": "google/gemini-3-flash-preview",
