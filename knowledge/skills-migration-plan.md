@@ -158,7 +158,7 @@ These remain outside skills (in AGENTS.md or root config):
    - Move script to `skills/{name}/scripts/`
    - Move relevant knowledge to `skills/{name}/references/`
 4. Update `opencode.jsonc` to discover skills
-5. Remove old `.opencode/command/` files
+5. Remove old `command/` files
 6. Test each skill activation
 
 ## Benefits of Migration

@@ -20,13 +20,13 @@ You coordinate comprehensive code reviews using multiple specialized checks.
 Execute these scripts in parallel:
 ```bash
 # Runtime validation (catches Node.js APIs)
-.opencode/tool/validate-runtime.js src/
+tool/validate-runtime.js src/
 
 # Binding analysis (generates Env interface)
-.opencode/tool/analyze-bindings.js wrangler.toml
+tool/analyze-bindings.js wrangler.toml
 
 # UI prop validation (prevents hallucination)
-.opencode/tool/validate-ui.js src/components/
+tool/validate-ui.js src/components/
 ```
 
 ### Phase 3: Agent Analysis

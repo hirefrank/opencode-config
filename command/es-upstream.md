@@ -56,7 +56,7 @@ This command executes `bin/es-check-upstream.sh` which:
 2. Compares against last recorded state
 3. Filters for relevant changes
 4. Generates adoption recommendations
-5. Updates `.opencode/knowledge/UPSTREAM.md`
+5. Updates `knowledge/UPSTREAM.md`
 
 ## Execute
 

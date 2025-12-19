@@ -421,7 +421,7 @@ If we create genuinely generic improvements (not Cloudflare-specific), we may co
 - **Why Critical**: Without this, Cloudflare Workers dev server fails in worktrees (missing env vars)
 - **Implementation**:
   ```bash
-  # Apply to: plugins/edge-stack/skills/git-worktree/scripts/worktree-manager.sh
+  # Apply to: skills/git-worktree/scripts/worktree-manager.sh
   # Add after worktree creation:
   if [ -f "$MAIN_REPO/.env" ]; then
     cp "$MAIN_REPO/.env" "$WORKTREE_PATH/.env"
@@ -440,7 +440,7 @@ If we create genuinely generic improvements (not Cloudflare-specific), we may co
 - **Why Relevant**: Our research agents fetch web docs - need current year context
 - **Implementation**:
   ```bash
-  # Apply to: plugins/edge-stack/agents/research/git-history-analyzer.md
+  # Apply to: agents/research/git-history-analyzer.md
   # Add to system prompt:
   "IMPORTANT: Today's date is 2025. When searching for documentation or examples, 
    prioritize 2025 resources over 2024 or older content."
@@ -461,7 +461,7 @@ If we create genuinely generic improvements (not Cloudflare-specific), we may co
 - **Why Relevant**: Improves workflow clarity, reduces friction
 - **Implementation**:
   ```bash
-  # Apply to: plugins/edge-stack/commands/es-plan.md
+  # Apply to: commands/es-plan.md
   # Add after plan generation:
   echo "Plan saved to: $PLAN_FILE"
   echo ""
@@ -487,7 +487,7 @@ If we create genuinely generic improvements (not Cloudflare-specific), we may co
 - **Why Relevant**: We have Playwright MCP - can leverage for better PR documentation
 - **Implementation**:
   ```bash
-  # Apply to: plugins/edge-stack/commands/es-work.md
+  # Apply to: commands/es-work.md
   # Add after implementation phase:
   if [[ "$CHANGES_AFFECT_UI" == "true" ]]; then
     echo "📸 Capture screenshots of UI changes using Playwright MCP"
@@ -512,7 +512,7 @@ If we create genuinely generic improvements (not Cloudflare-specific), we may co
 - **Why Relevant**: Community plugin - need structured issue reporting
 - **Implementation**:
   ```bash
-  # Create: plugins/edge-stack/commands/es-report-bug.md
+  # Create: commands/es-report-bug.md
   # Template:
   1. Collect reproduction steps
   2. Capture environment (claude --version, wrangler --version)
@@ -536,7 +536,7 @@ If we create genuinely generic improvements (not Cloudflare-specific), we may co
 - **Why Relevant**: Valuable for designing MCP servers and multi-agent workflows
 - **Implementation**:
   ```bash
-  # Create: plugins/edge-stack/skills/agent-native-architecture/
+  # Create: skills/agent-native-architecture/
   # Files:
   # - SKILL.md (philosophy and patterns)
   # - examples/ (Cloudflare-specific examples using Durable Objects, Queues)

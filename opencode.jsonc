@@ -16,8 +16,8 @@
   // Loaded automatically to provide project context
   "instructions": [
     "AGENTS.md",
-    ".opencode/knowledge/guidelines.md",
-    ".opencode/knowledge/cloudflare-patterns.md"
+    "knowledge/guidelines.md",
+    "knowledge/cloudflare-patterns.md"
   ],
 
   // === Key Bindings ===
@@ -56,12 +56,12 @@
   "context_triggers": {
     // Cloudflare resource selection - when to use KV vs DO vs R2
     "rate limit|strong consistency|Durable Object|DO pattern|WebSocket": {
-      "load": [".opencode/knowledge/cloudflare-patterns.md"],
+      "load": ["knowledge/cloudflare-patterns.md"],
       "agent": "durable-objects"
     },
     // Runtime compatibility issues - Node.js API violations
     "process\\.env|require\\(|Buffer|fs module|Node\\.js|not working in Workers": {
-      "load": [".opencode/knowledge/cloudflare-patterns.md"],
+      "load": ["knowledge/cloudflare-patterns.md"],
       "agent": "runtime-guardian"
     },
     // UI component questions - shadcn/ui props and patterns
@@ -71,16 +71,16 @@
     },
     // Design and aesthetics - prevent generic AI patterns
     "Inter font|Roboto|purple gradient|generic|aesthetic|design review|distinctive": {
-      "load": [".opencode/knowledge/design-anti-patterns.md"]
+      "load": ["knowledge/design-anti-patterns.md"]
     },
     // Authentication setup
     "auth|login|session|OAuth|passkey|better-auth|sign in": {
       "mcp": "better-auth",
-      "load": [".opencode/knowledge/guidelines.md"]
+      "load": ["knowledge/guidelines.md"]
     },
     // Performance optimization
     "cold start|bundle size|slow|optimize|performance|latency|edge": {
-      "load": [".opencode/knowledge/cloudflare-patterns.md"],
+      "load": ["knowledge/cloudflare-patterns.md"],
       "agent": "architect"
     },
     // Code review requests
@@ -89,15 +89,15 @@
     },
     // Semantic code search - use mgrep for intent-based queries
     "find.*where|search.*for|look.*for|how does.*work|what.*calls|who uses": {
-      "load": [".opencode/knowledge/mgrep-patterns.md"]
+      "load": ["knowledge/mgrep-patterns.md"]
     },
     // Task management - beads for cross-session persistence
     "task|todo|pending|what.*next|continue|pick up|left off|multi-session": {
-      "load": [".opencode/knowledge/beads-patterns.md"]
+      "load": ["knowledge/beads-patterns.md"]
     },
     // Model selection guidance
     "which model|what model|use opus|use gemini|daily driver|escalate": {
-      "load": [".opencode/knowledge/model-strategy.md"]
+      "load": ["knowledge/model-strategy.md"]
     }
   },
 

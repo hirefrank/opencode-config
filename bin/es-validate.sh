@@ -15,7 +15,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GIT_ROOT="$(git rev-parse --show-toplevel)"
-OPENCODE_TOOLS="$GIT_ROOT/.opencode/tool"
+OPENCODE_TOOLS="$GIT_ROOT/tool"
 
 # Colors
 RED='\033[0;31m'

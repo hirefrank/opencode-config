@@ -75,9 +75,9 @@ Feedback: "Use KV for rate limiting - it's fast enough"
 ## Storage Location
 
 Validated patterns go to:
-- `.opencode/knowledge/cloudflare-patterns.md` - Runtime/resource patterns
-- `.opencode/knowledge/ui-patterns.md` - shadcn/Tailwind patterns
-- `.opencode/knowledge/guidelines.md` - General best practices
+- `knowledge/cloudflare-patterns.md` - Runtime/resource patterns
+- `knowledge/ui-patterns.md` - shadcn/Tailwind patterns
+- `knowledge/guidelines.md` - General best practices
 
 ## Pattern Format
 

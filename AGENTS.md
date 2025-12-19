@@ -147,7 +147,7 @@ interface Env {
 - ❌ className="" with no customization
 - ✅ Deep customization via cn() utility
 
-See `.opencode/knowledge/design-anti-patterns.md` for complete patterns.
+See `knowledge/design-anti-patterns.md` for complete patterns.
 
 ---
 
@@ -268,7 +268,7 @@ bd list                   # All tasks
 bd dep add bd-b bd-a     # B depends on A
 ```
 
-See `.opencode/knowledge/beads-patterns.md` for detailed usage.
+See `knowledge/beads-patterns.md` for detailed usage.
 
 ---
 
@@ -304,12 +304,12 @@ Use mgrep for intent-based queries ("find rate limiting"), grep for exact patter
 ## File Locations
 
 ```
-.opencode/
-├── agent/           # AI agent definitions
-├── command/         # Slash commands
-├── tool/            # Hard Tools (JS validators)
-├── knowledge/       # Context and patterns
-└── opencode.jsonc   # Main configuration
+agent/           # AI agent definitions
+command/         # Slash commands
+tool/            # Hard Tools (JS validators)
+knowledge/       # Context and patterns
+skills/          # Injectable knowledge packages
+opencode.jsonc   # Main configuration
 
 bin/                 # Workflow shell scripts
 ```

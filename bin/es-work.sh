@@ -22,7 +22,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GIT_ROOT="$(git rev-parse --show-toplevel)"
-OPENCODE_TOOLS="$GIT_ROOT/.opencode/tool"
+OPENCODE_TOOLS="$GIT_ROOT/tool"
 WORKTREE_BASE="$GIT_ROOT/.worktrees"
 
 # Colors for output
@@ -272,8 +272,8 @@ fi)
 
 1. **Analyze the plan** and create TodoWrite items for each task
 2. **Run Hard Tools after each change**:
-   - \`node .opencode/tool/validate-runtime.js src\`
-   - \`node .opencode/tool/analyze-bindings.js wrangler.toml\`
+   - \`node tool/validate-runtime.js src\`
+   - \`node tool/analyze-bindings.js wrangler.toml\`
 3. **Validate frequently**: \`pnpm typecheck && pnpm lint\`
 4. **Test locally**: \`wrangler dev\`
 5. **Commit incrementally** with conventional commit messages

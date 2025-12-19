@@ -1,208 +1,66 @@
-# hirefrank Marketplace
+# opencode-config
 
-The official hirefrank marketplace where I share my AI workflow tools and productivity plugins. Featuring specialized Claude Code plugins for AI analysis and Cloudflare Workers development.
+Personal OpenCode configuration optimized for Edge-first development.
 
-## Available Plugins
+> **Edge Stack** is a Cloudflare Workers-first development framework optimized for edge computing, modern React (TanStack Start), and token-efficient AI workflows.
 
-### 🔍 Claude Skills Analyzer
-**Plugin ID**: `claude-skills-analyzer`
+---
 
-Analyzes your AI conversation exports (Claude, ChatGPT) to automatically generate reusable Custom Skills based on your actual usage patterns.
+## ⚡ Quick Start
 
-**Key Features:**
-- Cross-platform analysis (Claude + ChatGPT)
-- Pattern recognition and workflow automation
-- Smart deduplication across platforms
-- Complete skill package generation
-- Incremental processing for efficiency
-
-**Usage**:
-- `/skills-setup` - Get setup guidance and export instructions
-- `/analyze-skills` - Run the main conversation analysis
-- `/skills-troubleshoot` - Diagnose and fix common issues
-
-[📖 Full Documentation](./plugins/claude-skills-analyzer/README.md)
-
-### ⚡ Edge Stack
-**Plugin ID**: `edge-stack`
-
-Complete full-stack development toolkit optimized for edge computing. Build modern web applications with Tanstack Start (React), Cloudflare Workers, Polar.sh billing, better-auth authentication, Resend email, and shadcn/ui design system.
-
-**Key Features:**
-- **27 specialized agents** (all with MCP integration) - [View all agents](./plugins/edge-stack/agents/)
-- **14 autonomous SKILLs** (continuous validation) - [View all skills](./plugins/edge-stack/skills/)
-- **26 workflow commands** (including setup wizards, test generation, verification, and community tools) - [View all commands](./plugins/edge-stack/commands/)
-- **9 bundled MCP servers** (6 active by default: shadcn/ui, better-auth, Playwright, Package Registry, Tailwind CSS, Context7) - no manual setup required
-- **E2E testing** with Playwright and automated test generation
-- **Email integration** with Resend for transactional and marketing emails
-- **Bundled statusline** - at-a-glance development context
-- **Documentation validation** - keeps docs in sync with code
-- Distinctive design system preventing generic "AI aesthetics"
-
-**Command Highlights** (see [full list](./plugins/edge-stack/commands/)):
-- **Setup**: `/es-billing-setup`, `/es-auth-setup`, `/es-test-setup`, `/es-email-setup`
-- **Development**: `/es-tanstack-route`, `/es-tanstack-component`, `/es-component`, `/es-worker`
-- **Testing**: `/es-test-gen`, `/es-test-setup`
-- **Validation**: `/es-validate`, `/es-verify-output`, `/es-design-review`
-- **Workflow**: `/es-commit`, `/es-review`, `/es-work`, `/es-resolve-parallel`
-- **Migration**: `/es-tanstack-migrate`, `/es-migrate`
-- **Utilities**: `/es-plan`, `/es-issue`, `/es-triage`, `/es-theme`, `/es-deploy`, `/es-report-bug`
-
-For detailed documentation on all agents, commands, skills, and MCP integration, see the [Edge Stack Plugin README](./plugins/edge-stack/README.md).
-
-**Quick Start**:
-- `/es-billing-setup` - Interactive Polar.sh billing integration
-- `/es-auth-setup` - Interactive authentication configuration
-- `/es-test-setup` - Initialize Playwright E2E testing
-- `/es-test-gen` - Generate tests for routes/components/server functions
-- `/es-tanstack-component` - Generate shadcn/ui components
-- `/es-tanstack-route` - Create TanStack Router routes
-- `/es-commit` - Auto-commit with generated messages
-- `/es-validate` - Comprehensive validation before commit
-
-[📖 Full Documentation](./plugins/edge-stack/README.md)
-
-## Quick Start
-
-### Standard Installation
-Run Claude and add the marketplace:
-
+### 1. Clone & Install
 ```bash
-/plugin marketplace add hirefrank/hirefrank-marketplace
+git clone https://github.com/hirefrank/opencode-config ~/.config/opencode
+cd ~/.config/opencode
 ```
 
-Then install a plugin:
-
+### 2. Verify
 ```bash
-/plugin install claude-skills-analyzer
-# or
-/plugin install edge-stack
+opencode doctor
 ```
 
-### One-Command Installation
-Use the [Claude Plugins CLI](https://claude-plugins.dev) to skip the marketplace setup:
+---
 
-```bash
-npx claude-plugins install @hirefrank/hirefrank-marketplace/claude-skills-analyzer
-```
+## 🏗️ Structure
 
-This automatically adds the marketplace and installs the plugin in a single step.
+- **`agent/`**: 27 specialized agents with MCP integration.
+- **`command/`**: 26 workflow commands (setup, development, validation).
+- **`skills/`**: 14 autonomous SKILLs for continuous validation.
+- **`knowledge/`**: Context-triggers and edge development patterns.
+- **`tool/`**: Hard Tools (JS/TS validators) for runtime and UI checks.
+- **`plugin/`**: Pre-tool-use hooks and validation scripts.
 
-## What Is Edge-First Development?
+---
 
-Edge-first development prioritizes:
-- **Serverless-first**: No servers to manage, automatic scaling
-- **Globally distributed**: Run at the edge, close to users
-- **TypeScript native**: Type-safe from Workers to frontend
-- **Platform primitives**: KV, D1, R2, Durable Objects, not vendor-agnostic abstractions
+## 🛠️ Key Features
 
-This plugin accelerates edge development by:
-1. **Preventing platform pitfalls**: Validates Workers runtime compatibility, detects forbidden APIs
-2. **Enforcing best practices**: Optimizes cold starts, caching, data access patterns
-3. **Generating edge-aware code**: Scaffolds Workers, DOs, bindings with correct patterns
+- **Edge-first architecture**: Optimized for Workers, KV, R2, D1, and Durable Objects.
+- **Modern Stack**: TanStack Start (React 19), Server Functions, shadcn/ui, and Tailwind 4.
+- **Token-efficient**: "Hard Tools" over "Soft Instructions" to reduce context bloat.
+- **Ground Truth**: Integrated MCP servers (Context7, shadcn, Better Auth) prevent AI hallucinations.
 
-## Quick Start Guide
+---
 
-### For Claude Skills Analyzer:
-```shell
-# 1. Install the plugin
-/plugin install claude-skills-analyzer
+## 📖 Commands
 
-# 2. Follow the interactive setup
-/skills-setup
+| Task | Command |
+|------|---------|
+| Start work | `/es-work` |
+| Validate commit | `/es-validate` |
+| New worker | `/es-worker` |
+| Code review | `/es-review` |
+| Release | `/es-release` |
+| Check upstream | `/es-upstream` |
 
-# 3. Run the analysis
-/analyze-skills
-```
+---
 
-See the [full Quick Start guide](./plugins/claude-skills-analyzer/README.md#quick-start) for detailed instructions including export steps and skill installation.
+## Credits
 
-### For Edge Stack:
-```shell
-# 1. Install the plugin
-/plugin install edge-stack
+- **[joelhooks/opencode-config](https://github.com/joelhooks/opencode-config)** - Inspiration for structure and workflow patterns.
+- **[OpenCode](https://opencode.ai)** - The foundation.
 
-# 2. Setup billing integration
-/es-billing-setup
-
-# 3. Setup authentication
-/es-auth-setup
-
-# 4. Initialize E2E testing
-/es-test-setup
-
-# 5. Generate a TanStack Router route
-/es-tanstack-route /dashboard
-
-# 6. Generate a shadcn/ui component
-/es-tanstack-component button PrimaryButton
-
-# 7. Validate and commit
-/es-validate
-/es-commit
-```
-
-See the [full documentation](./plugins/edge-stack/README.md) for detailed instructions including all 27 agents, 24 commands, 13 SKILLs, and 9 MCP servers.
-
-## Plugin Categories
-
-- **🎯 Productivity**: Tools for workflow optimization and automation
-- **📊 Analysis**: Data processing and pattern recognition tools
-- **🔧 Development**: Code and project management utilities
-
-## Planned Plugins
-
-Future plugins in development:
-- **conversation-summarizer**: Generate executive summaries from meeting transcripts
-- **code-pattern-extractor**: Identify reusable code patterns from projects
-- **writing-style-analyzer**: Analyze and replicate writing styles across content
-
-## Contributing
-
-### Suggesting New Plugins
-Have an idea for a plugin? [Open an issue](https://github.com/hirefrank/hirefrank-marketplace/issues) with:
-- Plugin concept and use case
-- Expected input/output formats
-- Target user workflow
-
-### Plugin Development
-Interested in contributing? Check out:
-- [Claude Code Plugin Documentation](https://docs.anthropic.com/en/docs/claude-code/plugins)
-- Plugin development guidelines in each plugin directory
-- Code standards and testing requirements
-
-### Feedback & Issues
-- 🐛 **Bug Reports**: [GitHub Issues](https://github.com/hirefrank/hirefrank-marketplace/issues)
-- 💡 **Feature Requests**: [GitHub Discussions](https://github.com/hirefrank/hirefrank-marketplace/discussions)
-- 📧 **Direct Contact**: frank@hirefrank.com
-
-## Repository Structure
-
-```
-hirefrank-marketplace/
-├── .claude-plugin/
-│   └── marketplace.json     # Marketplace configuration
-├── plugins/
-│   ├── claude-skills-analyzer/
-│   │   ├── .claude-plugin/
-│   │   │   └── plugin.json
-│   │   ├── commands/
-│   │   ├── skills/
-│   │   └── README.md
-│   └── edge-stack/
-│       ├── .claude-plugin/
-│       │   └── plugin.json
-│       ├── .claude-code/
-│       │   └── statusline.json
-│       ├── agents/        # 27 specialized agents
-│       ├── commands/      # 24 workflow commands
-│       ├── skills/        # 13 autonomous SKILLs
-│       └── README.md
-├── docs/                    # Shared documentation
-├── examples/               # Usage examples
-└── README.md              # This file
-```
+---
 
 ## License
 
-All plugins are released under MIT License - feel free to use, modify, and distribute for personal and commercial use.
+MIT

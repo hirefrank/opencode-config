@@ -15,7 +15,7 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 GIT_ROOT="$(git rev-parse --show-toplevel)"
-STATE_DIR="$GIT_ROOT/.opencode/state"
+STATE_DIR="$GIT_ROOT/state"
 OUTPUT_DIR=$(mktemp -d)
 trap "rm -rf $OUTPUT_DIR" EXIT
 
