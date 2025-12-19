@@ -6,9 +6,8 @@ beads is a git-backed task tracker designed for AI agents. Use it for persistent
 
 | Tool | When | Example |
 |------|------|---------|
-| **TodoWrite** | Current session tasks | "Fix these 3 type errors" |
-| **beads** | Multi-session work | "Migration spanning multiple conversations" |
-| **GitHub Issues** | Team/external | "Bug report from user" |
+| **TodoWrite** | Current session | "Fix these 3 type errors" (automatic, user sees progress) |
+| **beads** | Cross-session | "Migration spanning multiple conversations" (persistent) |
 
 ## Core Commands
 
@@ -97,14 +96,3 @@ bd init
 ```
 
 Creates `.beads/` directory (add to git).
-
-## Integration with GitHub Issues
-
-For user-facing work, create GitHub Issue AND beads task:
-
-```bash
-# Create linked task
-bd add "Fix login bug (see #123)" --label bug
-```
-
-beads = agent memory, GitHub Issues = team communication.
