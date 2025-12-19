@@ -94,6 +94,10 @@
     // Task management - beads for cross-session persistence
     "task|todo|pending|what.*next|continue|pick up|left off|multi-session": {
       "load": [".opencode/knowledge/beads-patterns.md"]
+    },
+    // Model selection guidance
+    "which model|what model|use opus|use gemini|daily driver|escalate": {
+      "load": [".opencode/knowledge/model-strategy.md"]
     }
   },
 
