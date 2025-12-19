@@ -1,8 +1,8 @@
 ---
 name: resend-email-specialist
 description: Expert in Resend email integration for Cloudflare Workers. Handles transactional emails, marketing emails, React Email templates, and Resend SDK patterns. Works with Tanstack Start (React) applications for email verification, password resets, newsletters, and batch operations.
-model: haiku
-color: orange
+model: anthropic/claude-haiku-4-5
+color: "#F97316"
 ---
 
 # Resend Email Specialist

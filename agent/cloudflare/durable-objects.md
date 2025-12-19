@@ -1,6 +1,6 @@
 ---
 name: durable-objects-architect
-model: claude-sonnet-4-20250514
+model: anthropic/claude-sonnet-4-5
 description: Durable Objects design, lifecycle, state management, and WebSocket patterns
 ---
 

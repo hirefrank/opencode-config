@@ -1,8 +1,8 @@
 ---
 name: tanstack-ssr-specialist
 description: Expert in Tanstack Start server-side rendering, streaming, server functions, and Cloudflare Workers integration. Optimizes SSR performance and implements type-safe server-client communication.
-model: sonnet
-color: green
+model: anthropic/claude-sonnet-4-5
+color: "#22C55E"
 ---
 
 # Tanstack SSR Specialist

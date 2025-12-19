@@ -1,49 +1,40 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  // Edge Stack - OpenCode Configuration
-  // Migrated from Claude Code plugin architecture to script-native OpenCode
-  // Optimized for Claude 4.5 Opus with token-efficient "Hard Tools"
+  "model": "google/gemini-3-flash-preview",
+  "small_model": "opencode/big-pickle",
 
-  // === Model Configuration ===
-  "model": {
-    "primary": "claude-opus-4-5-20251101",
-    "fallback": "claude-sonnet-4-20250514",
-    "lightweight": "claude-haiku-4-20250514"
-  },
+  "plugin": ["opencode-gemini-auth"],
 
-  // === Instructions (Rules Files) ===
-  // Loaded automatically to provide project context
   "instructions": [
     "AGENTS.md",
     "knowledge/guidelines.md",
-    "knowledge/cloudflare-patterns.md"
+    "knowledge/cloudflare-patterns.md",
+    "knowledge/model-strategy.md"
   ],
 
-  // === Key Bindings ===
-  // Quick access to common operations (press leader key first, then shortcut)
-  // Example: Ctrl+X then w = start work session
-  "keybinds": {
-    "leader": "ctrl+x",
-    // Session management
-    "new_session": "n",
-    "open_session": "o",
-    "share": "s",
-    "undo": "u",
-    "redo": "r",
-    "help": "h",
-    "quit": "q",
-    // Edge Stack workflows
-    "work": "w",           // /es-work - start feature development
-    "validate": "v",       // /es-validate - pre-commit checks
-    "code_review": "c",    // /es-review - code review
-    "tasks": "t",          // bd ready - check pending tasks
-    "find": "f",           // mgrep prompt - semantic search
-    "deploy": "d"          // /es-release - release workflow
+  "command": {
+    "work": {
+      "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
+      "description": "Start feature development session",
+      "agent": "architect"
+    },
+    "validate": {
+      "template": "Run pre-commit validation. Check Workers runtime, bundle size, and types.",
+      "description": "Run project validation gates",
+      "agent": "runtime-guardian"
+    },
+    "review": {
+      "template": "Perform deep architectural and code review of current changes.",
+      "description": "Request comprehensive code review",
+      "agent": "reviewer"
+    },
+    "deploy": {
+      "template": "Execute release workflow. Sync beads, run final tests, and deploy to Cloudflare.",
+      "description": "Start deployment workflow"
+    }
   },
 
-  // === Formatters ===
-  // Auto-format files after editing
   "formatter": {
     "prettier": {
       "command": ["npx", "prettier", "--write", "$FILE"],
@@ -51,226 +42,215 @@
     }
   },
 
-  // === Context Triggers (Progressive Disclosure) ===
-  // Load context dynamically based on conversation content
-  "context_triggers": {
-    // Cloudflare resource selection - when to use KV vs DO vs R2
-    "rate limit|strong consistency|Durable Object|DO pattern|WebSocket": {
-      "load": ["knowledge/cloudflare-patterns.md"],
-      "agent": "durable-objects"
-    },
-    // Runtime compatibility issues - Node.js API violations
-    "process\\.env|require\\(|Buffer|fs module|Node\\.js|not working in Workers": {
-      "load": ["knowledge/cloudflare-patterns.md"],
-      "agent": "runtime-guardian"
-    },
-    // UI component questions - shadcn/ui props and patterns
-    "shadcn|Button|Card|Dialog|variant|className|component prop": {
-      "mcp": "shadcn",
-      "agent": "ui-validator"
-    },
-    // Design and aesthetics - prevent generic AI patterns
-    "Inter font|Roboto|purple gradient|generic|aesthetic|design review|distinctive": {
-      "load": ["knowledge/design-anti-patterns.md"]
-    },
-    // Authentication setup
-    "auth|login|session|OAuth|passkey|better-auth|sign in": {
-      "mcp": "better-auth",
-      "load": ["knowledge/guidelines.md"]
-    },
-    // Performance optimization
-    "cold start|bundle size|slow|optimize|performance|latency|edge": {
-      "load": ["knowledge/cloudflare-patterns.md"],
-      "agent": "architect"
-    },
-    // Code review requests
-    "review|PR|pull request|check this|what's wrong|look at": {
-      "agent": "reviewer"
-    },
-    // Semantic code search - use mgrep for intent-based queries
-    "find.*where|search.*for|look.*for|how does.*work|what.*calls|who uses": {
-      "load": ["knowledge/mgrep-patterns.md"]
-    },
-    // Task management - beads for cross-session persistence
-    "task|todo|pending|what.*next|continue|pick up|left off|multi-session": {
-      "load": ["knowledge/beads-patterns.md"]
-    },
-    // Model selection guidance
-    "which model|what model|use opus|use gemini|daily driver|escalate": {
-      "load": ["knowledge/model-strategy.md"]
-    }
-  },
-
-  // === MCP Server Configuration ===
-  // Heavy servers use defer_loading to prevent context overload at startup
   "mcp": {
-    // Primary documentation lookup - ALWAYS ENABLED
     "context7": {
       "type": "local",
       "command": ["npx", "-y", "@context7/mcp"],
-      "enabled": true,
-      "description": "Documentation lookup for 100+ frameworks including Cloudflare (Workers, KV, R2, D1, Pages), TanStack Router, React"
+      "enabled": true
     },
-
-    // UI component documentation - ALWAYS ENABLED (prevents hallucinated props)
     "shadcn": {
       "type": "local",
       "command": ["npx", "shadcn@latest", "mcp"],
-      "enabled": true,
-      "description": "shadcn/ui component documentation - prevents prop hallucination"
+      "enabled": true
     },
-
-    // Tailwind CSS utilities - ALWAYS ENABLED
     "tailwindcss": {
       "type": "local",
       "command": ["npx", "-y", "tailwindcss-mcp-server"],
-      "enabled": true,
-      "description": "Tailwind CSS utilities, CSS-to-Tailwind conversion, component templates"
+      "enabled": true
     },
-
-    // Better Auth - ENABLED for auth patterns
+    "nuxt": {
+      "type": "remote",
+      "url": "https://ui.nuxt.com/mcp",
+      "enabled": true
+    },
     "better-auth": {
       "type": "remote",
       "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
-      "enabled": true,
-      "description": "Better Auth implementation patterns for Tanstack Start"
+      "enabled": true
     },
-
-    // Heavy servers with defer_loading to reduce startup context
     "playwright": {
       "type": "local",
       "command": ["npx", "@playwright/mcp@latest"],
-      "enabled": true,
-      "defer_loading": true,
-      "description": "Browser automation and E2E testing - loaded on demand"
+      "enabled": true
     },
-
     "package-registry": {
       "type": "local",
       "command": ["npx", "-y", "package-registry-mcp"],
-      "enabled": true,
-      "defer_loading": true,
-      "description": "NPM, Cargo, PyPI, NuGet package search - loaded on demand"
+      "enabled": true
     },
-
-    // Disabled servers (redundant or require auth)
     "cloudflare-docs": {
       "type": "remote",
       "url": "https://docs.mcp.cloudflare.com/mcp",
-      "enabled": false,
-      "description": "Cloudflare docs - redundant with context7"
+      "enabled": false
     },
-
-    "tanstack-router": {
-      "type": "local",
-      "command": ["npx", "-y", "mcp-remote", "https://gitmcp.io/TanStack/router"],
-      "enabled": false,
-      "description": "TanStack Router docs - redundant with context7"
-    },
-
     "polar": {
       "type": "remote",
       "url": "https://mcp.polar.sh/mcp/polar-mcp",
-      "enabled": false,
-      "description": "Polar billing - requires authentication"
+      "enabled": false
     }
   },
 
-  // === Global Tool Permissions ===
-  // Disable heavy MCP tools globally, enable per-agent
-  "tools": {
-    "playwright*": false,
-    "package-registry*": false
+  "tool": {
+    "typecheck": "tool/typecheck.ts",
+    "git-context": "tool/git-context.ts",
+    "repo-autopsy": "tool/repo-autopsy.ts"
   },
 
-  // === Agent Configuration ===
-  // Grouped by model class for easy updates when new models release
-  // To update: find/replace model ID within each class section
   "agent": {
-    // ┌─────────────────────────────────────────────────────────────┐
-    // │ MODEL CLASS: OPUS (deep thinking, complex reasoning)        │
-    // │ Current: claude-opus-4-5-20251101                           │
-    // └─────────────────────────────────────────────────────────────┘
+    // TIER 1 (Opus 4.5)
     "architect": {
-      "model": "claude-opus-4-5-20251101",
+      "model": "anthropic/claude-opus-4-5",
       "temperature": 0.3,
-      "description": "Senior Cloudflare Architect - edge-first design, resource selection, Workers patterns",
-      "tools": {
-        "context7*": true,
-        "shadcn*": true
-      }
-    },
-    "feedback-codifier": {
-      "model": "claude-opus-4-5-20251101",
-      "temperature": 0.2,
-      "description": "Extracts and validates patterns from feedback, updates knowledge base",
-      "tools": {
-        "context7*": true
-      }
+      "description": "Senior Cloudflare Architect (Opus 4.5)"
     },
     "reviewer": {
-      "model": "claude-opus-4-5-20251101",
-      "description": "Comprehensive code review with confidence scoring",
-      "tools": {
-        "context7*": true,
-        "shadcn*": true
-      }
+      "model": "anthropic/claude-opus-4-5",
+      "description": "Deep code review (Opus 4.5)"
+    },
+    "feedback-codifier": {
+      "model": "anthropic/claude-opus-4-5",
+      "temperature": 0.2,
+      "description": "Extracts patterns from feedback (Opus 4.5)"
+    },
+    "durable-objects": {
+      "model": "anthropic/claude-opus-4-5",
+      "description": "Durable Objects and State Management specialist"
+    },
+    "frontend-design-specialist": {
+      "model": "anthropic/claude-opus-4-5",
+      "description": "Prevents generic UI patterns, enforces distinctiveness (Opus 4.5)"
+    },
+    "tanstack-ui-architect": {
+      "model": "anthropic/claude-opus-4-5",
+      "description": "TanStack Start architecture and patterns (Opus 4.5)"
     },
 
-    // ┌─────────────────────────────────────────────────────────────┐
-    // │ MODEL CLASS: SONNET (balanced speed/quality)                │
-    // │ Current: claude-sonnet-4-20250514                           │
-    // └─────────────────────────────────────────────────────────────┘
-    "testing": {
-      "model": "claude-sonnet-4-20250514",
-      "description": "E2E testing with Playwright",
-      "tools": {
-        "playwright*": true
-      }
+    // TIER 2 (Gemini Pro)
+    "architect-alt": {
+      "model": "google/gemini-3-pro-preview",
+      "temperature": 0.3,
+      "description": "Cloudflare Architect (Gemini Pro)"
     },
+    "reviewer-alt": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "Smart code review (Gemini Pro)"
+    },
+    "feedback-codifier-alt": {
+      "model": "google/gemini-3-pro-preview",
+      "temperature": 0.2,
+      "description": "Extracts patterns from feedback (Gemini Pro)"
+    },
+    "frontend-design-specialist-alt": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "Prevents generic UI patterns, enforces distinctiveness (Gemini Pro)"
+    },
+    "tanstack-migration-specialist": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "TanStack migration patterns (Gemini Pro)"
+    },
+    "tanstack-ssr-specialist": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "TanStack SSR and Server Functions (Gemini Pro)"
+    },
+    "better-auth-specialist": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "better-auth D1 integration specialist (Gemini Pro)"
+    },
+    "polar-billing-specialist": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "Polar.sh billing integration (Gemini Pro)"
+    },
+
+    // TIER 3 (Gemini Flash)
     "reviewer-fast": {
-      "model": "claude-sonnet-4-20250514",
-      "description": "Quick code review for small changes",
-      "tools": {
-        "context7*": true,
-        "shadcn*": true
-      }
+      "model": "google/gemini-3-flash-preview",
+      "description": "Instant sanity check (Gemini Flash)"
     },
-
-    // ┌─────────────────────────────────────────────────────────────┐
-    // │ MODEL CLASS: HAIKU (fast, cheap, deterministic tasks)       │
-    // │ Current: claude-haiku-4-20250514                            │
-    // └─────────────────────────────────────────────────────────────┘
-    "runtime-validator": {
-      "model": "claude-haiku-4-20250514",
-      "description": "Workers runtime compatibility validator - catches forbidden APIs",
-      "tools": {}
+    "explainer-fast": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Quickly explains code or patterns (Gemini Flash)"
     },
-    "binding-analyzer": {
-      "model": "claude-haiku-4-20250514",
-      "description": "Analyzes wrangler.toml bindings and generates TypeScript interfaces"
+    "testing": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "E2E testing with Playwright"
     },
     "ui-validator": {
-      "model": "claude-haiku-4-20250514",
-      "description": "Validates shadcn/ui component usage",
-      "tools": {
-        "shadcn*": true
-      }
+      "model": "google/gemini-3-flash-preview",
+      "description": "Validates shadcn/ui component usage"
+    },
+    "tanstack-routing-specialist": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "TanStack Router patterns (Gemini Flash)"
+    },
+    "accessibility-guardian": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "WCAG compliance and a11y validation (Gemini Flash)"
+    },
+    "mcp-efficiency-specialist": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "MCP server token optimization (Gemini Flash)"
+    },
+    "playwright-testing-specialist": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Playwright E2E test patterns (Gemini Flash)"
+    },
+    "resend-email-specialist": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Resend email integration (Gemini Flash)"
+    },
+    "git-history-analyzer": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Git history and commit analysis (Gemini Flash)"
+    },
+
+    // TIER 4 (Big Pickle)
+    "runtime-guardian": {
+      "model": "opencode/big-pickle",
+      "description": "Workers runtime compatibility validator"
+    },
+    "binding-analyzer": {
+      "model": "opencode/big-pickle",
+      "description": "Analyzes wrangler.toml bindings"
+    },
+
+    // CORE ORCHESTRATION
+    "plan": {
+      "model": "anthropic/claude-opus-4-5",
+      "description": "Opus-powered project manager for reliable task breakdown"
+    },
+    "explore": {
+      "model": "anthropic/claude-opus-4-5",
+      "description": "Opus-powered search for high-precision codebase navigation"
+    },
+    "build": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Latest implementation muscle (Gemini 3 Flash Preview)"
+    },
+    "general": {
+      "model": "anthropic/claude-sonnet-4-5",
+      "description": "Balanced high-quality chat assistant (Sonnet 4.5)"
+    },
+    "general-alt": {
+      "model": "google/gemini-3-pro-preview",
+      "description": "High-reasoning conversational alternative (Gemini Pro)"
+    },
+
+    // INTERNAL OVERRIDES
+    "compaction": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Instant context management"
+    },
+    "summary": {
+      "model": "google/gemini-3-flash-preview",
+      "description": "Fast session handoffs"
     }
   },
 
-  // === Security Permissions ===
-  "permissions": {
-    // Allow reading env files (needed for worktree copying)
-    "allow": [
-      "read:.env*",
-      "read:wrangler.toml"
-    ],
-    // Prevent destructive operations
-    "deny": [
-      "bash:rm -rf",
-      "bash:git push --force",
-      "bash:git reset --hard"
-    ]
+  "permission": {
+    "edit": "allow",
+    "bash": "allow",
+    "webfetch": "allow",
+    "doom_loop": "allow",
+    "external_directory": "allow"
   }
 }

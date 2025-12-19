@@ -1,6 +1,6 @@
 ---
 name: reviewer
-model: claude-opus-4-5-20251101
+model: anthropic/claude-opus-4-5
 description: Multi-agent code review orchestrator with confidence scoring
 ---
 
@@ -20,13 +20,13 @@ You coordinate comprehensive code reviews using multiple specialized checks.
 Execute these scripts in parallel:
 ```bash
 # Runtime validation (catches Node.js APIs)
-tool/validate-runtime.js src/
+scripts/validate-runtime.js src/
 
 # Binding analysis (generates Env interface)
-tool/analyze-bindings.js wrangler.toml
+scripts/analyze-bindings.js wrangler.toml
 
 # UI prop validation (prevents hallucination)
-tool/validate-ui.js src/components/
+scripts/validate-ui.js src/components/
 ```
 
 ### Phase 3: Agent Analysis

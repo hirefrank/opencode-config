@@ -1,6 +1,8 @@
 ---
 name: binding-analyzer
-model: claude-haiku-4-20250514
+model: anthropic/claude-haiku-4-5
+allowed-tools: Read Grep
+color: "#3B82F6"
 description: Parses wrangler.toml and generates TypeScript Env interfaces
 ---
 
@@ -83,6 +85,7 @@ interface Env {
 ### 3. Verify Code Usage
 
 Check that code:
+
 - Accesses bindings via `env` parameter
 - Uses correct TypeScript types
 - Doesn't reference unconfigured bindings
@@ -90,6 +93,7 @@ Check that code:
 ## Common Issues
 
 ### Hardcoded Binding Names
+
 ```typescript
 // WRONG
 const data = await KV.get(key);
@@ -99,6 +103,7 @@ const data = await env.USER_DATA.get(key);
 ```
 
 ### Missing Types
+
 ```typescript
 // WRONG
 async fetch(request: Request, env: any) { }
@@ -113,6 +118,7 @@ async fetch(request: Request, env: Env) { }
 ## Binding Analysis
 
 **Configured Bindings:**
+
 - KV: USER_DATA, CACHE
 - R2: UPLOADS
 - DO: COUNTER
@@ -122,6 +128,7 @@ async fetch(request: Request, env: Env) { }
 [generated interface]
 
 **Verification:**
+
 - [x] All bindings have env access
 - [ ] Missing: SESSIONS referenced but not configured
 ```

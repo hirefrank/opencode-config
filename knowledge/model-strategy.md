@@ -1,239 +1,83 @@
 # Model Strategy
 
-Optimized for $100 Claude Max plan + free models (Gemini subscription, OpenCode GLM-4.6).
+Optimized for $100 Claude Max plan + free models (Google Gemini Subscription, OpenCode Zen).
 
-## Philosophy
+## The "Bucket" Philosophy
 
-- **Save Max quota for Opus** — deep thinking tasks only
-- **Use free models for everything else** — Gemini 3 Flash, GLM-4.6
-- **Simplicity over micro-optimization** — three model tiers, clear rules
+To maintain maximum reliability and efficiency, we divide our models into three provider "buckets." If one bucket is capped (usage limit) or down (API outage), we switch to a different bucket.
 
----
+### Bucket A: Anthropic ($100 Max Plan)
+*   **Models**: Opus 4.5, Sonnet 4.5.
+*   **Quota**: Shared. If Opus hits a daily limit, Sonnet may be capped as well.
+*   **Best For**: Absolute gold-standard reasoning and reliability.
 
-## Configuration Note
-
-Check your `opencode.jsonc` primary model setting:
-
-```jsonc
-"model": {
-  "primary": "...",      // ← This is your daily driver
-  "fallback": "...",
-  "lightweight": "..."
-}
-```
-
-If `primary` is set to Opus, general coding consumes Max quota.
-Configure Gemini 3 Flash as primary to save quota for explicit Opus agent calls.
+### Bucket B: Google (Free/Pro Subscription)
+*   **Models**: Gemini 3 Pro, Gemini 3 Flash.
+*   **Quota**: Independent of Bucket A.
+*   **Best For**: Daily coding, high-reasoning tasks that don't need Opus, and independent redundancy.
 
 ---
 
-## Daily Driver
+## Agent Intent Tiers
 
-**Gemini 3 Flash** — your default for general coding work.
+We use agents to intentionally choose the right model for the right task.
 
-| Metric | Value |
-|--------|-------|
-| SWE-bench | 78% (beats Sonnet's 77%) |
-| Speed | 3x faster than Sonnet |
-| Cost | FREE (Google subscription) |
-| Context | 1M tokens |
+### Tier 1: Gold Standard (Bucket A)
+Use when quality is the ONLY priority.
+*   `@architect` (Opus 4.5)
+*   `@reviewer` (Opus 4.5)
+*   `@feedback-codifier` (Opus 4.5)
 
-### When to use daily driver:
-- Implementing features from beads tasks
-- Bug fixes
-- Writing tests
-- Refactoring
-- General coding questions
+### Tier 2: Independent High-Reasoning (Bucket B)
+High-quality alternatives that use your Google subscription instead of Claude Max quota.
+*   `@architect-alt` (Gemini 3 Pro)
+*   `@reviewer-alt` (Gemini 3 Pro)
+*   `@feedback-codifier-alt` (Gemini 3 Pro)
 
-### When to escalate to Opus:
-- Complex architectural decisions → `@architect`
-- Deep code review → `@reviewer`
-- Pattern extraction → `@feedback-codifier`
-- When Gemini gives unsatisfying answers
-
----
-
-## Model Tiers
-
-### Tier 1: Deep Thinking (Claude Max → Opus)
-
-Reserved for work that genuinely needs Opus's 80.9% SWE-bench quality.
-
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| `@architect` | Design decisions | New features, resource selection, trade-offs |
-| `@reviewer` | Deep code review | Before merging, complex PRs |
-| `@feedback-codifier` | Pattern extraction | After corrections, learning loops |
-
-**Trigger:** Invoke explicitly with `@agent` or via context triggers.
-
-### Tier 2: Balanced (Gemini 3 Flash — FREE)
-
-Your daily driver and workhorse.
-
-| Agent | Purpose |
-|-------|---------|
-| `testing` | E2E test generation |
-| `reviewer-fast` | Quick reviews for small changes |
-| `ui-validator` | shadcn/ui props validation |
-| (default) | General coding |
-
-### Tier 3: Fast/Simple (GLM-4.6 — FREE)
-
-For quick, structured tasks.
-
-| Agent | Purpose |
-|-------|---------|
-| `runtime-validator` | Check Workers API violations |
-| `binding-analyzer` | Parse wrangler.toml |
-
----
-
-## Overflow Strategy
-
-When you hit rate limits, cascade through free models before touching Max quota:
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ PRIMARY: Gemini 3 Flash (FREE)                              │
-│ Hit limit?                                                  │
-│     ↓                                                       │
-│ OVERFLOW 1: GLM-4.6 "big pickle" (FREE)                     │
-│ Hit limit?                                                  │
-│     ↓                                                       │
-│ OVERFLOW 2: Claude Sonnet (Max quota) — LAST RESORT         │
-└─────────────────────────────────────────────────────────────┘
-```
-
-| If you hit... | Overflow to... | Cost |
-|---------------|----------------|------|
-| Gemini 3 Flash | GLM-4.6 | FREE |
-| GLM-4.6 | Gemini 3 Flash | FREE |
-| Both free models | Claude Sonnet | Max quota |
-
-**If you're hitting both free model limits regularly:**
-- You're doing massive refactors → normal, use Sonnet overflow
-- Something inefficient is happening → investigate token usage
-
----
-
-## Workflow Integration
-
-### Session Start
-```bash
-bd ready                    # Check pending beads tasks
-# → Pick a task to work on
-```
-
-### During Session (Daily Driver: Gemini 3 Flash)
-```
-Working on: bd-a1b2 "Add rate limiting to API"
-
-1. General coding → Gemini 3 Flash (default)
-2. Hit a design question? → @architect (Opus)
-3. Quick validation → @runtime-validator (GLM-4.6)
-4. Ready to review? → @reviewer-fast (Gemini) or @reviewer (Opus)
-```
-
-### Session End
-```bash
-bd done bd-a1b2             # Mark completed
-bd add "Continue X"         # Create for next session
-git commit                  # Commit work
-```
-
----
-
-## Decision Tree
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ What are you doing?                                         │
-└─────────────────────────────────────────────────────────────┘
-                              │
-        ┌─────────────────────┼─────────────────────┐
-        ▼                     ▼                     ▼
-   General coding      Design/Review         Quick validation
-        │                     │                     │
-        ▼                     ▼                     ▼
-   Gemini 3 Flash         Opus                  GLM-4.6
-      (FREE)           ($100 Max)               (FREE)
-```
-
----
-
-## Model Comparison (December 2025)
-
-### Why These Models?
-
-| Model | SWE-bench | Best For | Cost |
-|-------|-----------|----------|------|
-| **Claude Opus 4.5** | 80.9% ⭐ | Complex coding, nuance | $100 Max |
-| **Gemini 3 Flash** | 78% | Daily coding, fast | FREE |
-| **GLM-4.6** | ~75% | Validation, structured | FREE |
-| Claude Sonnet 4.5 | 77.2% | (backup only) | Max quota |
-| Claude Haiku 4.5 | 73.3% | (don't use, wastes quota) | Max quota |
-
-### Models NOT in Your Stack (and why)
-
-| Model | Why Skip |
-|-------|----------|
-| GPT-5.2 Pro | Not free, Opus covers deep thinking |
-| DeepSeek V3.2 | You have Gemini/GLM free already |
-| Grok 4 Fast | Nice 2M context, but Gemini's 1M is enough |
+### Tier 3: Fast & Lightweight (Bucket B)
+The default for general chat and quick utility tasks.
+*   **Primary (Chat)**: Gemini 3 Flash (Free/Fast)
+*   **@reviewer-fast**: Instant sanity checks.
+*   **@explainer-fast**: Quick code/pattern explanations.
+*   **@testing**: E2E generation.
+*   **Global Fallback**: Sonnet 4.5 (Reliable backup)
 
 ---
 
 ## Quota Protection Rules
 
-1. **Never use Opus for simple coding** — that's what Gemini is for
-2. **Never use Opus for validation** — GLM-4.6 handles it
-3. **Invoke Opus agents explicitly** — `@architect`, `@reviewer`, `@feedback-codifier`
-4. **Default model = Gemini** — saves Max quota automatically
-5. **Haiku/Sonnet waste quota** — use free alternatives instead
+1.  **Context Triggers = Opus**: By default, keywords like "review" or "architect" will trigger **Tier 1 (Opus 4.5)**. If you are low on quota, explicitly use the `@agent-alt` versions.
+2.  **Small Tasks = Big Pickle**: All background tasks (titling sessions, summarizing context) are hard-coded to **Bucket C** to prevent credit bleed.
+3.  **Proactive Scaling**: If Gemini Flash gives an unsatisfying answer, don't keep retry-looping. Immediately escalate to `@architect-alt` (Gemini Pro) or `@architect` (Opus).
 
 ---
 
-## Subscriptions & Plans
+## Workflow Integration
 
-### Keep
-| Plan | Cost | Why |
-|------|------|-----|
-| Claude Max 5x | $100/mo | Opus access for deep thinking |
-| Google Gemini Pro | (existing) | Gemini 3 Flash for daily driver |
+Every session follows the **beads** lifecycle to ensure cross-session memory:
 
-### Don't Renew
-| Plan | Why |
-|------|-----|
-| GLM 4.6 Quarterly | OpenCode "big pickle" provides GLM-4.6 FREE |
+### 1. Session Start
+```bash
+bd ready    # Check unblocked tasks
+# Select task and begin coding with Gemini Flash
+```
 
-**Before quarterly expires:** Test that big pickle alone handles your validator workload.
+### 2. Deep Work
+*   Complex logic? → `@architect`
+*   Quota saving? → `@architect-alt`
+*   Quick check? → `@reviewer-fast`
 
----
-
-## Monthly Cost Breakdown
-
-| Item | Cost |
-|------|------|
-| Claude Max 5x (Opus access) | $100 |
-| Gemini 3 Flash | $0 (subscription) |
-| GLM-4.6 | $0 (OpenCode) |
-| **Total** | **$100** |
-
-All Tier 2/3 work is FREE. Max quota reserved for Opus-worthy tasks only.
+### 3. Session End
+```bash
+bd done [id]       # Close task
+bd add "..."       # Log next steps
+git commit -m "..."
+git push           # Mandatory
 
 ---
 
-## Future Considerations
+## Limit Handling Summary
 
-### When to Re-evaluate
-- New model releases (check benchmarks vs current stack)
-- If you consistently hit Max limits → consider Max 20x ($200)
-- If you never hit Max limits → consider dropping to Pro ($20) + API overflow
-
-### Models to Watch
-| Model | Why Watch |
-|-------|-----------|
-| Gemini 3 Pro | If included in subscription, could replace some Opus work |
-| Claude Opus 5 | Next Opus release, update model IDs when available |
-| GPT-5.2-Codex | If you need agentic long-horizon refactors |
+1.  **If Opus is capped**: Switch to the "alt" equivalent (e.g., `@architect` -> `@architect-alt`). This jumps you from **Bucket A** to **Bucket B**.
+2.  **If Gemini Flash is capped**: OpenCode will automatically fall back to **Sonnet 4.5**. This jumps you from **Bucket B** to **Bucket A**.
+3.  **If both are capped**: Stick to Bucket C (Big Pickle) for basic tasks or wait for quota reset.

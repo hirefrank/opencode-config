@@ -238,37 +238,56 @@ Hard Tools and MCP servers provide ground truth.
 
 ---
 
-## Task Management
+## Task Management (beads)
+
+This project uses **bd** (beads) for issue tracking. Run `bd onboard` to get started.
 
 | Tool | Scope | When |
 |------|-------|------|
 | **TodoWrite** | Single session | Real-time progress visibility (automatic) |
 | **beads** | Cross-session | Everything persistent |
 
-### Session Workflow
-
-```bash
-# Session start - check pending work
-bd ready
-
-# During session - TodoWrite handles visibility automatically
-
-# Session end - persist state
-bd done bd-a1b2           # Mark completed
-bd add "Continue X"       # Create for next session
-```
-
 ### beads Commands
 
 ```bash
-bd ready                  # What's unblocked?
-bd add "Task description" # Create task
-bd done bd-a1b2          # Mark complete
+bd ready                  # Find available work
+bd show <id>              # View issue details
+bd update <id> --status in_progress  # Claim work
+bd done <id>              # Mark complete
+bd sync                   # Sync with git
 bd list                   # All tasks
-bd dep add bd-b bd-a     # B depends on A
+bd dep add bd-b bd-a       # B depends on A
 ```
 
 See `knowledge/beads-patterns.md` for detailed usage.
+
+---
+
+## Landing the Plane (Session Completion)
+
+**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+
+**MANDATORY WORKFLOW:**
+
+1. **File issues for remaining work** - Create issues for anything that needs follow-up
+2. **Run quality gates** (if code changed) - Tests, linters, builds
+3. **Update issue status** - Close finished work, update in-progress items
+4. **PUSH TO REMOTE** - This is MANDATORY:
+   ```bash
+   git pull --rebase
+   bd sync
+   git push
+   git status  # MUST show "up to date with origin"
+   ```
+5. **Clean up** - Clear stashes, prune remote branches
+6. **Verify** - All changes committed AND pushed
+7. **Hand off** - Provide context for next session
+
+**CRITICAL RULES:**
+- Work is NOT complete until `git push` succeeds
+- NEVER stop before pushing - that leaves work stranded locally
+- NEVER say "ready to push when you are" - YOU must push
+- If push fails, resolve and retry until it succeeds
 
 ---
 
@@ -306,10 +325,37 @@ Use mgrep for intent-based queries ("find rate limiting"), grep for exact patter
 ```
 agent/           # AI agent definitions
 command/         # Slash commands
-tool/            # Hard Tools (JS validators)
+scripts/            # Hard Tools (JS validators)
 knowledge/       # Context and patterns
 skills/          # Injectable knowledge packages
 opencode.jsonc   # Main configuration
 
 bin/                 # Workflow shell scripts
 ```
+
+## Landing the Plane (Session Completion)
+
+**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
+
+**MANDATORY WORKFLOW:**
+
+1. **File issues for remaining work** - Create issues for anything that needs follow-up
+2. **Run quality gates** (if code changed) - Tests, linters, builds
+3. **Update issue status** - Close finished work, update in-progress items
+4. **PUSH TO REMOTE** - This is MANDATORY:
+   ```bash
+   git pull --rebase
+   bd sync
+   git push
+   git status  # MUST show "up to date with origin"
+   ```
+5. **Clean up** - Clear stashes, prune remote branches
+6. **Verify** - All changes committed AND pushed
+7. **Hand off** - Provide context for next session
+
+**CRITICAL RULES:**
+- Work is NOT complete until `git push` succeeds
+- NEVER stop before pushing - that leaves work stranded locally
+- NEVER say "ready to push when you are" - YOU must push
+- If push fails, resolve and retry until it succeeds
+Use 'bd' for task tracking

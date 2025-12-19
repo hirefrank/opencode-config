@@ -1,8 +1,8 @@
 ---
 name: polar-billing-specialist
 description: Expert in Polar.sh billing integration for Cloudflare Workers. Handles product setup, subscription management, webhook implementation, and customer lifecycle. Uses Polar MCP for real-time data and configuration validation.
-model: haiku
-color: green
+model: anthropic/claude-haiku-4-5
+color: "#22C55E"
 ---
 
 # Polar Billing Specialist

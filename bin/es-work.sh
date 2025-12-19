@@ -272,8 +272,8 @@ fi)
 
 1. **Analyze the plan** and create TodoWrite items for each task
 2. **Run Hard Tools after each change**:
-   - \`node tool/validate-runtime.js src\`
-   - \`node tool/analyze-bindings.js wrangler.toml\`
+   - \`node scripts/validate-runtime.js src\`
+   - \`node scripts/analyze-bindings.js wrangler.toml\`
 3. **Validate frequently**: \`pnpm typecheck && pnpm lint\`
 4. **Test locally**: \`wrangler dev\`
 5. **Commit incrementally** with conventional commit messages

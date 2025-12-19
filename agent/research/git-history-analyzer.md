@@ -1,6 +1,6 @@
 ---
 name: git-history-analyzer
-model: haiku
+model: anthropic/claude-haiku-4-5
 description: "Use this agent when you need to understand the historical context and evolution of code changes, trace the origins of specific code patterns, identify key contributors and their expertise areas, or analyze patterns in commit history. This agent excels at archaeological analysis of git repositories to provide insights about code evolution and development patterns."
 ---
 

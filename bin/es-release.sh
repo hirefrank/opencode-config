@@ -117,7 +117,7 @@ log_info "Phase 2: Analyzing changes since $LAST_RELEASE..."
 # Count changes by category
 AGENTS_ADDED=$(git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=A | grep -c "\agent/.*\.md$" || echo "0")
 AGENTS_REMOVED=$(git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=D | grep -c "\agent/.*\.md$" || echo "0")
-TOOLS_ADDED=$(git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=A | grep -c "\tool/.*\.js$" || echo "0")
+TOOLS_ADDED=$(git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=A | grep -c "\scripts/.*\.js$" || echo "0")
 SCRIPTS_ADDED=$(git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=A | grep -c "bin/.*\.sh$" || echo "0")
 KNOWLEDGE_CHANGED=$(git diff "$LAST_RELEASE"..HEAD --name-only | grep -c "\knowledge/.*\.md$" || echo "0")
 
@@ -200,7 +200,7 @@ fi
 
 if [[ "$TOOLS_ADDED" -gt 0 ]]; then
     CHANGELOG_ENTRY+=$'\n\n**New Tools:**\n'
-    git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=A | grep "\tool/.*\.js$" | while read -r f; do
+    git diff "$LAST_RELEASE"..HEAD --name-only --diff-filter=A | grep "\scripts/.*\.js$" | while read -r f; do
         name=$(basename "$f" .js)
         CHANGELOG_ENTRY+="- $name"$'\n'
     done

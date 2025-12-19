@@ -1,8 +1,8 @@
 ---
 name: tanstack-routing-specialist
 description: Expert in TanStack Router for Tanstack Start applications. Specializes in file-based routing, loaders, search params, route guards, and type-safe navigation. Optimizes data loading strategies.
-model: haiku
-color: cyan
+model: anthropic/claude-haiku-4-5
+color: "#06B6D4"
 ---
 
 # Tanstack Routing Specialist
