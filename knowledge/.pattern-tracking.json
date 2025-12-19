@@ -1,0 +1,44 @@
+{
+  "patterns": {
+    "use-durable-objects-for-rate-limiting": {
+      "success": 1,
+      "failure": 0,
+      "created": "2025-12-19T16:17:46.890Z",
+      "lastValidated": "2025-12-19T16:17:46.890Z",
+      "recentFailures": [],
+      "maturity": "candidate"
+    },
+    "use-kv-for-session-storage": {
+      "success": 0,
+      "failure": 5,
+      "created": "2025-12-19T16:18:00.526Z",
+      "lastValidated": "2025-12-19T16:18:00.526Z",
+      "maturity": "deprecated",
+      "text": "Use KV for session storage",
+      "category": "resource",
+      "recentFailures": [
+        {
+          "date": "2025-12-19T16:18:05.522Z",
+          "reason": "Session race condition"
+        },
+        {
+          "date": "2025-12-19T16:18:05.565Z",
+          "reason": "Session race condition"
+        },
+        {
+          "date": "2025-12-19T16:18:05.596Z",
+          "reason": "Session race condition"
+        },
+        {
+          "date": "2025-12-19T16:18:05.630Z",
+          "reason": "Session race condition"
+        },
+        {
+          "date": "2025-12-19T16:18:05.661Z",
+          "reason": "Session race condition"
+        }
+      ]
+    }
+  },
+  "antiPatterns": []
+}
