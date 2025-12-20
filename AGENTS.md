@@ -410,7 +410,7 @@ Feedback: "Always set TTL when writing to KV"
 1. Query MCP: context7 → "KV put TTL best practices"
 2. Docs confirm: "Set expirationTtl on all writes"
 3. Pattern MATCHES ✓
-4. Write to knowledge/cloudflare-patterns.md
+4. Write to skills/cloudflare-workers/references/PATTERNS.md
 ```
 
 ### Example: Rejected Pattern
@@ -444,103 +444,16 @@ Patterns are stored in skill reference files:
 
 ---
 
-## Agent Architecture
-
-### Model Tiering System
-
-Agents are organized by model tier to optimize for cost, quality, and quota management.
-
-| Tier       | Model        | Purpose                  | Quota               |
-| ---------- | ------------ | ------------------------ | ------------------- |
-| **Tier 1** | Opus 4.5     | Gold standard reasoning  | Anthropic Max       |
-| **Tier 2** | Gemini Pro   | High-quality alternative | Google subscription |
-| **Tier 3** | Gemini Flash | Fast parallel work       | Google subscription |
-| **Tier 4** | Big Pickle   | Script-like validation   | Free                |
-
-### Tier 1: Gold Standard (Opus 4.5)
-
-Use when quality is the ONLY priority. Consumes Anthropic Max quota.
-
-| Agent                         | Purpose                                  |
-| ----------------------------- | ---------------------------------------- |
-| `@architect`                  | High-level design decisions              |
-| `@reviewer`                   | Deep code review with confidence scoring |
-| `@feedback-codifier`          | Extracts patterns from feedback          |
-| `@durable-objects`            | DO patterns and state management         |
-| `@frontend-design-specialist` | Prevents generic UI patterns             |
-| `@tanstack-ui-architect`      | TanStack Start architecture              |
-| `@plan`                       | Reliable task breakdown                  |
-| `@explore`                    | High-precision codebase navigation       |
-
-### Tier 2: Independent High-Reasoning (Gemini Pro)
-
-High-quality alternatives using Google quota instead of Anthropic.
-
-| Agent                             | Purpose                                |
-| --------------------------------- | -------------------------------------- |
-| `@architect-alt`                  | Cloudflare architecture (quota saving) |
-| `@reviewer-alt`                   | Smart code review (quota saving)       |
-| `@feedback-codifier-alt`          | Pattern extraction (quota saving)      |
-| `@frontend-design-specialist-alt` | UI pattern enforcement                 |
-| `@tanstack-migration-specialist`  | TanStack migration patterns            |
-| `@tanstack-ssr-specialist`        | SSR and Server Functions               |
-| `@better-auth-specialist`         | better-auth D1 integration             |
-| `@polar-billing-specialist`       | Polar.sh billing integration           |
-| `@general-alt`                    | High-reasoning conversation            |
-
-### Tier 3: Fast & Lightweight (Gemini Flash)
-
-Default for general chat, parallel workers, and quick tasks.
-
-| Agent                            | Purpose                         |
-| -------------------------------- | ------------------------------- |
-| `@reviewer-fast`                 | Instant sanity checks           |
-| `@explainer-fast`                | Quick code/pattern explanations |
-| `@testing`                       | E2E test generation             |
-| `@ui-validator`                  | shadcn/ui component validation  |
-| `@tanstack-routing-specialist`   | TanStack Router patterns        |
-| `@accessibility-guardian`        | WCAG compliance validation      |
-| `@mcp-efficiency-specialist`     | MCP token optimization          |
-| `@playwright-testing-specialist` | Playwright E2E patterns         |
-| `@resend-email-specialist`       | Resend email integration        |
-| `@git-history-analyzer`          | Git history analysis            |
-| `@build`                         | Implementation muscle           |
-| `@compaction`                    | Context management              |
-| `@summary`                       | Fast session handoffs           |
-
-**Review Swarm Workers** (parallel execution):
-
-- `@review-security` - Security-focused review
-- `@review-performance` - Performance-focused review
-- `@review-cloudflare` - Cloudflare patterns review
-- `@review-design` - Design/UI review
-
-### Tier 4: Validation Scripts (Big Pickle)
-
-Free tier for deterministic validation. Script-like behavior.
-
-| Agent               | Purpose                        |
-| ------------------- | ------------------------------ |
-| `@runtime-guardian` | Workers runtime compatibility  |
-| `@binding-analyzer` | wrangler.toml binding analysis |
-
-### Quota Protection
-
-1. **Opus capped?** → Use `-alt` agents (switches Bucket A → B)
-2. **Flash capped?** → Falls back to Sonnet 4.5 (switches Bucket B → A)
-3. **Both capped?** → Use Tier 4 agents or wait for reset
-
----
-
 ## File Locations
 
 ```
-agent/           # AI agent definitions
+agent/           # Custom agents (feedback-codifier only)
 command/         # Slash commands
 scripts/         # Hard Tools (JS validators)
-skills/          # Injectable knowledge packages (trigger-based)
+skills/          # Knowledge packages (trigger-based, via oh-my-opencode)
 docs/            # Documentation and upstream tracking
 opencode.jsonc   # Main configuration
-
 bin/             # Workflow shell scripts
 ```
+
+**Note**: Most agents are provided by oh-my-opencode. Only `@feedback-codifier` is custom.

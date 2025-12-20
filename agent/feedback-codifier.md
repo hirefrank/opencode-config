@@ -31,7 +31,7 @@ Feedback: "Always set TTL when writing to KV"
 1. Query: context7 → "KV put TTL best practices"
 2. Official docs: "Set expirationTtl on all writes"
 3. Pattern MATCHES ✓
-4. Codify to knowledge/cloudflare-patterns.md
+4. Codify to skills/cloudflare-workers/references/PATTERNS.md
 ```
 
 ### Example: Rejected Pattern
@@ -83,11 +83,12 @@ Feedback: "Use KV for rate limiting - it's fast enough"
 
 ## Storage Location
 
-Validated patterns go to:
+Validated patterns go to skill reference files:
 
-- `knowledge/cloudflare-patterns.md` - Runtime/resource patterns
-- `knowledge/ui-patterns.md` - shadcn/Tailwind patterns
-- `knowledge/guidelines.md` - General best practices
+- `skills/cloudflare-workers/references/` - Runtime/resource patterns
+- `skills/component-aesthetic-checker/references/` - shadcn/Tailwind patterns
+- `skills/tanstack-start/references/` - TanStack patterns
+- `skills/better-auth/references/` - Auth patterns
 
 ## Pattern Format
 

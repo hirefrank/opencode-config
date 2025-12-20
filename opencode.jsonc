@@ -12,18 +12,15 @@
   "command": {
     "es-work": {
       "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
-      "description": "Start feature development session",
-      "agent": "architect"
+      "description": "Start feature development session"
     },
     "es-validate": {
       "template": "Run pre-commit validation. Check Workers runtime, bundle size, and types.",
-      "description": "Run project validation gates",
-      "agent": "runtime-guardian"
+      "description": "Run project validation gates"
     },
     "es-review": {
       "template": "Perform deep architectural and code review of current changes.",
-      "description": "Request comprehensive code review",
-      "agent": "reviewer"
+      "description": "Request comprehensive code review"
     },
     "es-deploy": {
       "template": "Execute release workflow. Sync beads, run final tests, and deploy to Cloudflare.",
@@ -111,174 +108,10 @@
   },
 
   "agent": {
-    // TIER 1 (Opus 4.5)
-    "architect": {
-      "model": "anthropic/claude-opus-4-5",
-      "temperature": 0.3,
-      "description": "Senior Cloudflare Architect (Opus 4.5)"
-    },
-    "reviewer": {
-      "model": "anthropic/claude-opus-4-5",
-      "description": "Deep code review (Opus 4.5)"
-    },
     "feedback-codifier": {
       "model": "anthropic/claude-opus-4-5",
       "temperature": 0.2,
-      "description": "Extracts patterns from feedback (Opus 4.5)"
-    },
-    "durable-objects": {
-      "model": "anthropic/claude-opus-4-5",
-      "description": "Durable Objects and State Management specialist"
-    },
-    "frontend-design-specialist": {
-      "model": "anthropic/claude-opus-4-5",
-      "description": "Prevents generic UI patterns, enforces distinctiveness (Opus 4.5)"
-    },
-    "tanstack-ui-architect": {
-      "model": "anthropic/claude-opus-4-5",
-      "description": "TanStack Start architecture and patterns (Opus 4.5)"
-    },
-
-    // TIER 2 (Gemini Pro)
-    "architect-alt": {
-      "model": "google/gemini-3-pro-preview",
-      "temperature": 0.3,
-      "description": "Cloudflare Architect (Gemini Pro)"
-    },
-    "reviewer-alt": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "Smart code review (Gemini Pro)"
-    },
-    "feedback-codifier-alt": {
-      "model": "google/gemini-3-pro-preview",
-      "temperature": 0.2,
-      "description": "Extracts patterns from feedback (Gemini Pro)"
-    },
-    "frontend-design-specialist-alt": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "Prevents generic UI patterns, enforces distinctiveness (Gemini Pro)"
-    },
-    "tanstack-migration-specialist": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "TanStack migration patterns (Gemini Pro)"
-    },
-    "tanstack-ssr-specialist": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "TanStack SSR and Server Functions (Gemini Pro)"
-    },
-    "better-auth-specialist": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "better-auth D1 integration specialist (Gemini Pro)"
-    },
-    "polar-billing-specialist": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "Polar.sh billing integration (Gemini Pro)",
-      "permission": { "bash": "ask" }
-    },
-
-    // REVIEW SWARM WORKERS (Gemini Flash - cheap parallel execution)
-    "review-security": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Security-focused review worker (swarm)"
-    },
-    "review-performance": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Performance-focused review worker (swarm)"
-    },
-    "review-cloudflare": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Cloudflare-patterns review worker (swarm)"
-    },
-    "review-design": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Design/UI review worker (swarm)"
-    },
-
-    // TIER 3 (Gemini Flash)
-    "reviewer-fast": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Instant sanity check (Gemini Flash)"
-    },
-    "explainer-fast": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Quickly explains code or patterns (Gemini Flash)"
-    },
-    "testing": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "E2E testing with Playwright",
-      "permission": { "bash": "ask" }
-    },
-    "ui-validator": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Validates shadcn/ui component usage"
-    },
-    "tanstack-routing-specialist": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "TanStack Router patterns (Gemini Flash)"
-    },
-    "accessibility-guardian": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "WCAG compliance and a11y validation (Gemini Flash)"
-    },
-    "mcp-efficiency-specialist": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "MCP server token optimization (Gemini Flash)"
-    },
-    "playwright-testing-specialist": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Playwright E2E test patterns (Gemini Flash)",
-      "permission": { "bash": "ask", "webfetch": "ask" }
-    },
-    "resend-email-specialist": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Resend email integration (Gemini Flash)",
-      "permission": { "bash": "ask" }
-    },
-    "git-history-analyzer": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Git history and commit analysis (Gemini Flash)"
-    },
-
-    // TIER 4 (Big Pickle)
-    "runtime-guardian": {
-      "model": "opencode/big-pickle",
-      "description": "Workers runtime compatibility validator"
-    },
-    "binding-analyzer": {
-      "model": "opencode/big-pickle",
-      "description": "Analyzes wrangler.toml bindings"
-    },
-
-    // CORE ORCHESTRATION
-    "plan": {
-      "model": "anthropic/claude-opus-4-5",
-      "description": "Opus-powered project manager for reliable task breakdown"
-    },
-    "explore": {
-      "model": "anthropic/claude-opus-4-5",
-      "description": "Opus-powered search for high-precision codebase navigation"
-    },
-    "build": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Latest implementation muscle (Gemini 3 Flash Preview)"
-    },
-    "general": {
-      "model": "anthropic/claude-sonnet-4-5",
-      "description": "Balanced high-quality chat assistant (Sonnet 4.5)"
-    },
-    "general-alt": {
-      "model": "google/gemini-3-pro-preview",
-      "description": "High-reasoning conversational alternative (Gemini Pro)"
-    },
-
-    // INTERNAL OVERRIDES
-    "compaction": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Instant context management"
-    },
-    "summary": {
-      "model": "google/gemini-3-flash-preview",
-      "description": "Fast session handoffs"
+      "description": "Learning engine - extracts and validates patterns from feedback"
     }
   },
 
