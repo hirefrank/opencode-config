@@ -1,0 +1,8 @@
+{
+  "$schema": "https://raw.githubusercontent.com/code-yeongyu/oh-my-opencode/master/assets/oh-my-opencode.schema.json",
+  "google_auth": true,
+  "agents": {
+    "Sisyphus": { "model": "google/gemini-3-flash-preview" },
+    "oracle": { "model": "opencode/gpt-5.2" }
+  }
+}
