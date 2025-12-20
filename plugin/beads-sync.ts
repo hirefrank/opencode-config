@@ -1,12 +1,12 @@
 /**
- * Beads Sync Hook
+ * Beads Sync Plugin
  *
  * Syncs TodoWrite completions with beads (bd) for cross-session persistence.
  * When a todo item containing a beads ID (bd-xxx) is marked complete,
- * this hook automatically marks it done in beads.
+ * this plugin automatically marks it done in beads.
  */
 
-import { $ } from "bun";
+import type { Plugin } from "@opencode-ai/plugin";
 
 interface TodoItem {
   content: string;
@@ -14,18 +14,12 @@ interface TodoItem {
   activeForm?: string;
 }
 
-/**
- * Extract beads task IDs from text
- */
 function extractBeadsIds(text: string): string[] {
   const matches = text.match(/bd-[a-z0-9]+/gi);
   return matches ? [...new Set(matches)] : [];
 }
 
-/**
- * Check if beads is available
- */
-async function isBeadsAvailable(): Promise<boolean> {
+async function isBeadsAvailable($: any): Promise<boolean> {
   try {
     await $`bd --version`.quiet();
     return true;
@@ -34,111 +28,97 @@ async function isBeadsAvailable(): Promise<boolean> {
   }
 }
 
-/**
- * Mark a beads task as done
- */
-async function markBeadsDone(taskId: string): Promise<boolean> {
+async function markBeadsDone($: any, taskId: string): Promise<boolean> {
   try {
     await $`bd done ${taskId}`.quiet();
-    console.log(`✅ Synced: ${taskId} marked done in beads`);
+    console.log(`Synced: ${taskId} marked done in beads`);
     return true;
   } catch (error) {
-    console.warn(`⚠️ Failed to sync ${taskId}: ${error}`);
+    console.warn(`Failed to sync ${taskId}: ${error}`);
     return false;
   }
 }
 
-/**
- * Claim a beads task (mark as in_progress)
- */
-async function claimBeadsTask(taskId: string): Promise<boolean> {
+async function claimBeadsTask($: any, taskId: string): Promise<boolean> {
   try {
     await $`bd update ${taskId} --status in_progress`.quiet();
-    console.log(`📋 Claimed: ${taskId} marked in_progress in beads`);
+    console.log(`Claimed: ${taskId} marked in_progress in beads`);
     return true;
   } catch (error) {
-    console.warn(`⚠️ Failed to claim ${taskId}: ${error}`);
+    console.warn(`Failed to claim ${taskId}: ${error}`);
     return false;
   }
 }
 
-/**
- * Sync beads with git
- */
-async function syncBeads(): Promise<void> {
+async function syncBeads($: any): Promise<void> {
   try {
     await $`bd sync`.quiet();
-    console.log("🔄 Beads synced with git");
   } catch {
     // Ignore sync failures
   }
 }
 
-/**
- * Hook: Called when TodoWrite updates todos
- */
-export async function onTodoWrite(todos: TodoItem[]): Promise<void> {
-  if (!(await isBeadsAvailable())) {
-    return; // Beads not installed, skip
-  }
+const plugin: Plugin = async ({ $ }) => {
+  // Check if beads is available once at plugin load
+  const beadsAvailable = await isBeadsAvailable($);
 
-  for (const todo of todos) {
-    const beadsIds = extractBeadsIds(todo.content);
-
-    for (const taskId of beadsIds) {
-      if (todo.status === "completed") {
-        await markBeadsDone(taskId);
-      } else if (todo.status === "in_progress") {
-        await claimBeadsTask(taskId);
+  return {
+    // Hook into TodoWrite tool execution
+    "tool.execute.after": async (input, output) => {
+      if (input.tool !== "TodoWrite" || !beadsAvailable) {
+        return;
       }
-    }
-  }
 
-  // Sync with git after processing
-  await syncBeads();
-}
+      // Parse todos from the tool args
+      try {
+        const args = output.metadata?.args;
+        if (!args?.todos) return;
 
-/**
- * Hook: Called at session start
- */
-export async function onSessionStart(): Promise<void> {
-  if (!(await isBeadsAvailable())) {
-    return;
-  }
+        const todos: TodoItem[] = args.todos;
 
-  try {
-    const result = await $`bd ready --limit 5`.quiet();
-    const output = result.stdout.toString().trim();
+        for (const todo of todos) {
+          const beadsIds = extractBeadsIds(todo.content);
 
-    if (output) {
-      console.log("\n📋 Available beads tasks:");
-      console.log(output);
-      console.log("\nUse 'bd show <id>' for details or include task ID in your work.\n");
-    }
-  } catch {
-    // No tasks or beads not configured
-  }
-}
+          for (const taskId of beadsIds) {
+            if (todo.status === "completed") {
+              await markBeadsDone($, taskId);
+            } else if (todo.status === "in_progress") {
+              await claimBeadsTask($, taskId);
+            }
+          }
+        }
 
-/**
- * Hook: Called at session end
- */
-export async function onSessionEnd(): Promise<void> {
-  if (!(await isBeadsAvailable())) {
-    return;
-  }
+        // Sync with git after processing
+        await syncBeads($);
+      } catch {
+        // Ignore parse errors
+      }
+    },
 
-  await syncBeads();
-  console.log("📤 Session ended, beads synced with git");
-}
+    // Hook into session events
+    event: async ({ event }) => {
+      if (!beadsAvailable) return;
 
-// Export for OpenCode plugin integration
-export default {
-  onTodoWrite,
-  onSessionStart,
-  onSessionEnd,
-  extractBeadsIds,
-  markBeadsDone,
-  claimBeadsTask,
-  syncBeads,
+      if (event.type === "session.created") {
+        // Show available beads tasks at session start
+        try {
+          const result = await $`bd ready --limit 5`.quiet();
+          const output = result.stdout.toString().trim();
+
+          if (output) {
+            console.log("\nAvailable beads tasks:");
+            console.log(output);
+            console.log("\nUse 'bd show <id>' for details.\n");
+          }
+        } catch {
+          // No tasks or beads not configured
+        }
+      } else if (event.type === "session.ended") {
+        await syncBeads($);
+        console.log("Session ended, beads synced");
+      }
+    },
+  };
 };
+
+export default plugin;

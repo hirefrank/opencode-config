@@ -35,6 +35,11 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 
 4. **Hard Tools over soft instructions** - Deterministic code > prompt instructions for validation
 
+### Great Use Cases
+
+- **ultrawork**: "Implement a full-stack user profile page with D1 and Tanstack Start." (Claude handles the logic, Gemini builds the UI in parallel!)
+- **search**: "How is authentication handled across the entire project?" (The Librarian and Explore agents will scour your docs and code simultaneously.)
+
 ---
 
 ## Quick Start
