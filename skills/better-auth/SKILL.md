@@ -7,6 +7,23 @@ metadata:
   version: "1.0"
 compatibility: Requires better-auth, D1, Cloudflare Workers
 allowed-tools: Bash(npm:*) Bash(pnpm:*) Read Write
+triggers:
+  - "auth"
+  - "authentication"
+  - "login"
+  - "logout"
+  - "signup"
+  - "sign up"
+  - "oauth"
+  - "session"
+  - "jwt"
+  - "user"
+  - "password"
+  - "register"
+  - "better-auth"
+  - "social login"
+  - "google auth"
+  - "github auth"
 ---
 
 # Better Auth with D1 in Cloudflare Workers

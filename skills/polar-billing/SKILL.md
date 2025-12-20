@@ -7,6 +7,21 @@ metadata:
   version: "1.0"
 compatibility: Requires Polar.sh account, D1, Cloudflare Workers
 allowed-tools: Bash(wrangler:*) Read Write
+triggers:
+  - "billing"
+  - "subscription"
+  - "payment"
+  - "pricing"
+  - "checkout"
+  - "polar"
+  - "monetize"
+  - "plan"
+  - "tier"
+  - "purchase"
+  - "webhook"
+  - "customer"
+  - "invoice"
+  - "saas"
 ---
 
 # Polar.sh Billing Integration

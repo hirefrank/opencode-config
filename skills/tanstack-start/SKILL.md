@@ -7,6 +7,21 @@ metadata:
   version: "1.0"
 compatibility: Requires React 19, Tanstack Start, Cloudflare Workers
 allowed-tools: Bash(npm:*) Bash(pnpm:*) Bash(npx:*) Read Write
+triggers:
+  - "tanstack"
+  - "route"
+  - "routing"
+  - "ssr"
+  - "server function"
+  - "server component"
+  - "file-based routing"
+  - "loader"
+  - "action"
+  - "react 19"
+  - "streaming"
+  - "suspense"
+  - "page"
+  - "layout"
 ---
 
 # Tanstack Start Development

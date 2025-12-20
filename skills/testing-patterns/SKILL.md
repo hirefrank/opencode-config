@@ -7,6 +7,20 @@ metadata:
   version: "1.0"
 compatibility: Requires Vitest, Playwright, Cloudflare Workers testing
 allowed-tools: Bash(npm:*) Bash(pnpm:*) Bash(npx:*) Read Write
+triggers:
+  - "test"
+  - "testing"
+  - "vitest"
+  - "playwright"
+  - "e2e"
+  - "unit test"
+  - "integration test"
+  - "mock"
+  - "fixture"
+  - "coverage"
+  - "assertion"
+  - "expect"
+  - "describe"
 ---
 
 # Testing Patterns for Cloudflare Workers
