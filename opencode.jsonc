@@ -1,6 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
+  "model": "google/gemini-3-flash-preview",
+  "small_model": "opencode/gpt-5-nano",
+
   "plugin": ["oh-my-opencode"],
 
   "instructions": [
@@ -74,7 +77,7 @@
 
   "agent": {
     "plan": {
-      "model": "google/gemini-3-flash-preview"
+      "model": "anthropic/claude-opus-4-5"
     },
     "feedback-codifier": {
       "model": "anthropic/claude-opus-4-5",
