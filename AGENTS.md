@@ -452,7 +452,6 @@ command/         # Slash commands
 tool/            # MCP tools (auto-registered)
 skills/          # Knowledge packages (trigger-based)
 plugin/          # Hooks and extensions (beads-sync)
-docs/            # Documentation and upstream tracking
 opencode.jsonc   # Main configuration
 ```
 

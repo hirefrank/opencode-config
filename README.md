@@ -64,8 +64,7 @@ opencode-config/
 ├── command/               # Slash commands (/es-*)
 ├── tool/                  # MCP tools (auto-registered)
 ├── skills/                # Knowledge packages (trigger-based)
-├── plugin/                # Hooks and extensions (beads-sync)
-└── docs/                  # Documentation, upstream tracking
+└── plugin/                # Hooks and extensions (beads-sync)
 ```
 
 ### What Lives Where
