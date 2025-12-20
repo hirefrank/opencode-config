@@ -1,207 +1,144 @@
 # opencode-config
 
-Personal OpenCode configuration optimized for Edge-first development.
+Personal OpenCode configuration for Edge-first development with oh-my-opencode.
 
-> **Edge Stack** is a Cloudflare Workers-first development framework optimized for edge computing, modern React (TanStack Start), and token-efficient AI workflows.
+> **Edge Stack**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
 
 ---
 
-## ⚡ Quick Start
+## Philosophy
 
-### 1. Clone & Configure
+### Primitives
+
+| Primitive | Purpose | Example |
+|-----------|---------|---------|
+| **tools/** | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings |
+| **skills/** | Inject knowledge when triggered (context, not execution) | `cloudflare-workers/` injects KV patterns |
+| **command/** | Slash commands for workflows | `/es-review` triggers code review |
+| **agent/** | Custom agents not provided by oh-my-opencode | `feedback-codifier` (learning loop) |
+
+### Key Principles
+
+1. **oh-my-opencode provides agents** - Only define custom agents for unique functionality (e.g., feedback-codifier learning loop)
+
+2. **Tools execute, skills inject knowledge** - Validators are tools (they run code), not skills (which provide context)
+
+3. **Smaller skills = more token-efficient** - Many focused skills beats few monolithic ones. Only inject what's needed.
+
+4. **MCP tools over shell scripts** - Use `tool/*.ts` (auto-registered MCP) instead of `scripts/*.js` (legacy pattern)
+
+5. **Hard Tools over soft instructions** - Deterministic code > prompt instructions for validation
+
+---
+
+## Quick Start
+
 ```bash
 git clone https://github.com/hirefrank/opencode-config ~/Projects/opencode-config
 
-# Add to your shell profile (.bashrc, .zshrc, etc.)
+# Add to shell profile (.bashrc, .zshrc)
 export OPENCODE_CONFIG=~/Projects/opencode-config
-```
 
-### 2. Verify
-```bash
+# Verify
 opencode doctor
 ```
 
-> **Note:** This repo uses `OPENCODE_CONFIG` export instead of symlinking to `~/.config/opencode/`. This allows `tool/`, `agent/`, `command/`, and `skills/` directories to live at the repo root (matching Joel Hooks' structure) while keeping the repo in your preferred location.
+---
+
+## Structure
+
+```
+opencode-config/
+├── AGENTS.md              # Global instructions (loaded every session)
+├── opencode.jsonc         # Config: model, commands, MCP servers
+├── agent/                 # Custom agents (feedback-codifier only)
+├── command/               # Slash commands (/es-*)
+├── tool/                  # MCP tools (auto-registered)
+├── skills/                # Knowledge packages (trigger-based)
+├── bin/                   # Shell scripts for commands
+├── docs/                  # Documentation, upstream tracking
+└── .opencode/             # oh-my-opencode extension (skill-matcher, hooks)
+```
+
+### What Lives Where
+
+| I want to... | Use |
+|--------------|-----|
+| Run validation, return structured results | `tool/*.ts` |
+| Inject knowledge about a domain | `skills/*/SKILL.md` |
+| Create a workflow command | `command/*.md` + `opencode.jsonc` |
+| Define a custom agent | `agent/*.md` + `opencode.jsonc` |
+| Add reference docs for a skill | `skills/*/references/*.md` |
 
 ---
 
-## 🏗️ Structure
+## Commands
 
-- **`agent/`**: 18 specialized agent definitions (36 config entries with tier variants).
-- **`command/`**: 29 workflow commands (setup, development, validation).
-- **`tool/`**: 5 custom OpenCode tools (git-context, repo-autopsy, typecheck, ubs).
-- **`skills/`**: 19 SKILLs for continuous validation.
-- **`knowledge/`**: Context-triggers and edge development patterns.
-- **`scripts/`**: 4 Hard Tools (JS validators) for runtime and UI checks.
-- **`plugin/`**: Pre-tool-use hooks and validation scripts.
-
----
-
-## 🛠️ Key Features
-
-- **Edge-first architecture**: Optimized for Workers, KV, R2, D1, and Durable Objects.
-- **Modern Stack**: TanStack Start (React 19), Server Functions, shadcn/ui, and Tailwind 4.
-- **Token-efficient**: "Hard Tools" over "Soft Instructions" to reduce context bloat.
-- **Ground Truth**: Integrated MCP servers (Context7, shadcn, Better Auth) prevent AI hallucinations.
+| Command | Description |
+|---------|-------------|
+| `/es-work` | Start feature development session |
+| `/es-validate` | Run pre-commit validation |
+| `/es-review` | Code review with confidence scoring |
+| `/es-deploy` | Release workflow |
+| `/es-plan` | Plan with architectural guidance |
+| `/es-triage` | Triage findings to beads |
 
 ---
 
-## 📖 Commands
+## Skills
 
-| Task | Command |
+Skills are knowledge packages triggered by keywords. Smaller, focused skills are more token-efficient.
+
+### Core Skills
+
+| Skill | Triggers | Domain |
+|-------|----------|--------|
+| `cloudflare-workers` | workers, cloudflare, kv, r2, d1 | Cloudflare runtime |
+| `durable-objects` | durable objects, do, websocket, state | Stateful coordination |
+| `tanstack-start` | tanstack, router, server functions | React framework |
+| `better-auth` | auth, login, session, oauth | Authentication |
+| `polar-billing` | billing, subscription, polar | Payments |
+| `shadcn-ui` | shadcn, ui, component, button | UI components |
+| `beads-workflow` | beads, bd, task, issue | Task management |
+| `code-reviewer` | review, pr, code review | Code review swarm |
+
+---
+
+## Tools
+
+MCP tools in `tool/` are auto-registered. They execute and return structured data.
+
+| Tool | Purpose |
 |------|---------|
-| Start work | `/es-work` |
-| Validate commit | `/es-validate` |
-| New worker | `/es-worker` |
-| Code review | `/es-review` |
-| Release | `/es-release` |
-| Check upstream | `/es-upstream` |
+| `ubs.ts` | Universal Bug Scanner |
+| `cloudflare-bindings.ts` | Analyze wrangler.toml bindings |
+| `ui-validator.ts` | Validate UI patterns |
+| `repo-autopsy.ts` | Deep repo analysis |
+| `typecheck.ts` | TypeScript validation |
 
 ---
 
-## 💡 Popular Prompts
+## Custom Agents
 
-### Task Management with Beads
+Only one custom agent (oh-my-opencode provides the rest):
 
-```bash
-# Start a work session from beads
-"Check bd ready for available tasks, pick the highest priority one, and start working on it"
+### @feedback-codifier
 
-# Work on multiple beads in parallel
-"Run bd list --status open, identify 3 independent P2 tasks, and work on them in parallel using subagents"
+The learning loop - extracts patterns from code reviews, validates against MCP/docs, writes to skill references.
 
-# Close out a session
-"Show me what I accomplished today. Close any completed beads and create new ones for remaining work"
 ```
-
-### Agent Selection by Task
-
-```bash
-# Architecture decisions (Opus 4.5 - highest quality)
-@architect "Design a rate limiting system using Durable Objects"
-
-# Quick review (Gemini Flash - fast)
-@reviewer-fast "Sanity check this PR before I push"
-
-# Deep review (Opus 4.5 - thorough)
-@reviewer "Full code review of the auth implementation"
-
-# Cost-conscious alternative (Gemini Pro)
-@architect-alt "Same task but using Gemini Pro instead of Opus"
+User Feedback → Extract Pattern → Validate via MCP → Accept/Reject → Update Skill
 ```
-
-### Frontend & UI
-
-```bash
-# Prevent generic UI (your most-used agent)
-@frontend-design-specialist "Review this landing page for distinctiveness. Score it against anti-patterns"
-
-# Gemini Pro alternative for faster iteration
-@frontend-design-specialist-alt "Quick check - is this button styling too generic?"
-
-# TanStack patterns
-@tanstack-ui-architect "Help me structure this dashboard with TanStack Start"
-
-# Accessibility check
-@accessibility-guardian "Audit this form for WCAG compliance"
-```
-
-### Cloudflare Workers
-
-```bash
-# Runtime compatibility
-@runtime-guardian "Check if this code will work in Workers runtime"
-
-# Durable Objects patterns
-@durable-objects "Implement a WebSocket chat room with DO"
-
-# Binding analysis
-@binding-analyzer "Generate TypeScript Env interface from wrangler.toml"
-```
-
-### Parallel Work Patterns
-
-```bash
-# Parallel implementation
-"Implement these 3 API endpoints in parallel: /users, /posts, /comments"
-
-# Parallel validation
-"Run these checks in parallel: typecheck, lint, and runtime validation"
-
-# Parallel research
-"Research these 3 libraries in parallel and recommend the best fit: [lib1, lib2, lib3]"
-```
-
-### Workflow Commands
-
-```bash
-# Start feature work (creates worktree, copies .env)
-/es-work --branch add-user-auth
-
-# Validate before commit
-/es-validate
-
-# Full design review
-/es-design-review
-
-# Create new Worker
-/es-worker api-gateway
-
-# Release with auto-versioning
-/es-release --dry-run
-```
-
-### Integration Specialists
-
-```bash
-# Authentication
-@better-auth-specialist "Set up GitHub OAuth with D1 adapter"
-
-# Billing
-@polar-billing-specialist "Implement subscription webhooks"
-
-# Email
-@resend-email-specialist "Create transactional email templates"
-
-# Testing
-@playwright-testing-specialist "Write E2E tests for the checkout flow"
-```
-
-### Model Tier Strategy
-
-| Tier | Agent Suffix | Use When |
-|------|--------------|----------|
-| 1 (Opus) | `@agent` | Critical decisions, complex architecture |
-| 2 (Gemini Pro) | `@agent-alt` | High reasoning, cost-conscious |
-| 3 (Gemini Flash) | `@agent-fast` | Quick checks, validation |
-| 4 (Big Pickle) | (internal) | Background utilities |
 
 ---
 
-## Credits & Inspiration
+## Credits
 
-This configuration stands on the shoulders of giants. We gratefully acknowledge:
-
-### Primary Sources
-
-| Source | Author | What We Adopted |
-|--------|--------|-----------------|
-| **[Every Inc - Compounding Engineering](https://github.com/EveryInc/every-marketplace/tree/main/plugins/compounding-engineering)** | Kieran Klaassen ([@kieranklaassen](https://github.com/kieranklaassen)) | Multi-agent orchestration, parallel execution, feedback codification, git worktree isolation, workflow structure |
-| **[Anthropic Claude Code Plugins](https://github.com/anthropics/claude-code/tree/main/plugins)** | Anthropic | Confidence scoring (`code-review`), safety hooks (`hookify`), 4-dimension design context (`frontend-design`) |
-| **[joelhooks/opencode-config](https://github.com/joelhooks/opencode-config)** | Joel Hooks ([@joelhooks](https://github.com/joelhooks)) | OpenCode structure patterns, custom tool architecture, SKILL.md format |
-
-### Community Contributors
-
-- **Ben Fisher** - Git worktree `.env` auto-copy fix
-- **Dan Shipper** ([@danshipper](https://github.com/danshipper)) - Agent-native architecture patterns
-- **Julik Tarkhanov** - JS reviewer race condition patterns
-
-### Tools & Platforms
-
-- **[OpenCode](https://opencode.ai)** - The foundation
-- **[beads (bd)](https://github.com/beads-ai/bd)** - Cross-session task tracking
-- **[Context7](https://context7.io)** - Framework documentation MCP
-- **[shadcn/ui](https://ui.shadcn.com)** - Component library + MCP
+| Source | What We Use |
+|--------|-------------|
+| [joelhooks/opencode-config](https://github.com/joelhooks/opencode-config) | Structure patterns, tool architecture |
+| [Every Inc](https://github.com/EveryInc/every-marketplace) | Feedback codification, parallel execution |
+| [Anthropic Plugins](https://github.com/anthropics/claude-code/tree/main/plugins) | Confidence scoring, safety hooks |
 
 ---
 

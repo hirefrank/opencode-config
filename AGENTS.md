@@ -449,7 +449,7 @@ Patterns are stored in skill reference files:
 ```
 agent/           # Custom agents (feedback-codifier only)
 command/         # Slash commands
-scripts/         # Hard Tools (JS validators)
+tool/            # MCP tools (auto-registered)
 skills/          # Knowledge packages (trigger-based, via oh-my-opencode)
 docs/            # Documentation and upstream tracking
 opencode.jsonc   # Main configuration

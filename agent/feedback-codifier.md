@@ -171,21 +171,26 @@ Anti-pattern: "Don't use KV for session storage - use DO instead"
 Reason: "KV eventual consistency causes session race conditions"
 ```
 
-### Tracking Commands
+### Writing Patterns
+
+When codifying a validated pattern, write directly to the appropriate skill reference file:
 
 ```bash
-# Record pattern success
-node scripts/codify-feedback.js --track "pattern-id" --result success
+# Example: Add KV pattern to cloudflare-workers skill
+# File: skills/cloudflare-workers/references/PATTERNS.md
 
-# Record pattern failure
-node scripts/codify-feedback.js --track "pattern-id" --result failure --reason "description"
+## Pattern: KV TTL Required
 
-# View pattern effectiveness
-node scripts/codify-feedback.js --stats "pattern-id"
+**Category**: Resource
+**Confidence**: High (validated via MCP)
+**Maturity**: established
 
-# List patterns needing refresh (confidence < 50%)
-node scripts/codify-feedback.js --stale
+### Problem
+KV entries without TTL consume quota indefinitely.
 
-# List candidates for deprecation (> 60% failure)
-node scripts/codify-feedback.js --failing
+### Solution
+Always set expirationTtl on KV.put() calls.
+
+### Example
+await env.KV.put("key", "value", { expirationTtl: 3600 });
 ```
