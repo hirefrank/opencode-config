@@ -13,23 +13,24 @@
     "knowledge/model-strategy.md"
   ],
 
+  "commands": "command",
   "command": {
-    "work": {
+    "es-work": {
       "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
       "description": "Start feature development session",
       "agent": "architect"
     },
-    "validate": {
+    "es-validate": {
       "template": "Run pre-commit validation. Check Workers runtime, bundle size, and types.",
       "description": "Run project validation gates",
       "agent": "runtime-guardian"
     },
-    "review": {
+    "es-review": {
       "template": "Perform deep architectural and code review of current changes.",
       "description": "Request comprehensive code review",
       "agent": "reviewer"
     },
-    "deploy": {
+    "es-deploy": {
       "template": "Execute release workflow. Sync beads, run final tests, and deploy to Cloudflare.",
       "description": "Start deployment workflow"
     }
