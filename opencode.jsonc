@@ -10,18 +10,6 @@
     "AGENTS.md"
   ],
   "command": {
-    "es-work": {
-      "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
-      "description": "Start feature development session"
-    },
-    "es-review": {
-      "template": "Perform deep architectural and code review of current changes.",
-      "description": "Request comprehensive code review"
-    },
-    "es-deploy": {
-      "template": "Execute release workflow. Sync beads, run final tests, and deploy to Cloudflare.",
-      "description": "Start deployment workflow"
-    },
     "es-plan": {
       "template": "command/es-plan.md",
       "description": "Plan Cloudflare Workers projects with architectural guidance"
