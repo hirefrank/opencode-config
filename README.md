@@ -1,6 +1,6 @@
 # opencode-config
 
-**Global OpenCode configuration** for Edge-first development with oh-my-opencode.
+**Global OpenCode configuration** for Edge-first development.
 
 > This repo is set as `OPENCODE_CONFIG_DIR` and applies to **all** OpenCode sessions across all projects.
 
@@ -19,22 +19,21 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 
 | Primitive | Purpose | Example |
 |-----------|---------|---------|
-| **tools/** | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings |
-| **skills/** | Inject knowledge when triggered (context, not execution) | `cloudflare-workers/` injects KV patterns |
+| **tool/** | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings |
+| **skills/** | Reference knowledge for specific domains | `cloudflare-workers/` documents KV patterns |
 | **command/** | Slash commands for workflows | `/es-review` triggers code review |
-| **agent/** | Custom agents not provided by oh-my-opencode | `feedback-codifier` (learning loop) |
+| **agent/** | Custom agent definitions | `feedback-codifier` (learning loop) |
+| **plugin/** | OpenCode plugins (if needed) | Custom hooks, extensions |
 
 ### Key Principles
 
-1. **oh-my-opencode provides agents** - Only define custom agents for unique functionality (e.g., feedback-codifier learning loop)
+1. **Tools execute, skills document** - Validators are tools (they run code), skills are reference knowledge
 
-2. **Tools execute, skills inject knowledge** - Validators are tools (they run code), not skills (which provide context)
+2. **Smaller skills = more token-efficient** - Many focused skills beats few monolithic ones
 
-3. **Smaller skills = more token-efficient** - Many focused skills beats few monolithic ones. Only inject what's needed.
+3. **MCP tools over shell scripts** - Use `tool/*.ts` (auto-registered) instead of legacy scripts
 
-4. **MCP tools over shell scripts** - Use `tool/*.ts` (auto-registered MCP) instead of `scripts/*.js` (legacy pattern)
-
-5. **Hard Tools over soft instructions** - Deterministic code > prompt instructions for validation
+4. **Hard Tools over soft instructions** - Deterministic code > prompt instructions for validation
 
 ---
 
@@ -65,9 +64,9 @@ opencode-config/
 ├── command/               # Slash commands (/es-*)
 ├── tool/                  # MCP tools (auto-registered)
 ├── skills/                # Knowledge packages (trigger-based)
+├── plugin/                # Hooks and extensions (beads-sync)
 ├── bin/                   # Shell scripts for commands
-├── docs/                  # Documentation, upstream tracking
-└── .opencode/             # oh-my-opencode extension (skill-matcher, hooks)
+└── docs/                  # Documentation, upstream tracking
 ```
 
 ### What Lives Where
@@ -125,6 +124,8 @@ MCP tools in `tool/` are auto-registered. They execute and return structured dat
 | `ui-validator.ts` | Validate UI patterns |
 | `repo-autopsy.ts` | Deep repo analysis |
 | `typecheck.ts` | TypeScript validation |
+| `beads.ts` | Beads task management integration |
+| `git-context.ts` | Git context for commits/PRs |
 
 ---
 
