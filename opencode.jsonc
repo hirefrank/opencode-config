@@ -42,17 +42,9 @@
       "template": "command/es-resolve-parallel.md",
       "description": "Resolve multiple tasks and issues in parallel"
     },
-    "es-upstream": {
-      "template": "command/es-upstream.md",
-      "description": "Check upstream sources for template changes and new patterns"
-    },
     "es-commit": {
       "template": "command/es-commit.md",
       "description": "Staged changes, generate commit message, and push"
-    },
-    "es-release": {
-      "template": "command/es-release.md",
-      "description": "Execute release workflow with versioning"
     },
     "es-test-gen": {
       "template": "command/es-test-gen.md",
