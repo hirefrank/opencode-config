@@ -30,10 +30,6 @@
       "template": "command/es-triage.md",
       "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
     },
-    "es-issue": {
-      "template": "command/es-issue.md",
-      "description": "Create well-structured GitHub issues or local tasks"
-    },
     "es-resolve-parallel": {
       "template": "command/es-resolve-parallel.md",
       "description": "Resolve multiple tasks and issues in parallel"
