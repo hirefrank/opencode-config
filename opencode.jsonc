@@ -73,6 +73,9 @@
   },
 
   "agent": {
+    "plan": {
+      "model": "google/gemini-3-flash-preview"
+    },
     "feedback-codifier": {
       "model": "anthropic/claude-opus-4-5",
       "temperature": 0.2,

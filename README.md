@@ -17,13 +17,13 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 
 ### Primitives
 
-| Primitive | Purpose | Example |
-|-----------|---------|---------|
-| **tool/** | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings |
-| **skills/** | Reference knowledge for specific domains | `cloudflare-workers/` documents KV patterns |
-| **command/** | Slash commands for workflows | `/es-plan` triggers planning workflow |
-| **agent/** | Custom agent definitions | `feedback-codifier` (learning loop) |
-| **plugin/** | OpenCode plugins (if needed) | Custom hooks, extensions |
+| Primitive    | Purpose                                             | Example                                     |
+| ------------ | --------------------------------------------------- | ------------------------------------------- |
+| **tool/**    | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings    |
+| **skills/**  | Reference knowledge for specific domains            | `cloudflare-workers/` documents KV patterns |
+| **command/** | Slash commands for workflows                        | `/es-plan` triggers planning workflow       |
+| **agent/**   | Custom agent definitions                            | `feedback-codifier` (learning loop)         |
+| **plugin/**  | OpenCode plugins (if needed)                        | Custom hooks, extensions                    |
 
 ### Key Principles
 
@@ -72,13 +72,26 @@ cd ~/Projects/opencode-config && npm install
 
 ### oh-my-opencode
 
-Provides additional agents and the context7 MCP for documentation lookup.
+[code-yeongyu/oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode) provides agents (Sisyphus, Oracle, Librarian, etc.), tools, and the context7 MCP.
 
 ```bash
 npm install -g oh-my-opencode
 ```
 
 Already configured in `opencode.jsonc` via `"plugin": ["oh-my-opencode"]`.
+
+To override agent models, create `~/.config/opencode/oh-my-opencode.json`:
+
+```json
+{
+  "agents": {
+    "oracle": { "model": "anthropic/claude-opus-4-5" },
+    "frontend-ui-ux-engineer": { "model": "google/gemini-3-pro-high" }
+  }
+}
+```
+
+See the [oh-my-opencode README](https://github.com/code-yeongyu/oh-my-opencode#agent-configuration) for all agent defaults and options.
 
 ### mgrep (Semantic Search)
 
@@ -112,6 +125,7 @@ bd onboard
 ```
 
 Key commands:
+
 ```bash
 bd ready          # Find available work
 bd show <id>      # View issue details
@@ -138,27 +152,27 @@ opencode-config/
 
 ### What Lives Where
 
-| I want to... | Use |
-|--------------|-----|
-| Run validation, return structured results | `tool/*.ts` |
-| Inject knowledge about a domain | `skills/*/SKILL.md` |
-| Create a workflow command | `command/*.md` + `opencode.jsonc` |
-| Define a custom agent | `agent/*.md` + `opencode.jsonc` |
-| Add reference docs for a skill | `skills/*/references/*.md` |
+| I want to...                              | Use                               |
+| ----------------------------------------- | --------------------------------- |
+| Run validation, return structured results | `tool/*.ts`                       |
+| Inject knowledge about a domain           | `skills/*/SKILL.md`               |
+| Create a workflow command                 | `command/*.md` + `opencode.jsonc` |
+| Define a custom agent                     | `agent/*.md` + `opencode.jsonc`   |
+| Add reference docs for a skill            | `skills/*/references/*.md`        |
 
 ---
 
 ## Commands
 
-| Command | Description |
-|---------|-------------|
-| `/es-plan` | Plan with architectural guidance |
-| `/es-triage` | Triage findings to beads |
-| `/es-commit` | Stage changes, generate commit message, push |
-| `/es-test-gen` | Generate Playwright tests |
-| `/es-component` | Create shadcn/ui component |
-| `/es-resolve-parallel` | Resolve multiple tasks in parallel |
-| `/es-generate-command` | Create new slash command |
+| Command                | Description                                  |
+| ---------------------- | -------------------------------------------- |
+| `/es-plan`             | Plan with architectural guidance             |
+| `/es-triage`           | Triage findings to beads                     |
+| `/es-commit`           | Stage changes, generate commit message, push |
+| `/es-test-gen`         | Generate Playwright tests                    |
+| `/es-component`        | Create shadcn/ui component                   |
+| `/es-resolve-parallel` | Resolve multiple tasks in parallel           |
+| `/es-generate-command` | Create new slash command                     |
 
 ---
 
@@ -168,16 +182,16 @@ Skills are knowledge packages triggered by keywords. Smaller, focused skills are
 
 ### Core Skills
 
-| Skill | Triggers | Domain |
-|-------|----------|--------|
-| `cloudflare-workers` | workers, cloudflare, kv, r2, d1 | Cloudflare runtime |
-| `durable-objects` | durable objects, do, websocket, state | Stateful coordination |
-| `tanstack-start` | tanstack, router, server functions | React framework |
-| `better-auth` | auth, login, session, oauth | Authentication |
-| `polar-billing` | billing, subscription, polar | Payments |
-| `shadcn-ui` | shadcn, ui, component, button | UI components |
-| `beads-workflow` | beads, bd, task, issue | Task management |
-| `code-reviewer` | review, pr, code review | Code review swarm |
+| Skill                | Triggers                              | Domain                |
+| -------------------- | ------------------------------------- | --------------------- |
+| `cloudflare-workers` | workers, cloudflare, kv, r2, d1       | Cloudflare runtime    |
+| `durable-objects`    | durable objects, do, websocket, state | Stateful coordination |
+| `tanstack-start`     | tanstack, router, server functions    | React framework       |
+| `better-auth`        | auth, login, session, oauth           | Authentication        |
+| `polar-billing`      | billing, subscription, polar          | Payments              |
+| `shadcn-ui`          | shadcn, ui, component, button         | UI components         |
+| `beads-workflow`     | beads, bd, task, issue                | Task management       |
+| `code-reviewer`      | review, pr, code review               | Code review swarm     |
 
 ---
 
@@ -185,15 +199,15 @@ Skills are knowledge packages triggered by keywords. Smaller, focused skills are
 
 MCP tools in `tool/` are auto-registered. They execute and return structured data.
 
-| Tool | Purpose |
-|------|---------|
-| `mgrep.ts` | Semantic code search (natural language queries) |
-| `ubs.ts` | Universal Bug Scanner (Workers, D1, KV, secrets) |
-| `cloudflare-bindings.ts` | Analyze wrangler.toml, generate Env interface |
-| `ui-validator.ts` | Validate shadcn/ui prop usage |
-| `repo-autopsy.ts` | Deep repo analysis (clone, search, AST) |
-| `typecheck.ts` | TypeScript type checking |
-| `git-context.ts` | Git context for commits/PRs |
+| Tool                     | Purpose                                          |
+| ------------------------ | ------------------------------------------------ |
+| `mgrep.ts`               | Semantic code search (natural language queries)  |
+| `ubs.ts`                 | Universal Bug Scanner (Workers, D1, KV, secrets) |
+| `cloudflare-bindings.ts` | Analyze wrangler.toml, generate Env interface    |
+| `ui-validator.ts`        | Validate shadcn/ui prop usage                    |
+| `repo-autopsy.ts`        | Deep repo analysis (clone, search, AST)          |
+| `typecheck.ts`           | TypeScript type checking                         |
+| `git-context.ts`         | Git context for commits/PRs                      |
 
 ---
 
@@ -213,11 +227,12 @@ User Feedback → Extract Pattern → Validate via MCP → Accept/Reject → Upd
 
 ## Credits
 
-| Source | What We Use |
-|--------|-------------|
-| [joelhooks/opencode-config](https://github.com/joelhooks/opencode-config) | Structure patterns, tool architecture |
-| [Every Inc](https://github.com/EveryInc/every-marketplace) | Feedback codification, parallel execution |
-| [Anthropic Plugins](https://github.com/anthropics/claude-code/tree/main/plugins) | Confidence scoring, safety hooks |
+| Source                                                                           | What We Use                                      |
+| -------------------------------------------------------------------------------- | ------------------------------------------------ |
+| [code-yeongyu/oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode)    | Agents (Sisyphus, Oracle, etc.), tools, context7 |
+| [joelhooks/opencode-config](https://github.com/joelhooks/opencode-config)        | Structure patterns, tool architecture            |
+| [Every Inc](https://github.com/EveryInc/every-marketplace)                       | Feedback codification, parallel execution        |
+| [Anthropic Plugins](https://github.com/anthropics/claude-code/tree/main/plugins) | Confidence scoring, safety hooks                 |
 
 ---
 

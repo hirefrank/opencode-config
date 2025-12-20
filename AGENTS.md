@@ -287,11 +287,13 @@ const toolConfig = {
 ```
 
 **Benefits**:
+
 - 85% reduction in token usage
 - Compatible with prompt caching
 - oh-my-opencode handles this automatically via "Context-aware delegating"
 
 **When to write code instead of direct tool calls**:
+
 - Complex workflows with 3+ dependent calls
 - Large datasets requiring filtering
 - Parallel operations
@@ -354,15 +356,15 @@ See `skills/beads-workflow/` for detailed usage.
 
 ## Quick Reference
 
-| Task           | Command / Tool        |
-| -------------- | --------------------- |
-| Plan feature   | `/es-plan`            |
-| Triage issues  | `/es-triage`          |
-| Commit changes | `/es-commit`          |
-| Generate tests | `/es-test-gen`        |
-| UI component   | `/es-component`       |
+| Task           | Command / Tool                                |
+| -------------- | --------------------------------------------- |
+| Plan feature   | `/es-plan`                                    |
+| Triage issues  | `/es-triage`                                  |
+| Commit changes | `/es-commit`                                  |
+| Generate tests | `/es-test-gen`                                |
+| UI component   | `/es-component`                               |
 | Validate code  | `typecheck`, `check_workers`, `check_secrets` |
-| Find work      | `bd ready`            |
+| Find work      | `bd ready`                                    |
 
 ### Code Search
 
@@ -391,7 +393,8 @@ mgrep --opencode "find rate limiting logic"
 ```
 
 **Best Practices**:
-1. Use natural language: "functions that validate user input" not "validate.*input"
+
+1. Use natural language: "functions that validate user input" not "validate.\*input"
 2. Be specific about intent: "error handling in API routes" not just "errors"
 3. Fallback to grep for exact matches (faster and deterministic)
 
@@ -439,12 +442,12 @@ Feedback: "Use KV for rate limiting - it's fast enough"
 
 Patterns are stored in skill reference files:
 
-| Category | Location |
-|----------|----------|
-| Cloudflare patterns | `skills/cloudflare-workers/references/` |
-| UI patterns | `skills/component-aesthetic-checker/references/` |
-| TanStack patterns | `skills/tanstack-start/references/` |
-| Auth patterns | `skills/better-auth/references/` |
+| Category            | Location                                         |
+| ------------------- | ------------------------------------------------ |
+| Cloudflare patterns | `skills/cloudflare-workers/references/`          |
+| UI patterns         | `skills/component-aesthetic-checker/references/` |
+| TanStack patterns   | `skills/tanstack-start/references/`              |
+| Auth patterns       | `skills/better-auth/references/`                 |
 
 **Note**: This is unique to our stack - oh-my-opencode has no equivalent learning loop.
 
@@ -462,3 +465,38 @@ opencode.jsonc   # Main configuration
 ```
 
 **Note**: Most agents are provided by oh-my-opencode. Only `@feedback-codifier` is custom.
+
+---
+
+## oh-my-opencode Agents
+
+Agents are provided by [code-yeongyu/oh-my-opencode](https://github.com/code-yeongyu/oh-my-opencode).
+
+### Default Agent Models
+
+| Agent                   | Default Model                       | Purpose                           |
+| ----------------------- | ----------------------------------- | --------------------------------- |
+| Sisyphus (primary)      | `anthropic/claude-opus-4-5`         | Main orchestrator                 |
+| Planner-Sisyphus        | (inherits from OpenCode plan agent) | Planning mode                     |
+| oracle                  | `openai/gpt-5.2`                    | Architecture decisions, debugging |
+| librarian               | `anthropic/claude-sonnet-4-5`       | External docs, OSS examples       |
+| explore                 | (session model)                     | Internal codebase search          |
+| frontend-ui-ux-engineer | `google/gemini-3-pro-preview`       | UI/UX implementation              |
+| document-writer         | `google/gemini-3-flash-preview`     | Documentation                     |
+| multimodal-looker       | `google/gemini-2.5-flash`           | PDFs, images, diagrams            |
+
+### Override Agent Models
+
+Create `~/.config/opencode/oh-my-opencode.json`:
+
+```json
+{
+  "agents": {
+    "oracle": { "model": "anthropic/claude-opus-4-5" },
+    "frontend-ui-ux-engineer": { "model": "anthropic/claude-sonnet-4" },
+    "explore": { "model": "anthropic/claude-haiku-4-5", "temperature": 0.5 }
+  }
+}
+```
+
+See the [oh-my-opencode README](https://github.com/code-yeongyu/oh-my-opencode#agent-configuration) for full configuration options.
