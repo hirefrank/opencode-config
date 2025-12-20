@@ -317,3 +317,9 @@ opencode @reviewer < synthesis.md
 - What's the total cost of ownership?
 
 This SKILL ensures comprehensive, consistent code reviews by orchestrating specialized worker agents and synthesizing their findings into actionable, confidence-scored recommendations.
+
+## Reference Materials
+
+- [references/SWARM_PATTERNS.md](references/SWARM_PATTERNS.md) - Advanced swarm coordination patterns
+- [references/CONFIDENCE_SCORING.md](references/CONFIDENCE_SCORING.md) - Detailed scoring methodology
+- [references/REVIEW_CHECKLIST.md](references/REVIEW_CHECKLIST.md) - Comprehensive review checklist

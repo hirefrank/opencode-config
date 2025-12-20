@@ -164,7 +164,7 @@ interface Env {
 - ❌ className="" with no customization
 - ✅ Deep customization via cn() utility
 
-See `knowledge/design-anti-patterns.md` for complete patterns.
+See `skills/component-aesthetic-checker/` for complete design patterns.
 
 ---
 
@@ -314,7 +314,7 @@ bd list                   # All tasks
 bd dep add bd-b bd-a       # B depends on A
 ```
 
-See `knowledge/beads-patterns.md` for detailed usage.
+See `skills/beads-workflow/` for detailed usage.
 
 ---
 
@@ -363,9 +363,33 @@ See `knowledge/beads-patterns.md` for detailed usage.
 | Search Type     | Tool    | Example                        |
 | --------------- | ------- | ------------------------------ |
 | Exact match     | `grep`  | `grep "TODO" src/`             |
+| Regex pattern   | `grep`  | `grep "function.*async" src/`  |
 | Semantic/intent | `mgrep` | `mgrep "error handling logic"` |
 
 Use mgrep for intent-based queries ("find rate limiting"), grep for exact patterns.
+
+#### mgrep Usage
+
+```bash
+# Find by intent (semantic search)
+mgrep "authentication flow"
+mgrep "how errors are handled"
+mgrep "REST endpoints for users"
+
+# With filters
+mgrep "state management" --glob "*.ts"
+mgrep "database queries" src/db/
+
+# OpenCode agent mode
+mgrep --opencode "find rate limiting logic"
+```
+
+**Best Practices**:
+1. Use natural language: "functions that validate user input" not "validate.*input"
+2. Be specific about intent: "error handling in API routes" not just "errors"
+3. Fallback to grep for exact matches (faster and deterministic)
+
+**Token Efficiency**: mgrep reduces token usage ~2x compared to grep - returns semantically relevant results pre-filtered vs raw matches requiring AI interpretation.
 
 ---
 
@@ -407,11 +431,14 @@ Feedback: "Use KV for rate limiting - it's fast enough"
 
 ### Storage Locations
 
-| Category | File |
-|----------|------|
-| Cloudflare patterns | `knowledge/cloudflare-patterns.md` |
-| UI patterns | `knowledge/design-anti-patterns.md` |
-| General practices | `knowledge/guidelines.md` |
+Patterns are stored in skill reference files:
+
+| Category | Location |
+|----------|----------|
+| Cloudflare patterns | `skills/cloudflare-workers/references/` |
+| UI patterns | `skills/component-aesthetic-checker/references/` |
+| TanStack patterns | `skills/tanstack-start/references/` |
+| Auth patterns | `skills/better-auth/references/` |
 
 **Note**: This is unique to our stack - oh-my-opencode has no equivalent learning loop.
 
@@ -422,7 +449,6 @@ Feedback: "Use KV for rate limiting - it's fast enough"
 ### Model Tiering System
 
 Agents are organized by model tier to optimize for cost, quality, and quota management.
-See `knowledge/model-strategy.md` for the full bucket philosophy.
 
 | Tier       | Model        | Purpose                  | Quota               |
 | ---------- | ------------ | ------------------------ | ------------------- |
@@ -511,10 +537,10 @@ Free tier for deterministic validation. Script-like behavior.
 ```
 agent/           # AI agent definitions
 command/         # Slash commands
-scripts/            # Hard Tools (JS validators)
-knowledge/       # Context and patterns
-skills/          # Injectable knowledge packages
+scripts/         # Hard Tools (JS validators)
+skills/          # Injectable knowledge packages (trigger-based)
+docs/            # Documentation and upstream tracking
 opencode.jsonc   # Main configuration
 
-bin/                 # Workflow shell scripts
+bin/             # Workflow shell scripts
 ```

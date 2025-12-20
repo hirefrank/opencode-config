@@ -7,10 +7,7 @@
   "plugin": ["opencode-gemini-auth"],
 
   "instructions": [
-    "AGENTS.md",
-    "knowledge/guidelines.md",
-    "knowledge/cloudflare-patterns.md",
-    "knowledge/model-strategy.md"
+    "AGENTS.md"
   ],
   "command": {
     "es-work": {

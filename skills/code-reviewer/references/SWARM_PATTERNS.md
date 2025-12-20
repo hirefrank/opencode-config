@@ -1,6 +1,6 @@
-# Swarm Coordination Patterns Knowledge Base
+# Swarm Coordination Patterns
 
-This file documents multi-agent coordination patterns based on the OpenCode Swarm architecture. These patterns enable parallel execution, reduced costs, and improved reliability through specialized agent roles.
+Multi-agent coordination patterns based on the OpenCode Swarm architecture. These patterns enable parallel execution, reduced costs, and improved reliability through specialized agent roles.
 
 ---
 
