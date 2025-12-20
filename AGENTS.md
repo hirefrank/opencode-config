@@ -450,10 +450,10 @@ Patterns are stored in skill reference files:
 agent/           # Custom agents (feedback-codifier only)
 command/         # Slash commands
 tool/            # MCP tools (auto-registered)
-skills/          # Knowledge packages (trigger-based, via oh-my-opencode)
+skills/          # Knowledge packages (trigger-based)
+plugin/          # Hooks and extensions (beads-sync)
 docs/            # Documentation and upstream tracking
 opencode.jsonc   # Main configuration
-bin/             # Workflow shell scripts
 ```
 
 **Note**: Most agents are provided by oh-my-opencode. Only `@feedback-codifier` is custom.

@@ -65,7 +65,6 @@ opencode-config/
 ├── tool/                  # MCP tools (auto-registered)
 ├── skills/                # Knowledge packages (trigger-based)
 ├── plugin/                # Hooks and extensions (beads-sync)
-├── bin/                   # Shell scripts for commands
 └── docs/                  # Documentation, upstream tracking
 ```
 
