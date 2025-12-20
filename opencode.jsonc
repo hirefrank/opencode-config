@@ -34,10 +34,6 @@
       "template": "command/es-component.md",
       "description": "Create shadcn/ui component"
     },
-    "es-theme": {
-      "template": "command/es-theme.md",
-      "description": "Set up or modify theme/design system"
-    },
     "es-generate-command": {
       "template": "command/es-generate-command.md",
       "description": "Generate new slash command"
