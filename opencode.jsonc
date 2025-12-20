@@ -4,7 +4,8 @@
   "model": "google/gemini-3-flash-preview",
   "small_model": "opencode/big-pickle",
 
-  "plugin": ["opencode-gemini-auth", "oh-my-opencode"],
+  "plugin": ["opencode-gemini-auth"],
+  // "plugin": ["opencode-gemini-auth", "oh-my-opencode"],
 
   "instructions": [
     "AGENTS.md"
