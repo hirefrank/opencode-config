@@ -60,11 +60,6 @@
   },
 
   "mcp": {
-    "context7": {
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
-      "enabled": true
-    },
     "shadcn": {
       "type": "local",
       "command": ["npx", "shadcn@latest", "mcp"],
@@ -73,11 +68,6 @@
     "tailwindcss": {
       "type": "local",
       "command": ["npx", "-y", "tailwindcss-mcp-server"],
-      "enabled": true
-    },
-    "nuxt": {
-      "type": "remote",
-      "url": "https://ui.nuxt.com/mcp",
       "enabled": true
     },
     "better-auth": {
