@@ -37,6 +37,10 @@
     "es-generate-command": {
       "template": "command/es-generate-command.md",
       "description": "Generate new slash command"
+    },
+    "es-analyze-repo": {
+      "template": "command/es-analyze-repo.md",
+      "description": "Analyze external repositories to discover patterns for the Edge Stack"
     }
   },
 
@@ -83,6 +87,11 @@
       "model": "anthropic/claude-opus-4-5",
       "temperature": 0.2,
       "description": "Learning engine - extracts and validates patterns from feedback"
+    },
+    "implementation-analyzer": {
+      "model": "anthropic/claude-opus-4-5",
+      "temperature": 0.3,
+      "description": "Proactive pattern discovery from external repositories"
     }
   },
 

@@ -363,6 +363,7 @@ See `skills/beads-workflow/` for detailed usage.
 | Commit changes | `/es-commit`                                  |
 | Generate tests | `/es-test-gen`                                |
 | UI component   | `/es-component`                               |
+| Analyze repo   | `/es-analyze-repo`                            |
 | Validate code  | `typecheck`, `check_workers`, `check_secrets` |
 | Find work      | `bd ready`                                    |
 
@@ -402,17 +403,19 @@ mgrep --opencode "find rate limiting logic"
 
 ---
 
-## Learning Loop: Feedback Codifier
+## Learning Loop: Pattern Discovery System
 
-The `@feedback-codifier` agent is a **pattern curation system** that extracts and validates patterns from code reviews before adding them to knowledge files.
+The Edge Stack has two complementary pattern discovery systems:
 
-### How It Works
+### 1. Feedback Codifier (Reactive)
+
+The `@feedback-codifier` agent extracts and validates patterns from **chat feedback and code reviews**.
 
 ```
 User Feedback → Extract Pattern → Validate via MCP/Docs → Accept/Reject → Update Knowledge
 ```
 
-### Example: Valid Pattern
+**Example:**
 
 ```
 Feedback: "Always set TTL when writing to KV"
@@ -422,41 +425,57 @@ Feedback: "Always set TTL when writing to KV"
 4. Write to skills/cloudflare-workers/references/PATTERNS.md
 ```
 
-### Example: Rejected Pattern
+### 2. Implementation Analyzer (Proactive)
+
+The `@implementation-analyzer` agent **proactively scans external repositories** to discover patterns from real-world implementations.
 
 ```
-Feedback: "Use KV for rate limiting - it's fast enough"
-1. Query MCP: context7 → "KV consistency rate limiting"
-2. Docs say: "KV is eventually consistent. Use DO for rate limiting"
-3. Pattern CONTRADICTS ✗
-4. REJECT: "KV eventual consistency causes race conditions"
+Target Repo → Clone & Analyze → Extract Patterns → Validate via MCP → Codify to SKILLS
 ```
 
-### Why This Exists
+**Usage:**
 
-- Prevents bad patterns from entering the knowledge base
-- Ensures all patterns are validated against official documentation
-- Creates a self-improving system that learns from reviews
+```bash
+/es-analyze-repo honojs/hono                    # Analyze specific repo
+/es-analyze-repo --discover "cloudflare auth"   # Find and analyze repos
+```
+
+**What it discovers:**
+
+- **Good Patterns** → Added to `PATTERNS.md` files
+- **Anti-Patterns** → Added to `ANTI_PATTERNS.md` with fixes
+- **Gaps** → Proposed as new skills
+
+### Comparison
+
+| Aspect     | Feedback Codifier      | Implementation Analyzer |
+| ---------- | ---------------------- | ----------------------- |
+| Trigger    | Reactive (chat)        | Proactive (command)     |
+| Input      | User feedback          | External repositories   |
+| Discovery  | Patterns in discussion | Patterns in code        |
+| Validation | Same (MCP)             | Same (MCP)              |
+| Output     | Same (SKILL files)     | Same (SKILL files)      |
 
 ### Storage Locations
 
 Patterns are stored in skill reference files:
 
-| Category            | Location                                         |
-| ------------------- | ------------------------------------------------ |
-| Cloudflare patterns | `skills/cloudflare-workers/references/`          |
-| UI patterns         | `skills/component-aesthetic-checker/references/` |
-| TanStack patterns   | `skills/tanstack-start/references/`              |
-| Auth patterns       | `skills/better-auth/references/`                 |
+| Category            | Location                                |
+| ------------------- | --------------------------------------- |
+| Cloudflare patterns | `skills/cloudflare-workers/references/` |
+| Durable Objects     | `skills/durable-objects/references/`    |
+| UI patterns         | `skills/shadcn-ui/references/`          |
+| TanStack patterns   | `skills/tanstack-start/references/`     |
+| Auth patterns       | `skills/better-auth/references/`        |
 
-**Note**: This is unique to our stack - oh-my-opencode has no equivalent learning loop.
+**Note**: This learning loop is unique to our stack - oh-my-opencode has no equivalent.
 
 ---
 
 ## File Locations
 
 ```
-agent/           # Custom agents (feedback-codifier only)
+agent/           # Custom agents (feedback-codifier, implementation-analyzer)
 command/         # Slash commands
 tool/            # MCP tools (auto-registered)
 skills/          # Knowledge packages (trigger-based)
@@ -464,7 +483,7 @@ plugin/          # Hooks and extensions (beads-sync)
 opencode.jsonc   # Main configuration
 ```
 
-**Note**: Most agents are provided by oh-my-opencode. Only `@feedback-codifier` is custom.
+**Note**: Most agents are provided by oh-my-opencode. Only `@feedback-codifier` and `@implementation-analyzer` are custom.
 
 ---
 
