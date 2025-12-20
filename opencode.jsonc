@@ -84,16 +84,6 @@
       "type": "local",
       "command": ["npx", "-y", "package-registry-mcp"],
       "enabled": true
-    },
-    "cloudflare-docs": {
-      "type": "remote",
-      "url": "https://docs.mcp.cloudflare.com/mcp",
-      "enabled": false
-    },
-    "polar": {
-      "type": "remote",
-      "url": "https://mcp.polar.sh/mcp/polar-mcp",
-      "enabled": false
     }
   },
 
