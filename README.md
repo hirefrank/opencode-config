@@ -119,12 +119,11 @@ MCP tools in `tool/` are auto-registered. They execute and return structured dat
 
 | Tool | Purpose |
 |------|---------|
-| `ubs.ts` | Universal Bug Scanner |
-| `cloudflare-bindings.ts` | Analyze wrangler.toml bindings |
-| `ui-validator.ts` | Validate UI patterns |
-| `repo-autopsy.ts` | Deep repo analysis |
-| `typecheck.ts` | TypeScript validation |
-| `beads.ts` | Beads task management integration |
+| `ubs.ts` | Universal Bug Scanner (Workers, D1, KV, secrets) |
+| `cloudflare-bindings.ts` | Analyze wrangler.toml, generate Env interface |
+| `ui-validator.ts` | Validate shadcn/ui prop usage |
+| `repo-autopsy.ts` | Deep repo analysis (clone, search, AST) |
+| `typecheck.ts` | TypeScript type checking |
 | `git-context.ts` | Git context for commits/PRs |
 
 ---
