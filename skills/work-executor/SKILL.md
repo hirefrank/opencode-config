@@ -210,7 +210,7 @@ After implementing each task, validate with relevant agents:
 ### Complementary Components
 
 - **beads**: Task tracking throughout execution
-- **es-validate command**: Pre-commit validation
+- **Validation tools**: `typecheck`, `check_workers`, `check_secrets`
 - **Review workers**: Post-implementation review
 - **Playwright MCP**: Screenshot capture for UI changes
 

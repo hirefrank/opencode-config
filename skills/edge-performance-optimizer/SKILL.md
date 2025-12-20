@@ -76,9 +76,9 @@ const [user, settings, prefs] = await Promise.all([
 
 ### Complementary to Existing Components
 
-- **edge-performance-oracle agent**: Handles comprehensive performance analysis, SKILL provides immediate optimization
+- **Validation tools**: `check_workers` for runtime validation
 - **workers-runtime-validator SKILL**: Complements runtime checks with performance optimization
-- **es-deploy command**: SKILL ensures performance standards before deployment
+- **oh-my-opencode agents**: `@oracle` for comprehensive performance analysis
 
 ### Escalation Triggers
 

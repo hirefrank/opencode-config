@@ -21,7 +21,7 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 |-----------|---------|---------|
 | **tool/** | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings |
 | **skills/** | Reference knowledge for specific domains | `cloudflare-workers/` documents KV patterns |
-| **command/** | Slash commands for workflows | `/es-review` triggers code review |
+| **command/** | Slash commands for workflows | `/es-plan` triggers planning workflow |
 | **agent/** | Custom agent definitions | `feedback-codifier` (learning loop) |
 | **plugin/** | OpenCode plugins (if needed) | Custom hooks, extensions |
 
@@ -147,12 +147,13 @@ opencode-config/
 
 | Command | Description |
 |---------|-------------|
-| `/es-work` | Start feature development session |
-| `/es-validate` | Run pre-commit validation |
-| `/es-review` | Code review with confidence scoring |
-| `/es-deploy` | Release workflow |
 | `/es-plan` | Plan with architectural guidance |
 | `/es-triage` | Triage findings to beads |
+| `/es-commit` | Stage changes, generate commit message, push |
+| `/es-test-gen` | Generate Playwright tests |
+| `/es-component` | Create shadcn/ui component |
+| `/es-resolve-parallel` | Resolve multiple tasks in parallel |
+| `/es-generate-command` | Create new slash command |
 
 ---
 

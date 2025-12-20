@@ -321,8 +321,8 @@ subscription middleware, and D1 database schema."
 ## Integration with Other Commands
 
 **Typical workflow**:
-1. `/es-work` - Work on feature
-2. `/es-validate` - Validate changes
+1. Work on feature
+2. Run validation tools (`typecheck`, `check_workers`)
 3. `/es-commit` - Commit and push ← THIS COMMAND
 4. `gh pr create` - Create PR (if on feature branch)
 
@@ -334,7 +334,7 @@ subscription middleware, and D1 database schema."
 ## Best Practices
 
 **Do's** ✅:
-- Run `/es-validate` before committing
+- Run validation tools before committing
 - Review the generated commit message
 - Use custom messages for complex changes
 - Let it auto-detect your current branch

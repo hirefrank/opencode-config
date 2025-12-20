@@ -121,7 +121,7 @@ After all items processed:
 ### Next Steps:
 
 1. View available work: `bd ready`
-2. Start work: Use `/es-work` or `bd update <id> --status in_progress`
+2. Start work: `bd update <id> --status in_progress`
 ```
 
 ## Example Response Format

@@ -101,21 +101,19 @@ After writing the plan file, use the **AskUserQuestion tool** to present these o
 **Options:**
 
 1. **Open plan in editor** - Open the plan file for review
-2. **Start `/es-work`** - Begin implementing this plan locally
+2. **Start implementing** - Begin implementing this plan now
 3. **Add to Beads (bd)** - Create persistent tasks from the plan using `bd add`
-4. **Create GitHub issue** - Create issue from plan using `gh issue create --body-file plans/<project_name>.md`
-5. **Continue conversation** - Ask clarifying questions or request changes to the plan
+4. **Continue conversation** - Ask clarifying questions or request changes to the plan
 
 Based on selection:
 
 - **Open plan in editor** → Run `open plans/<project_name>.md` to open the file in the user's default editor
-- **Start `/es-work`** → Call the /es-work command with the plan file path as argument
+- **Start implementing** → Begin implementing the first step of the plan
 - **Add to Beads (bd)** → Run `bd add "[Title]" --description "$(cat plans/<project_name>.md)"` after asking for title
-- **Create GitHub issue** → Run `gh issue create --body-file plans/<project_name>.md --title "[Title]"` after asking for issue title
 - **Continue conversation** → Accept free text for clarifications, refinements, or specific changes to the plan
 - **Other** (automatically provided) → Accept free text, act on it
 
-Loop back to options after making changes until user selects `/es-work` or creates an issue.
+Loop back to options after making changes until user starts implementing or creates a task.
 
 ---
 

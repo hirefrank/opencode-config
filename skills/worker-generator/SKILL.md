@@ -377,7 +377,7 @@ When generating Worker code, provide:
 
 - **workers-runtime-validator SKILL**: Validates generated code
 - **workers-binding-validator SKILL**: Validates binding usage
-- **es-validate command**: Pre-deployment validation
+- **Validation tools**: `typecheck`, `check_workers`, `check_secrets`
 
 ### Escalation Triggers
 

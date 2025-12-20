@@ -173,10 +173,7 @@ bd dep add <current-task> <blocker-task>
 Always run validation before `bd done`:
 
 ```bash
-# For code changes
-./bin/es-validate.sh
-
-# For new components
+# Run validation tools
 pnpm typecheck
 pnpm lint
 

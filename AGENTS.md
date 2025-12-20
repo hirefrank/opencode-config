@@ -215,11 +215,11 @@ wrangler secret put API_KEY
 
 Always run before committing:
 
-1. **Hard Tools Validation**
-
-   ```bash
-   ./bin/es-validate.sh
-   ```
+1. **Hard Tools Validation** (use tools directly)
+   - `typecheck` - TypeScript type checking
+   - `check_workers` - Workers runtime compatibility
+   - `check_secrets` - Hardcoded secrets detection
+   - `validate_ui` - UI component validation
 
 2. **Type Check**
 
@@ -349,14 +349,15 @@ See `skills/beads-workflow/` for detailed usage.
 
 ## Quick Reference
 
-| Task           | Command        |
-| -------------- | -------------- |
-| Code review    | `/es-review`   |
-| Start work     | `/es-work`     |
-| Validate       | `/es-validate` |
-| New worker     | `/es-worker`   |
-| Release        | `/es-release`  |
-| Check upstream | `/es-upstream` |
+| Task           | Command / Tool        |
+| -------------- | --------------------- |
+| Plan feature   | `/es-plan`            |
+| Triage issues  | `/es-triage`          |
+| Commit changes | `/es-commit`          |
+| Generate tests | `/es-test-gen`        |
+| UI component   | `/es-component`       |
+| Validate code  | `typecheck`, `check_workers`, `check_secrets` |
+| Find work      | `bd ready`            |
 
 ### Code Search
 

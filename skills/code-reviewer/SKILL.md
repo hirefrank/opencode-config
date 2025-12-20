@@ -229,44 +229,33 @@ Do you want to add this to the todo list?
 
 1. Review created todos
 2. Use `/es-triage` to prioritize
-3. Work on items: `/es-work`
+3. Start working on items
 ```
 
 ## Integration Points
 
 ### Complementary Components
 
-- **Review Workers** (`agent/review-workers/`): Specialized analysis agents
-- **es-validate command**: Pre-commit validation
+- **Validation tools**: `typecheck`, `check_workers`, `check_secrets`, `validate_ui`
 - **beads**: Issue tracking for findings
+- **oh-my-opencode agents**: `@oracle` for architecture, `@librarian` for research
 
 ### Escalation Triggers
 
-- Complex architecture questions → `@architect` agent
-- Deep security analysis → `@cloudflare-security-sentinel` agent
-- Performance deep-dive → `@edge-performance-oracle` agent
+- Complex architecture questions → `@oracle` agent
+- Deep security analysis → `@librarian` for security patterns
+- Performance deep-dive → Use `check_workers` tool
 
 ## Quick Start
 
-### Shell Script (Recommended)
+### Manual Review
 
 ```bash
-# Review a PR
-./bin/es-review.sh 123
+# Ask for code review naturally
+"Review my current changes for security and performance issues"
 
-# Review local changes
-./bin/es-review.sh --local
-
-# Sequential mode
-./bin/es-review.sh --sequential
-```
-
-### Manual Invocation
-
-```bash
-# Run workers in parallel (4 terminals)
-opencode @review-security < context.md
-opencode @review-performance < context.md
+# Or use oh-my-opencode agents
+"Ask @oracle to review this architecture"
 opencode @review-cloudflare < context.md
 opencode @review-design < context.md
 
