@@ -1,60 +1,28 @@
-# Data Privacy & Security
-# User conversation data (sensitive - should not be committed)
-data-exports/chatgpt/*.json
-data-exports/claude/*.json
-!data-exports/chatgpt/.gitkeep
-!data-exports/claude/.gitkeep
-
-# Analysis reports (contains conversation analysis - potentially sensitive)
-reports/*
-!reports/.gitkeep
-
-# Analysis logs (may contain conversation metadata)
-skills-analysis-log.json
-*-analysis-log.json
-
-# Generated skills output (may contain personal data)
-generated-skills/*
-!generated-skills/.gitkeep
-
-# Personal/Sensitive Files
+# Environment
 .env
 .env.local
-secrets/
-private/
 
-# System Files
+# System
 .DS_Store
 Thumbs.db
 *.log
 
-# Editor & IDE Files
+# Editor
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
 
-# Temporary Files
+# Temp
 tmp/
 temp/
 *.tmp
 *.bak
 
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-env/
-venv/
-.venv
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Node.js
+# Node
 node_modules/
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+
+# Bun
+bun-debug.log*
