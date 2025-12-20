@@ -31,10 +31,83 @@ Leverage oh-my-opencode as the foundation, extend with trigger-based skill selec
                           │
                           ▼
 ┌─────────────────────────────────────────────────────────┐
+│                   Search Tools                          │
+│  • grep      → exact pattern matching                   │
+│  • mgrep     → semantic LOCAL code search               │
+│  • grep_app  → GitHub/public code search (MCP)          │
+│  • AST-Grep  → structural code patterns                 │
+└─────────────────────────┬───────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────┐
 │                   OpenCode (platform)                   │
 │  • Streaming, providers, error handling                 │
 └─────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## Search Tools Reference
+
+Four complementary search tools for different use cases:
+
+| Tool | Searches | Use Case | Example |
+|------|----------|----------|---------|
+| `grep` | Local code (exact) | Find literal strings | `grep "TODO" src/` |
+| `mgrep` | Local code (semantic) | Find by intent | `mgrep "error handling logic"` |
+| `grep_app` | GitHub (MCP) | Find public examples | Via oh-my-opencode MCP |
+| `AST-Grep` | Local code (structural) | Refactoring patterns | Via oh-my-opencode tools |
+
+### mgrep Installation
+
+```bash
+# Via Homebrew
+brew install mixedbread-ai/tap/mgrep
+
+# Via npm
+npm install -g @mixedbread-ai/mgrep
+```
+
+### When to Use Each
+
+```
+"Find where TODO comments exist"
+  → grep "TODO"                    # Exact match
+
+"Find error handling logic"
+  → mgrep "error handling"         # Semantic, local
+
+"Find examples of rate limiting in open source"
+  → grep_app MCP                   # GitHub search
+
+"Find all async functions returning Promise<void>"
+  → AST-Grep pattern               # Structural
+```
+
+### mgrep Examples
+
+```bash
+# Find authentication flow
+mgrep "authentication flow"
+
+# Find where errors are handled
+mgrep "how errors are handled"
+
+# Find API endpoints
+mgrep "REST endpoints for users"
+
+# Scope to directory
+mgrep "database queries" src/db/
+
+# Scope to file type
+mgrep "state management" --glob "*.ts"
+```
+
+### Token Efficiency
+
+mgrep reduces token usage ~2x compared to grep-based exploration:
+- `grep` returns raw matches requiring AI interpretation
+- `mgrep` returns semantically relevant results pre-filtered
 
 ---
 
@@ -765,6 +838,7 @@ After implementation:
 5. **Beads sync**: TodoWrite → bd done automatically
 6. **LSP/AST tools**: Better code understanding
 7. **MCP servers**: Context7, Exa, Grep.app pre-configured
+8. **Search tools**: grep (exact), mgrep (semantic), grep_app (GitHub), AST-Grep (structural)
 
 ---
 
