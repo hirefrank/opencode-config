@@ -54,10 +54,6 @@
       "template": "command/es-theme.md",
       "description": "Set up or modify theme/design system"
     },
-    "es-git-history": {
-      "template": "command/es-git-history.md",
-      "description": "Analyze git history and patterns"
-    },
     "es-generate-command": {
       "template": "command/es-generate-command.md",
       "description": "Generate new slash command"
