@@ -86,9 +86,16 @@ npm install -g @mixedbread/mgrep
 # Authenticate
 mgrep login
 
+# Install OpenCode integration (adds MCP tool + skill)
+mgrep install-opencode
+
 # Index your project (run from project root)
 mgrep watch
 ```
+
+The `install-opencode` command:
+- Creates tool at `~/.config/opencode/tool/mgrep.ts`
+- Registers MCP integration in `~/.config/opencode/opencode.json`
 
 Usage: `mgrep "where is authentication handled"` vs grep's exact matching.
 
