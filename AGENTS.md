@@ -261,6 +261,36 @@ better - auth.getProviderSetup("github"); // Get real setup
 AI can hallucinate component props and API patterns.
 Hard Tools and MCP servers provide ground truth.
 
+### MCP Efficiency (Token Optimization)
+
+**Problem**: Direct MCP tool calls consume massive context (150K+ tokens for complex workflows).
+
+**Solution**: Use deferred loading and code execution patterns.
+
+```typescript
+// Configure MCP tools with defer_loading for on-demand discovery
+const toolConfig = {
+  // Always-loaded (3-5 critical tools)
+  cloudflare_search: { defer_loading: false },
+  package_registry: { defer_loading: false },
+
+  // Deferred (load on-demand via search)
+  shadcn_components: { defer_loading: true },
+  playwright_generate: { defer_loading: true },
+  polar_billing: { defer_loading: true },
+};
+```
+
+**Benefits**:
+- 85% reduction in token usage
+- Compatible with prompt caching
+- oh-my-opencode handles this automatically via "Context-aware delegating"
+
+**When to write code instead of direct tool calls**:
+- Complex workflows with 3+ dependent calls
+- Large datasets requiring filtering
+- Parallel operations
+
 ---
 
 ## Task Management (beads)
@@ -336,6 +366,54 @@ See `knowledge/beads-patterns.md` for detailed usage.
 | Semantic/intent | `mgrep` | `mgrep "error handling logic"` |
 
 Use mgrep for intent-based queries ("find rate limiting"), grep for exact patterns.
+
+---
+
+## Learning Loop: Feedback Codifier
+
+The `@feedback-codifier` agent is a **pattern curation system** that extracts and validates patterns from code reviews before adding them to knowledge files.
+
+### How It Works
+
+```
+User Feedback → Extract Pattern → Validate via MCP/Docs → Accept/Reject → Update Knowledge
+```
+
+### Example: Valid Pattern
+
+```
+Feedback: "Always set TTL when writing to KV"
+1. Query MCP: context7 → "KV put TTL best practices"
+2. Docs confirm: "Set expirationTtl on all writes"
+3. Pattern MATCHES ✓
+4. Write to knowledge/cloudflare-patterns.md
+```
+
+### Example: Rejected Pattern
+
+```
+Feedback: "Use KV for rate limiting - it's fast enough"
+1. Query MCP: context7 → "KV consistency rate limiting"
+2. Docs say: "KV is eventually consistent. Use DO for rate limiting"
+3. Pattern CONTRADICTS ✗
+4. REJECT: "KV eventual consistency causes race conditions"
+```
+
+### Why This Exists
+
+- Prevents bad patterns from entering the knowledge base
+- Ensures all patterns are validated against official documentation
+- Creates a self-improving system that learns from reviews
+
+### Storage Locations
+
+| Category | File |
+|----------|------|
+| Cloudflare patterns | `knowledge/cloudflare-patterns.md` |
+| UI patterns | `knowledge/design-anti-patterns.md` |
+| General practices | `knowledge/guidelines.md` |
+
+**Note**: This is unique to our stack - oh-my-opencode has no equivalent learning loop.
 
 ---
 

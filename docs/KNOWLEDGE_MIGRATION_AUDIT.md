@@ -155,15 +155,28 @@ Commands remain in the branch as-is. They reference agents/skills appropriately.
 - references/TEMPLATES.md for React Email patterns
 - references/DELIVERABILITY.md for best practices
 
-### ✅ Intentional Skips (Operational, Not Knowledge)
+### ✅ Operational Agents (Handled Separately)
 
-These were intentionally not migrated because they are operational tools/workflows, not reusable skill knowledge:
+These are operational tools/workflows, not domain expertise. They've been handled as follows:
 
-1. `mcp-efficiency-specialist.md` - MCP optimization is runtime behavior
-2. `git-history-analyzer.md` - Git analysis is tool usage
-3. `feedback-codifier.md` - Learning engine is process, not knowledge
-4. `mgrep-patterns.md` - Tool documentation
-5. `model-strategy.md` - Model selection is operational
+| Agent | Decision | Reason |
+|-------|----------|--------|
+| `mcp-efficiency-specialist.md` | → AGENTS.md section | oh-my-opencode overlaps; patterns added to "MCP Efficiency" section |
+| `git-history-analyzer.md` | → `command/es-git-history.md` | Utility tool, not domain expertise |
+| `feedback-codifier.md` | → Keep as agent + AGENTS.md docs | Unique learning loop, no oh-my-opencode equivalent |
+
+### oh-my-opencode Overlap Analysis
+
+| Our Component | oh-my-opencode Equivalent | Result |
+|---------------|--------------------------|--------|
+| mcp-efficiency-specialist | "Context-aware delegating" | ✅ GOOD overlap - documented, not duplicated |
+| git-history-analyzer | "Explore" agent (partial) | ⚠️ Different purpose - ours is git archaeology |
+| feedback-codifier | None | 🆕 UNIQUE - kept as agent |
+
+### Intentional Skips (Documentation Only)
+
+1. `mgrep-patterns.md` - Tool documentation
+2. `model-strategy.md` - Model selection is operational
 
 ---
 
