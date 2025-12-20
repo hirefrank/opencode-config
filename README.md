@@ -1,6 +1,13 @@
 # opencode-config
 
-Personal OpenCode configuration for Edge-first development with oh-my-opencode.
+**Global OpenCode configuration** for Edge-first development with oh-my-opencode.
+
+> This repo is set as `OPENCODE_CONFIG_DIR` and applies to **all** OpenCode sessions across all projects.
+
+```bash
+# ~/.bashrc or ~/.zshrc
+export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
+```
 
 > **Edge Stack**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
 
@@ -34,14 +41,17 @@ Personal OpenCode configuration for Edge-first development with oh-my-opencode.
 ## Quick Start
 
 ```bash
+# Clone
 git clone https://github.com/hirefrank/opencode-config ~/Projects/opencode-config
 
-# Add to shell profile (.bashrc, .zshrc)
-export OPENCODE_CONFIG=~/Projects/opencode-config
+# Add to ~/.bashrc or ~/.zshrc
+export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 
-# Verify
-opencode doctor
+# Reload shell and verify
+source ~/.bashrc && opencode doctor
 ```
+
+**Note**: `OPENCODE_CONFIG_DIR` makes this config global - it applies everywhere you run `opencode`.
 
 ---
 
