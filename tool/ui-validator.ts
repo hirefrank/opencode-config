@@ -1,7 +1,7 @@
 import { tool } from "@opencode-ai/plugin";
 import { readFile, readdir, stat } from "node:fs/promises";
 import { join, extname } from "node:path";
-import { truncateOutput, formatError } from "./tool-utils";
+import { truncateOutput, formatError } from "../lib/tool-utils";
 
 /**
  * UI Prop Validator

@@ -2,7 +2,7 @@ import { tool } from "@opencode-ai/plugin";
 import { $ } from "bun";
 import { existsSync, statSync } from "fs";
 import { join } from "path";
-import { truncateOutput, MAX_OUTPUT } from "./tool-utils";
+import { truncateOutput, MAX_OUTPUT } from "../lib/tool-utils";
 
 /**
  * Clone a repo locally and perform deep analysis

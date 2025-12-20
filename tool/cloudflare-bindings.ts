@@ -1,6 +1,6 @@
 import { tool } from "@opencode-ai/plugin";
 import { readFile, stat } from "node:fs/promises";
-import { truncateOutput, formatError } from "./tool-utils";
+import { truncateOutput, formatError } from "../lib/tool-utils";
 
 /**
  * Cloudflare Bindings Analyzer

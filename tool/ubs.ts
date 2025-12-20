@@ -2,7 +2,7 @@ import { tool } from "@opencode-ai/plugin";
 import { $ } from "bun";
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join, extname } from "node:path";
-import { truncateOutput, formatError } from "./tool-utils";
+import { truncateOutput, formatError } from "../lib/tool-utils";
 
 /**
  * UBS - Ultimate Bug Scanner
