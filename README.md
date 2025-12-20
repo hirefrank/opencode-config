@@ -54,6 +54,68 @@ source ~/.bashrc && opencode doctor
 
 ---
 
+## Setup
+
+After cloning, install these dependencies for full functionality:
+
+### Required
+
+```bash
+# Install plugin dependencies (for MCP tools)
+cd ~/Projects/opencode-config && npm install
+```
+
+### oh-my-opencode
+
+Provides additional agents and the context7 MCP for documentation lookup.
+
+```bash
+npm install -g oh-my-opencode
+```
+
+Already configured in `opencode.jsonc` via `"plugin": ["oh-my-opencode"]`.
+
+### mgrep (Semantic Search)
+
+Natural language code search - finds code by intent, not just patterns.
+
+```bash
+# Install
+npm install -g @mixedbread/mgrep
+
+# Authenticate
+mgrep login
+
+# Index your project (run from project root)
+mgrep watch
+```
+
+Usage: `mgrep "where is authentication handled"` vs grep's exact matching.
+
+### beads (Task Management)
+
+Persistent task tracking across sessions.
+
+```bash
+# Install
+npm install -g beads
+
+# Initialize in your project
+bd onboard
+```
+
+Key commands:
+```bash
+bd ready          # Find available work
+bd show <id>      # View issue details
+bd done <id>      # Mark complete
+bd sync           # Sync with git
+```
+
+See `skills/beads-workflow/` for detailed usage.
+
+---
+
 ## Structure
 
 ```
