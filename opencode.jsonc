@@ -14,10 +14,6 @@
       "template": "Initialize Edge Stack development workflow. Check beads for tasks and prepare worktree.",
       "description": "Start feature development session"
     },
-    "es-validate": {
-      "template": "Run pre-commit validation. Check Workers runtime, bundle size, and types.",
-      "description": "Run project validation gates"
-    },
     "es-review": {
       "template": "Perform deep architectural and code review of current changes.",
       "description": "Request comprehensive code review"
