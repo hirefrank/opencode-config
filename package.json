@@ -1,5 +1,21 @@
 {
   "dependencies": {
-    "@opencode-ai/plugin": "1.0.170"
-  }
+    "@opencode-ai/plugin": "1.0.175",
+    "commander": "^11.1.0",
+    "@anthropic-ai/sdk": "^0.24.3",
+    "openai": "^4.26.0",
+    "@google/generative-ai": "^0.15.0",
+    "nodemon": "^3.0.3",
+    "typescript": "^5.3.3",
+    "tsx": "^4.7.1"
+  },
+  "bin": {
+    "edge": "./dist/edge-cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/edge-cli.ts",
+    "edge": "tsx src/edge-cli.ts"
+  },
+  "type": "module"
 }
