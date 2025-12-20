@@ -325,16 +325,40 @@ EOF
 echo "$NEW_STATE" > "$STATE_FILE"
 log_success "State updated: $STATE_FILE"
 
-# Offer to create issues if flag set
-if [[ "$CREATE_ISSUES" == true ]] && command -v gh &> /dev/null; then
+# Offer to create tasks if flag set
+if [[ "$CREATE_ISSUES" == true ]]; then
     echo ""
-    read -p "Create GitHub issues for upstream changes? [y/N] " -n 1 -r
-    echo
-    if [[ $REPLY =~ ^[Yy]$ ]]; then
-        gh issue create \
-            --title "Upstream review: $TODAY" \
-            --body "$(cat $CONTEXT_FILE)" \
-            --label "upstream,review"
-        log_success "GitHub issue created"
-    fi
+    log_info "Choose task creation method:"
+    echo "1. Beads (Local persistent tasks)"
+    echo "2. GitHub (Remote issues)"
+    echo "3. Both"
+    echo "4. Skip"
+    read -p "Selection [1-4]: " -n 1 -r
+    echo ""
+
+    case $REPLY in
+        1|3)
+            if command -v bd &> /dev/null; then
+                bd add "Upstream review: $TODAY" --description "$(cat $CONTEXT_FILE)" --priority 2 --label "upstream"
+                log_success "Beads task added"
+            else
+                log_warn "bd command not found"
+            fi
+            [[ $REPLY == 1 ]] && exit 0
+            ;&
+        2|3)
+            if command -v gh &> /dev/null; then
+                gh issue create \
+                    --title "Upstream review: $TODAY" \
+                    --body "$(cat $CONTEXT_FILE)" \
+                    --label "upstream,review"
+                log_success "GitHub issue created"
+            else
+                log_warn "gh command not found"
+            fi
+            ;;
+        *)
+            log_info "Skipping task creation"
+            ;;
+    esac
 fi

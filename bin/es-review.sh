@@ -418,8 +418,8 @@ $(cat "$OUTPUT_DIR/result-design.txt" 2>/dev/null || echo "No results yet")
 
 ## Next Steps
 1. [ ] Address P1 findings before merge
-2. [ ] Consider P2 findings
-3. [ ] Run \`/es-validate\` before deploy
+2. [ ] Triage findings to Beads: Run `/es-triage` to create persistent tasks
+3. [ ] Run `/es-validate` before deploy
 \`\`\`
 EOF
 

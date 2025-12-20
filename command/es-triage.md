@@ -1,12 +1,13 @@
 ---
-description: Triage findings and decisions to add to the CLI todo system
+description: Triage findings and decisions to add to the Beads (bd) persistent task system
 ---
 
-Present all findings, decisions, or issues here one by one for triage. The goal is to go through each item and decide whether to add it to the CLI todo system.
+Present all findings, decisions, or issues here one by one for triage. The goal is to go through each item and decide whether to add it to the Beads (bd) persistent task system.
 
 **IMPORTANT: DO NOT CODE ANYTHING DURING TRIAGE!**
 
 This command is for:
+
 - Triaging code review findings
 - Processing security audit results
 - Reviewing performance analysis
@@ -40,113 +41,44 @@ Proposed Solution:
 Estimated Effort: [Small (< 2 hours) / Medium (2-8 hours) / Large (> 8 hours)]
 
 ---
-Do you want to add this to the todo list?
-1. yes - create todo file
+Do you want to add this to Beads?
+1. yes - run bd add
 2. next - skip this item
-3. custom - modify before creating
+3. custom - modify before adding
 ```
 
 ### Step 2: Handle User Decision
 
 **When user says "yes":**
 
-1. **Determine next issue ID:**
+1. **Map severity to priority:**
+   - 🔴 P1 (CRITICAL) → `1`
+   - 🟡 P2 (IMPORTANT) → `2`
+   - 🔵 P3 (NICE-TO-HAVE) → `3`
+
+2. **Run `bd add`:**
+
    ```bash
-   ls todos/ | grep -o '^[0-9]\+' | sort -n | tail -1
+   bd add "[Brief Title]" --description "[Description + Location + Solution]" --priority [priority] --label [category]
    ```
 
-2. **Create filename:**
-   ```
-   {next_id}-pending-{priority}-{brief-description}.md
-   ```
-
-   Priority mapping:
-   - 🔴 P1 (CRITICAL) → `p1`
-   - 🟡 P2 (IMPORTANT) → `p2`
-   - 🔵 P3 (NICE-TO-HAVE) → `p3`
-
-   Example: `042-pending-p1-transaction-boundaries.md`
-
-3. **Create from template:**
-   ```bash
-   cp todos/000-pending-p1-TEMPLATE.md todos/{new_filename}
-   ```
-
-4. **Populate the file:**
-   ```yaml
-   ---
-   status: pending
-   priority: p1  # or p2, p3 based on severity
-   issue_id: "042"
-   tags: [category, workers, durable-objects, kv, r2, etc.]
-   dependencies: []
-   ---
-
-   # [Issue Title]
-
-   ## Problem Statement
-   [Description from finding]
-
-   ## Findings
-   - [Key discoveries]
-   - Location: [file_path:line_number]
-   - [Scenario details]
-
-   ## Proposed Solutions
-
-   ### Option 1: [Primary solution]
-   - **Pros**: [Benefits]
-   - **Cons**: [Drawbacks if any]
-   - **Effort**: [Small/Medium/Large]
-   - **Risk**: [Low/Medium/High]
-
-   ## Recommended Action
-   [Leave blank - will be filled during approval]
-
-   ## Technical Details
-   - **Affected Files**: [List files]
-   - **Related Components**: [Components affected]
-   - **Database Changes**: [Yes/No - describe if yes]
-
-   ## Resources
-   - Original finding: [Source of this issue]
-   - Related issues: [If any]
-
-   ## Acceptance Criteria
-   - [ ] [Specific success criteria]
-   - [ ] Tests pass
-   - [ ] Code reviewed
-
-   ## Work Log
-
-   ### {date} - Initial Discovery
-   **By:** Claude Triage System
-   **Actions:**
-   - Issue discovered during [triage session type]
-   - Categorized as {severity}
-   - Estimated effort: {effort}
-
-   **Learnings:**
-   - [Context and insights]
-
-   ## Notes
-   Source: Triage session on {date}
-   ```
-
-5. **Confirm creation:**
-   "✅ Created: `{filename}` - Issue #{issue_id}"
+3. **Confirm creation:**
+   "✅ Added to Beads: `[Brief Title]`"
 
 **When user says "next":**
+
 - Skip to the next item
 - Track skipped items for summary
 
 **When user says "custom":**
+
 - Ask what to modify (priority, description, details)
 - Update the information
 - Present revised version
 - Ask again: yes/next/custom
 
-**Cloudflare-Specific Tags to Use:**
+**Cloudflare-Specific Labels to Use:**
+
 - `workers-runtime` - V8 runtime issues, Node.js API usage
 - `bindings` - KV/R2/D1/DO binding configuration or usage
 - `security` - Workers security model, secrets, CORS
@@ -172,22 +104,24 @@ After all items processed:
 ## Triage Complete
 
 **Total Items:** [X]
-**Todos Created:** [Y]
+**Tasks Added:** [Y]
 **Skipped:** [Z]
 
-### Created Todos:
-- `042-pending-p1-transaction-boundaries.md` - Transaction boundary issue
-- `043-pending-p2-cache-optimization.md` - Cache performance improvement
-...
+### Added to Beads:
+
+- `[Task Title 1]`
+- `[Task Title 2]`
+  ...
 
 ### Skipped Items:
+
 - Item #5: [reason]
 - Item #12: [reason]
 
 ### Next Steps:
-1. Review pending todos: `ls todos/*-pending-*.md`
-2. Approve for work: Move from pending → ready status
-3. Start work: Use `/resolve_todo_parallel` or pick individually
+
+1. View available work: `bd ready`
+2. Start work: Use `/es-work` or `bd update <id> --status in_progress`
 ```
 
 ## Example Response Format

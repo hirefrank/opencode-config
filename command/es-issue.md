@@ -21,6 +21,7 @@ First, I need to understand the Cloudflare Workers project structure, available 
 </thinking>
 
 **CRITICAL FIRST STEP**: Verify this is a Cloudflare Workers project:
+
 - Check for `wrangler.toml` file
 - If not found, warn user and ask if they want to create a new Workers project
 
@@ -113,10 +114,14 @@ Select how comprehensive you want the issue to be:
 
 ```typescript
 export default {
-  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: Env,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
     // Minimal implementation
-    return new Response('Hello World');
-  }
+    return new Response("Hello World");
+  },
 };
 ```
 
@@ -387,10 +392,18 @@ end \`\`\`
 
 ## Output Format
 
-Present the complete issue content within `<github_issue>` tags, ready for GitHub CLI:
+Present the complete issue content within `<github_issue>` tags, ready for GitHub CLI or Beads:
+
+**Option 1: GitHub CLI**
 
 ```bash
 gh issue create --title "[TITLE]" --body "[CONTENT]" --label "[LABELS]"
+```
+
+**Option 2: Beads (Local Tracking)**
+
+```bash
+bd add "[TITLE]" --description "[CONTENT]" --priority 2 --label "[LABELS]"
 ```
 
 ## Thinking Approaches

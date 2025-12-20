@@ -270,13 +270,16 @@ fi)
 
 ## Work Instructions
 
-1. **Analyze the plan** and create TodoWrite items for each task
-2. **Run Hard Tools after each change**:
-   - \`node scripts/validate-runtime.js src\`
-   - \`node scripts/analyze-bindings.js wrangler.toml\`
-3. **Validate frequently**: \`pnpm typecheck && pnpm lint\`
-4. **Test locally**: \`wrangler dev\`
-5. **Commit incrementally** with conventional commit messages
+1. **Check for available tasks**: Run `bd ready` to see unblocked, persistent tasks.
+2. **Analyze the plan** and create TodoWrite items for each task.
+3. **Run Hard Tools after each change**:
+   - `node scripts/validate-runtime.js src`
+   - `node scripts/analyze-bindings.js wrangler.toml`
+4. **Validate frequently**: `pnpm typecheck && pnpm lint`
+5. **Test locally**: `wrangler dev`
+6. **Commit incrementally** with conventional commit messages
+7. **Complete the session**: Run `bd done <id>` and `bd sync` when tasks are finished.
+
 
 ## Validation Checklist
 
