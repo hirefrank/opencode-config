@@ -136,6 +136,11 @@
   },
 
   "mcp": {
+    "mgrep": {
+      "type": "local",
+      "command": ["mgrep", "mcp"],
+      "enabled": true
+    },
     "shadcn": {
       "type": "local",
       "command": ["npx", "shadcn@latest", "mcp"],
