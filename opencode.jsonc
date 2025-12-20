@@ -32,12 +32,30 @@
       "template": "Execute release workflow. Sync beads, run final tests, and deploy to Cloudflare.",
       "description": "Start deployment workflow"
     },
-    "es-plan": "command/es-plan.md",
-    "es-triage": "command/es-triage.md",
-    "es-issue": "command/es-issue.md",
-    "es-resolve-parallel": "command/es-resolve-parallel.md",
-    "es-upstream": "command/es-upstream.md",
-    "es-commit": "command/es-commit.md"
+    "es-plan": {
+      "template": "command/es-plan.md",
+      "description": "Plan Cloudflare Workers projects with architectural guidance"
+    },
+    "es-triage": {
+      "template": "command/es-triage.md",
+      "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
+    },
+    "es-issue": {
+      "template": "command/es-issue.md",
+      "description": "Create well-structured GitHub issues or local tasks"
+    },
+    "es-resolve-parallel": {
+      "template": "command/es-resolve-parallel.md",
+      "description": "Resolve multiple tasks and issues in parallel"
+    },
+    "es-upstream": {
+      "template": "command/es-upstream.md",
+      "description": "Check upstream sources for template changes and new patterns"
+    },
+    "es-commit": {
+      "template": "command/es-commit.md",
+      "description": "Staged changes, generate commit message, and push"
+    }
   },
 
   "formatter": {
