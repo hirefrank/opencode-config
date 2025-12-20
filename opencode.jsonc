@@ -65,11 +65,6 @@
       "command": ["npx", "shadcn@latest", "mcp"],
       "enabled": true
     },
-    "tailwindcss": {
-      "type": "local",
-      "command": ["npx", "-y", "tailwindcss-mcp-server"],
-      "enabled": true
-    },
     "better-auth": {
       "type": "remote",
       "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
