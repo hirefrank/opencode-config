@@ -504,7 +504,7 @@ Agents are provided by [code-yeongyu/oh-my-opencode](https://github.com/code-yeo
 
 | Agent                   | Default Model                       | Purpose                           |
 | ----------------------- | ----------------------------------- | --------------------------------- |
-| Sisyphus (primary)      | `anthropic/claude-opus-4-5`         | Main orchestrator                 |
+| Sisyphus (primary)      | `anthropic/claude-sonnet-4-5`       | Main orchestrator                 |
 | Planner-Sisyphus        | (inherits from OpenCode plan agent) | Planning mode                     |
 | oracle                  | `openai/gpt-5.2`                    | Architecture decisions, debugging |
 | librarian               | `anthropic/claude-sonnet-4-5`       | External docs, OSS examples       |
