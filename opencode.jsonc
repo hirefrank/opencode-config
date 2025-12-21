@@ -1,7 +1,7 @@
 {
   "$schema": "https://opencode.ai/config.json",
 
-  "model": "google/gemini-3-flash-preview",
+  "model": "anthropic/claude-sonnet-4-5",
   "small_model": "opencode/gpt-5-nano",
 
   "plugin": ["oh-my-opencode"],
