@@ -26,8 +26,8 @@ This command analyzes your changes, generates a meaningful commit message follow
 <commit_message_override> #$ARGUMENTS </commit_message_override>
 
 **Usage**:
-- `/es-commit` - Auto-generate commit message from changes
-- `/es-commit "Custom message"` - Use provided message
+- `/f-commit` - Auto-generate commit message from changes
+- `/f-commit "Custom message"` - Use provided message
 
 ## Main Tasks
 
@@ -148,7 +148,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
    ```
    feat: Add automated commit workflow command
 
-   Created /es-commit command to streamline git workflow by automatically
+   Created /f-commit command to streamline git workflow by automatically
    staging changes, generating contextual commit messages, and pushing to
    the current working branch.
 
@@ -160,7 +160,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
    - Automatically pushes to remote after successful commit
 
    Files added:
-   - commands/es-commit.md (workflow automation command)
+   - commands/f-commit.md (workflow automation command)
 
    🤖 Generated with [Claude Code](https://claude.com/claude-code)
 
@@ -284,17 +284,17 @@ $COMMIT_MESSAGE
 
 ### Auto-generate commit message
 ```bash
-/es-commit
+/f-commit
 ```
 
 ### Custom commit message
 ```bash
-/es-commit "fix: Resolve authentication timeout issue"
+/f-commit "fix: Resolve authentication timeout issue"
 ```
 
 ### With detailed custom message
 ```bash
-/es-commit "feat: Add Polar.sh billing integration
+/f-commit "feat: Add Polar.sh billing integration
 
 Complete implementation of Polar.sh billing with webhooks,
 subscription middleware, and D1 database schema."
@@ -323,12 +323,12 @@ subscription middleware, and D1 database schema."
 **Typical workflow**:
 1. Work on feature
 2. Run validation tools (`typecheck`, `check_workers`)
-3. `/es-commit` - Commit and push ← THIS COMMAND
+3. `/f-commit` - Commit and push ← THIS COMMAND
 4. `gh pr create` - Create PR (if on feature branch)
 
 **Or for quick iterations**:
 1. Make changes
-2. `/es-commit` - Auto-commit with generated message
+2. `/f-commit` - Auto-commit with generated message
 3. Continue working
 
 ## Best Practices
@@ -358,7 +358,7 @@ subscription middleware, and D1 database schema."
 **Solution**: Check authentication (`gh auth status`), verify remote exists
 
 **Issue**: "Commit message too generic"
-**Solution**: Provide custom message with `/es-commit "your message"`
+**Solution**: Provide custom message with `/f-commit "your message"`
 
 ---
 

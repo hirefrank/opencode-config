@@ -9,7 +9,7 @@
 export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 ```
 
-> **Edge Stack**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
+> **f-train**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
 
 ---
 
@@ -21,7 +21,7 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 | ------------ | --------------------------------------------------- | ------------------------------------------- |
 | **tool/**    | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings    |
 | **skills/**  | Reference knowledge for specific domains            | `cloudflare-workers/` documents KV patterns |
-| **command/** | Slash commands for workflows                        | `/es-plan` triggers planning workflow       |
+| **command/** | Slash commands for workflows                        | `/f-plan` triggers planning workflow       |
 | **agent/**   | Custom agent definitions                            | `feedback-codifier` (learning loop)         |
 | **plugin/**  | OpenCode plugins (if needed)                        | Custom hooks, extensions                    |
 
@@ -144,7 +144,7 @@ opencode-config/
 ├── AGENTS.md              # Global instructions (loaded every session)
 ├── opencode.jsonc         # Config: model, commands, MCP servers
 ├── agent/                 # Custom agents (feedback-codifier only)
-├── command/               # Slash commands (/es-*)
+├── command/               # Slash commands (/f-*)
 ├── tool/                  # MCP tools (auto-registered)
 ├── skills/                # Knowledge packages (trigger-based)
 └── plugin/                # Hooks and extensions (beads-sync)
@@ -166,13 +166,13 @@ opencode-config/
 
 | Command                | Description                                  |
 | ---------------------- | -------------------------------------------- |
-| `/es-plan`             | Plan with architectural guidance             |
-| `/es-triage`           | Triage findings to beads                     |
-| `/es-commit`           | Stage changes, generate commit message, push |
-| `/es-test-gen`         | Generate Playwright tests                    |
-| `/es-component`        | Create shadcn/ui component                   |
-| `/es-resolve-parallel` | Resolve multiple tasks in parallel           |
-| `/es-generate-command` | Create new slash command                     |
+| `/f-plan`             | Plan with architectural guidance             |
+| `/f-triage`           | Triage findings to beads                     |
+| `/f-commit`           | Stage changes, generate commit message, push |
+| `/f-test-gen`         | Generate Playwright tests                    |
+| `/f-component`        | Create shadcn/ui component                   |
+| `/f-resolve-parallel` | Resolve multiple tasks in parallel           |
+| `/f-generate-command` | Create new slash command                     |
 
 ---
 

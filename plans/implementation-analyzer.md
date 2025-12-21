@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The **Implementation Analyzer** is a proactive pattern discovery system that analyzes external repositories implementing the Edge Stack (Tanstack Start, Cloudflare Workers, shadcn/ui, etc.) to:
+The **Implementation Analyzer** is a proactive pattern discovery system that analyzes external repositories implementing the f-train (Tanstack Start, Cloudflare Workers, shadcn/ui, etc.) to:
 
 1. **Discover good patterns** → Add to SKILLS as validated patterns
 2. **Identify anti-patterns** → Add to SKILLS as warnings with fixes
@@ -82,9 +82,9 @@ const STACK_SIGNATURES = {
 ### 1.3 Discovery Command
 
 ```bash
-/es-analyze-repo <owner/repo>           # Analyze specific repo
-/es-analyze-repo --discover <topic>     # Find and analyze repos by topic
-/es-analyze-repo --batch <file.txt>     # Analyze list of repos
+/f-analyze-repo <owner/repo>           # Analyze specific repo
+/f-analyze-repo --discover <topic>     # Find and analyze repos by topic
+/f-analyze-repo --batch <file.txt>     # Analyze list of repos
 ```
 
 ---
@@ -386,7 +386,7 @@ description: Proactive pattern discovery from external repositories
 
 # Implementation Analyzer - Reverse Feedback Codifier
 
-You analyze external repositories to discover patterns for the Edge Stack.
+You analyze external repositories to discover patterns for the f-train.
 
 ## Core Workflow
 
@@ -418,11 +418,11 @@ NEVER codify a pattern without MCP validation:
 Write patterns to skill reference files following the Pattern Format.
 ````
 
-#### 2. Command: `command/es-analyze-repo.md`
+#### 2. Command: `command/f-analyze-repo.md`
 
 ```markdown
 ---
-description: Analyze external repositories to discover patterns for the Edge Stack
+description: Analyze external repositories to discover patterns for the f-train
 ---
 
 # Repository Analysis Command
@@ -550,7 +550,7 @@ After generating the report, ask:
 ```markdown
 ---
 name: implementation-analyzer
-description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the Edge Stack to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, or auditing implementations.
+description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-train to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, or auditing implementations.
 triggers:
   - "analyze repo"
   - "discover patterns"
@@ -572,7 +572,7 @@ Proactively analyze external repositories to discover patterns that should be ad
 This SKILL activates when:
 - User wants to analyze an external repository
 - Discovering patterns from OSS implementations
-- Auditing a codebase for Edge Stack compliance
+- Auditing a codebase for f-train compliance
 - Learning from real-world implementations
 
 ## Workflow
@@ -622,8 +622,8 @@ This SKILL activates when:
 
   "command": {
     // ... existing commands ...
-    "es-analyze-repo": {
-      "template": "command/es-analyze-repo.md",
+    "f-analyze-repo": {
+      "template": "command/f-analyze-repo.md",
       "description": "Analyze external repositories to discover patterns",
     },
   },
@@ -646,7 +646,7 @@ This SKILL activates when:
 ### Example 1: Analyze Specific Repo
 
 ```bash
-/es-analyze-repo honojs/hono
+/f-analyze-repo honojs/hono
 ```
 
 Output:
@@ -677,7 +677,7 @@ Actions:
 ### Example 2: Discover Repos by Topic
 
 ```bash
-/es-analyze-repo --discover "cloudflare workers tanstack"
+/f-analyze-repo --discover "cloudflare workers tanstack"
 ```
 
 Output:
@@ -687,7 +687,7 @@ Searching for repos with "cloudflare workers tanstack"...
 
 Found 5 relevant repos:
 1. user/tanstack-workers-template (87 stars)
-2. org/edge-stack-starter (45 stars)
+2. org/f-train-starter (45 stars)
 3. dev/cf-tanstack-demo (23 stars)
 ...
 
@@ -698,7 +698,7 @@ Analyzing top 3...
 ### Example 3: Batch Analysis
 
 ```bash
-/es-analyze-repo --batch repos-to-analyze.txt
+/f-analyze-repo --batch repos-to-analyze.txt
 ```
 
 ---
@@ -739,7 +739,7 @@ Both systems share:
 ### Phase 1: Core Infrastructure (Week 1)
 
 - [ ] Create `agent/implementation-analyzer.md`
-- [ ] Create `command/es-analyze-repo.md`
+- [ ] Create `command/f-analyze-repo.md`
 - [ ] Create `skills/implementation-analyzer/SKILL.md`
 - [ ] Update `opencode.jsonc`
 

@@ -1,4 +1,4 @@
-# Edge Stack Development Guidelines
+# f-train Development Guidelines
 
 This file defines the rules and conventions for AI agents working on this project.
 
@@ -6,7 +6,7 @@ This file defines the rules and conventions for AI agents working on this projec
 
 ## Project Overview
 
-**Edge Stack** is a Cloudflare Workers-first development framework optimized for:
+**f-train** is a Cloudflare Workers-first development framework optimized for:
 
 - Edge-first architecture (Workers, KV, R2, D1, Durable Objects)
 - Modern React stack (Tanstack Start, shadcn/ui, Tailwind 4)
@@ -358,12 +358,12 @@ See `skills/beads-workflow/` for detailed usage.
 
 | Task           | Command / Tool                                |
 | -------------- | --------------------------------------------- |
-| Plan feature   | `/es-plan`                                    |
-| Triage issues  | `/es-triage`                                  |
-| Commit changes | `/es-commit`                                  |
-| Generate tests | `/es-test-gen`                                |
-| UI component   | `/es-component`                               |
-| Analyze repo   | `/es-analyze-repo`                            |
+| Plan feature   | `/f-plan`                                    |
+| Triage issues  | `/f-triage`                                  |
+| Commit changes | `/f-commit`                                  |
+| Generate tests | `/f-test-gen`                                |
+| UI component   | `/f-component`                               |
+| Analyze repo   | `/f-analyze-repo`                            |
 | Validate code  | `typecheck`, `check_workers`, `check_secrets` |
 | Find work      | `bd ready`                                    |
 
@@ -405,7 +405,7 @@ mgrep --opencode "find rate limiting logic"
 
 ## Learning Loop: Pattern Discovery System
 
-The Edge Stack has two complementary pattern discovery systems:
+The f-train has two complementary pattern discovery systems:
 
 ### 1. Feedback Codifier (Reactive)
 
@@ -436,8 +436,8 @@ Target Repo → Clone & Analyze → Extract Patterns → Validate via MCP → Co
 **Usage:**
 
 ```bash
-/es-analyze-repo honojs/hono                    # Analyze specific repo
-/es-analyze-repo --discover "cloudflare auth"   # Find and analyze repos
+/f-analyze-repo honojs/hono                    # Analyze specific repo
+/f-analyze-repo --discover "cloudflare auth"   # Find and analyze repos
 ```
 
 **What it discovers:**

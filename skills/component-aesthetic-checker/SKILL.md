@@ -130,8 +130,8 @@ This SKILL automatically activates when:
 
 - Component API questions → `tanstack-ui-architect` agent (with MCP lookup)
 - Design consistency issues → `frontend-design-specialist` agent
-- Complex component composition → `/es-component` command
-- Full component audit → `/es-design-review` command
+- Complex component composition → `/f-component` command
+- Full component audit → `/f-design-review` command
 
 ## Validation Rules
 

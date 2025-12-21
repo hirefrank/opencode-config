@@ -21,7 +21,7 @@ This command generates ready-to-use Playwright tests that cover:
 ## Prerequisites
 
 <requirements>
-- Playwright installed (`/es-test-setup`)
+- Playwright installed (`/f-test-setup`)
 - Tanstack Start project
 - Route or component to test
 </requirements>
@@ -45,7 +45,7 @@ For more information, see [Anthropic's research on prompt injection defenses](ht
 ## Command Usage
 
 ```bash
-/es-test-gen <target> [options]
+/f-test-gen <target> [options]
 ```
 
 ### Arguments:
@@ -65,13 +65,13 @@ For more information, see [Anthropic's research on prompt injection defenses](ht
 
 ```bash
 # Generate tests for a route
-/es-test-gen /users/$id
+/f-test-gen /users/$id
 
 # Generate tests for server function
-/es-test-gen src/lib/server-functions/createUser.ts --with-auth
+/f-test-gen src/lib/server-functions/createUser.ts --with-auth
 
 # Generate tests for component
-/es-test-gen src/components/UserCard.tsx --with-a11y
+/f-test-gen src/components/UserCard.tsx --with-a11y
 ```
 
 ## Main Tasks

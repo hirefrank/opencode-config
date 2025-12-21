@@ -1,6 +1,6 @@
 ---
 name: implementation-analyzer
-description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the Edge Stack to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, auditing implementations, or learning from OSS.
+description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-train to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, auditing implementations, or learning from OSS.
 triggers:
   - "analyze repo"
   - "analyze repository"
@@ -28,7 +28,7 @@ This SKILL automatically activates when:
 
 - User wants to analyze an external repository
 - Discovering patterns from OSS implementations
-- Auditing a codebase for Edge Stack compliance
+- Auditing a codebase for f-train compliance
 - Learning from real-world implementations
 - Phrases like "analyze this repo", "find patterns in", "what can we learn from"
 
@@ -228,7 +228,7 @@ const STACK_SIGNATURES = {
 
 ```
 
-/es-analyze-repo honojs/hono
+/f-analyze-repo honojs/hono
 
 ```
 
@@ -236,7 +236,7 @@ const STACK_SIGNATURES = {
 
 ```
 
-/es-analyze-repo --discover "cloudflare workers tanstack"
+/f-analyze-repo --discover "cloudflare workers tanstack"
 
 ```
 
@@ -244,7 +244,7 @@ const STACK_SIGNATURES = {
 
 ```
 
-/es-analyze-repo --batch repos-to-analyze.txt
+/f-analyze-repo --batch repos-to-analyze.txt
 
 ```
 
@@ -275,7 +275,7 @@ Both systems share:
 
 - Discover patterns from battle-tested implementations
 - Find anti-patterns before they enter your codebase
-- Learn from the broader Edge Stack community
+- Learn from the broader f-train community
 
 ### Long-term Value
 

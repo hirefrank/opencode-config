@@ -389,7 +389,7 @@ Skills often work together:
 
 ### Complementary Components
 - **related-validator SKILL**: Validates output from this skill
-- **es-command command**: Uses this skill's patterns
+- **f-command command**: Uses this skill's patterns
 - **related-agent agent**: Handles complex cases
 
 ### Escalation Triggers
@@ -406,7 +406,7 @@ Skills can be invoked by commands:
 
 ### Via Command
 ```bash
-/es-my-command
+/f-my-command
 ```
 
 ### Direct Activation

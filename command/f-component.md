@@ -25,7 +25,7 @@ description: Scaffold shadcn/ui components with distinctive design, accessibilit
 ## Command Usage
 
 ```bash
-/es-component <type> <name> [options]
+/f-component <type> <name> [options]
 ```
 
 ### Arguments:
@@ -42,16 +42,16 @@ description: Scaffold shadcn/ui components with distinctive design, accessibilit
 
 ```bash
 # Generate primary button component
-/es-component button PrimaryButton
+/f-component button PrimaryButton
 
 # Generate feature card with rich animations
-/es-component card FeatureCard --animations rich
+/f-component card FeatureCard --animations rich
 
 # Generate hero section with custom theme
-/es-component hero LandingHero --theme custom
+/f-component hero LandingHero --theme custom
 
 # Generate modal with custom output path
-/es-component modal ConfirmDialog --output components/dialogs/
+/f-component modal ConfirmDialog --output components/dialogs/
 ```
 
 ## Main Tasks
@@ -909,7 +909,7 @@ import { <ComponentName> } from '#components';
 2. Customize props/styles as needed
 3. Test accessibility with keyboard navigation
 4. Test animations with reduced motion preference
-5. Run `/es-design-review` to validate design patterns
+5. Run `/f-design-review` to validate design patterns
 ```
 
 </output_format>
@@ -930,7 +930,7 @@ import { <ComponentName> } from '#components';
 After generating component:
 1. **Review code**: Open generated file and review
 2. **Test component**: Add to a page and test interactions
-3. **Validate design**: Run `/es-design-review` if needed
+3. **Validate design**: Run `/f-design-review` if needed
 4. **Document**: Add to component library docs/Storybook
 
 ## Notes

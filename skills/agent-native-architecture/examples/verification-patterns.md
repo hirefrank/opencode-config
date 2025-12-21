@@ -4,7 +4,7 @@ When agents make changes—deploying Workers, modifying Durable Objects, updatin
 
 **The Golden Rule**: Use the most deterministic verification method that can catch the error.
 
-## 1. Rules-Based Verification (PREFERRED)
+## 1. Rulf-Based Verification (PREFERRED)
 
 **When to use**: Output has clear correctness criteria that can be checked programmatically.
 
@@ -23,7 +23,7 @@ export class CodeModificationAgent extends DurableObject {
     // Agent makes code changes
     const modifiedCode = await this.agentModifyCode(code);
 
-    // Rules-based verification: TypeScript
+    // Rulf-based verification: TypeScript
     const verification = await this.verifyWithTypeScript(modifiedCode);
 
     if (!verification.success) {
@@ -182,7 +182,7 @@ When modifying Durable Object state:
 2. If validation fails, adjust your changes
 3. Never write invalid state
 
-The schema is the source of truth. Rules-based validation catches errors
+The schema is the source of truth. Rulf-based validation catches errors
 before they're persisted.
 ```
 
@@ -198,7 +198,7 @@ export class APIModificationAgent extends DurableObject {
     // Agent creates new implementation
     const modified = await this.agentModify(endpoint, newImplementation);
 
-    // Rules-based: test against OpenAPI schema
+    // Rulf-based: test against OpenAPI schema
     const contractTest = await this.verifyContract(modified);
 
     if (!contractTest.success) {
@@ -308,13 +308,13 @@ browser = { binding = "MYBROWSER" }
 ```markdown
 When modifying UI components:
 
-1. First run rules-based checks (TypeScript, linting)
+1. First run rulf-based checks (TypeScript, linting)
 2. Then deploy to preview environment
 3. Capture screenshots at key breakpoints (mobile, tablet, desktop)
 4. Compare against baseline
 5. Only proceed if visual diff is acceptable
 
-Visual verification is slower than rules-based, but necessary for UI changes.
+Visual verification is slower than rulf-based, but necessary for UI changes.
 Allow ~3-5 seconds per screenshot comparison.
 ```
 
@@ -428,7 +428,7 @@ export class VisualRegressionAgent extends DurableObject {
 - Non-deterministic (different result on same input)
 - Can have false positives/negatives
 
-**Use only when rules-based and visual verification cannot catch the issue.**
+**Use only when rulf-based and visual verification cannot catch the issue.**
 
 ### Code Readability Assessment
 
@@ -439,7 +439,7 @@ export class RefactoringAgent extends DurableObject {
     // Agent refactors
     const refactored = await this.agentRefactor(code, goal);
 
-    // Rules-based checks FIRST
+    // Rulf-based checks FIRST
     const typeCheck = await this.verifyWithTypeScript(refactored);
     const lint = await this.verifyWithBiome(refactored);
 
@@ -495,7 +495,7 @@ Explain your reasoning.
 }
 ```
 
-**Critical**: Use LLM-as-judge ONLY after rules-based checks pass. Don't waste API calls on code that fails type checking.
+**Critical**: Use LLM-as-judge ONLY after rulf-based checks pass. Don't waste API calls on code that fails type checking.
 
 ### Documentation Quality Verification
 
@@ -557,7 +557,7 @@ export class ContentGenerationAgent extends DurableObject {
     // Agent generates content
     const content = await this.agentGenerate(prompt);
 
-    // Rules-based checks FIRST (cheap, fast)
+    // Rulf-based checks FIRST (cheap, fast)
     const rulesCheck = {
       lengthOk: content.length >= constraints.minLength &&
                 content.length <= constraints.maxLength,
@@ -610,7 +610,7 @@ Answer YES or NO and explain why.
   }
 
   private containsProhibitedWords(content: string): boolean {
-    // Rules-based: fast word checking
+    // Rulf-based: fast word checking
     const prohibited = ['badword1', 'badword2'];
     return prohibited.some(word =>
       content.toLowerCase().includes(word.toLowerCase())
@@ -620,8 +620,8 @@ Answer YES or NO and explain why.
 ```
 
 **Hierarchy in action**:
-1. Rules-based length/format check (1ms)
-2. Rules-based prohibited words check (1ms)
+1. Rulf-based length/format check (1ms)
+2. Rulf-based prohibited words check (1ms)
 3. Only then LLM-as-judge for tone (1-2 seconds, $0.01-0.05)
 
 ## Decision Matrix
@@ -648,11 +648,11 @@ export default {
 
     switch (type) {
       case 'typescript':
-        // Rules-based: fast
+        // Rulf-based: fast
         return Response.json(await verifyTypeScript(payload.code));
 
       case 'lint':
-        // Rules-based: fast
+        // Rulf-based: fast
         return Response.json(await runBiome(payload.code));
 
       case 'visual':
@@ -735,7 +735,7 @@ export class VerificationHistory extends DurableObject {
 // WRONG - LLM-as-judge for deterministic check
 await llmAsJudge(`Does this JSON parse correctly? ${json}`);
 
-// RIGHT - Rules-based
+// RIGHT - Rulf-based
 try {
   JSON.parse(json);
   return { valid: true };
@@ -744,7 +744,7 @@ try {
 }
 ```
 
-**Don't skip rules-based verification**
+**Don't skip rulf-based verification**
 ```typescript
 // WRONG - straight to LLM-as-judge
 const quality = await llmAsJudge(code);

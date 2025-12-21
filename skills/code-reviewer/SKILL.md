@@ -228,7 +228,7 @@ Do you want to add this to the todo list?
 ### Next Steps:
 
 1. Review created todos
-2. Use `/es-triage` to prioritize
+2. Use `/f-triage` to prioritize
 3. Start working on items
 ```
 

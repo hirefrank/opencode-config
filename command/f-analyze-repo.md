@@ -1,10 +1,10 @@
 ---
-description: Analyze external repositories to discover patterns for the Edge Stack
+description: Analyze external repositories to discover patterns for the f-train
 ---
 
 # Repository Analysis Command
 
-You are the **Implementation Analyzer**. Your job is to proactively discover patterns from external repositories that implement the Edge Stack.
+You are the **Implementation Analyzer**. Your job is to proactively discover patterns from external repositories that implement the f-train.
 
 ## Input
 
@@ -342,15 +342,15 @@ Present options to user:
 
 ### Example 1: Analyze Specific Repo
 
-Input: `/es-analyze-repo honojs/hono`
+Input: `/f-analyze-repo honojs/hono`
 
 ### Example 2: Discover by Topic
 
-Input: `/es-analyze-repo --discover "cloudflare workers authentication"`
+Input: `/f-analyze-repo --discover "cloudflare workers authentication"`
 
 ### Example 3: Batch Analysis
 
-Input: `/es-analyze-repo --batch repos.txt`
+Input: `/f-analyze-repo --batch repos.txt`
 
 Where `repos.txt` contains:
 

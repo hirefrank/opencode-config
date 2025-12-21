@@ -10,37 +10,37 @@
     "AGENTS.md"
   ],
   "command": {
-    "es-plan": {
-      "template": "command/es-plan.md",
+    "f-plan": {
+      "template": "command/f-plan.md",
       "description": "Plan Cloudflare Workers projects with architectural guidance"
     },
-    "es-triage": {
-      "template": "command/es-triage.md",
+    "f-triage": {
+      "template": "command/f-triage.md",
       "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
     },
-    "es-resolve-parallel": {
-      "template": "command/es-resolve-parallel.md",
+    "f-resolve-parallel": {
+      "template": "command/f-resolve-parallel.md",
       "description": "Resolve multiple tasks and issues in parallel"
     },
-    "es-commit": {
-      "template": "command/es-commit.md",
+    "f-commit": {
+      "template": "command/f-commit.md",
       "description": "Staged changes, generate commit message, and push"
     },
-    "es-test-gen": {
-      "template": "command/es-test-gen.md",
+    "f-test-gen": {
+      "template": "command/f-test-gen.md",
       "description": "Generate Playwright tests for a feature"
     },
-    "es-component": {
-      "template": "command/es-component.md",
+    "f-component": {
+      "template": "command/f-component.md",
       "description": "Create shadcn/ui component"
     },
-    "es-generate-command": {
-      "template": "command/es-generate-command.md",
+    "f-generate-command": {
+      "template": "command/f-generate-command.md",
       "description": "Generate new slash command"
     },
-    "es-analyze-repo": {
-      "template": "command/es-analyze-repo.md",
-      "description": "Analyze external repositories to discover patterns for the Edge Stack"
+    "f-analyze-repo": {
+      "template": "command/f-analyze-repo.md",
+      "description": "Analyze external repositories to discover patterns for the f-train"
     }
   },
 

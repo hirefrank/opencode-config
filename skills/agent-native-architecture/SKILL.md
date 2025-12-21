@@ -119,7 +119,7 @@ The agent decides when to compact: "Summarize your last 100 interactions and sto
 
 When agents make changes—deploying Workers, modifying state, updating configurations—verification is critical. Use this hierarchy (from most to least preferred):
 
-**1. Rules-Based Verification (PREFERRED)**
+**1. Rulf-Based Verification (PREFERRED)**
 
 Deterministic checks with clear pass/fail criteria. Fast, cheap, reliable.
 
@@ -149,7 +149,7 @@ Only when criteria are subjective or fuzzy. Expensive, high latency, non-determi
 
 The hierarchy is deliberate: prefer determinism. Let rules catch what they can, visual verification for what must be seen, LLM-as-judge only when nothing else works.
 
-**On Cloudflare**: Rules-based verification runs in Workers (milliseconds), visual verification uses Browser Rendering (seconds), LLM-as-judge uses external API calls (seconds + cost).
+**On Cloudflare**: Rulf-based verification runs in Workers (milliseconds), visual verification uses Browser Rendering (seconds), LLM-as-judge uses external API calls (seconds + cost).
 
 ### When to Use Subagents
 
@@ -423,7 +423,7 @@ See `examples/` directory for detailed implementations:
 
 **Verification Patterns:** `examples/verification-patterns.md`
 
-- Rules-based verification (linting, type checking, validation)
+- Rulf-based verification (linting, type checking, validation)
 - Visual verification (screenshots, Browser Rendering)
 - LLM-as-judge patterns (when and how to use)
 - Cloudflare Workers-specific verification strategies
