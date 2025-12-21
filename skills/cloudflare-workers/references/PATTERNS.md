@@ -4,31 +4,55 @@ This document contains validated patterns for Cloudflare Workers development.
 
 ## Rate Limiting with Durable Objects
 
+Durable Objects are ideal for rate limiting because they provide single-threaded, atomic execution. Use `blockConcurrencyWhile` for safe initialization.
+
 ```typescript
-// DO class for rate limiting
-export class RateLimiter {
-  constructor(state: DurableObjectState, env: Env) {
-    this.state = state;
-    this.env = env;
+import { DurableObject } from 'cloudflare:workers';
+
+export class RateLimiter extends DurableObject<Env> {
+  private limit: RateLimitData | null = null;
+
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+    
+    // Block concurrent requests until initialized from persistent storage
+    this.ctx.blockConcurrencyWhile(async () => {
+      this.limit = await this.ctx.storage.get<RateLimitData>('limit') || null;
+
+      const currentAlarm = await this.ctx.storage.getAlarm();
+      if (currentAlarm === null) {
+        await this.ctx.storage.setAlarm(Date.now() + 60000);
+      }
+    });
   }
 
-  async fetch(request: Request) {
-    const ip = request.headers.get("CF-Connecting-IP") || "unknown";
-    const key = `ratelimit:${ip}`;
-
-    const count = (await this.state.storage.get(key)) || 0;
+  async fetch(request: Request): Promise<Response> {
+    const req: RateLimitRequest = await request.json();
+    const { maxRequests, windowMs } = req;
     const now = Date.now();
-    const windowStart = now - 60000; // 1 minute window
 
-    if (count >= 100) {
-      return new Response("Rate limit exceeded", { status: 429 });
+    if (!this.limit || now > this.limit.resetTime) {
+      this.limit = { count: 0, resetTime: now + windowMs };
     }
 
-    await this.state.storage.put(key, count + 1, {
-      expirationTtl: 60,
-    });
+    if (this.limit.count >= maxRequests) {
+      const retryAfter = Math.ceil((this.limit.resetTime - now) / 1000);
+      return new Response(JSON.stringify({ allowed: false, retryAfter }), { status: 429 });
+    }
 
-    return new Response("OK");
+    this.limit.count++;
+    await this.ctx.storage.put('limit', this.limit);
+
+    return new Response(JSON.stringify({ allowed: true, remaining: maxRequests - this.limit.count }));
+  }
+
+  async alarm(): Promise<void> {
+    const now = Date.now();
+    if (this.limit && now > this.limit.resetTime) {
+      this.limit = null;
+      await this.ctx.storage.delete('limit');
+    }
+    await this.ctx.storage.setAlarm(Date.now() + 60000);
   }
 }
 ```
@@ -213,6 +237,80 @@ export async function handleDownload(env: Env, key: string) {
 }
 ```
 
+## Edge Caching with Middleware
+
+Use the Cloudflare Cache API for edge caching. Wrap handlers in a middleware that handles cache keys and ETags.
+
+```typescript
+export function withEdgeCache(handler: Handler, options: CacheOptions) {
+  return async (context: Context) => {
+    const { request } = context;
+    if (request.method !== 'GET') return handler(context);
+
+    const cache = caches.default;
+    const cacheKey = new Request(request.url, request);
+    let response = await cache.match(cacheKey);
+
+    if (!response) {
+      response = await handler(context);
+      if (response.ok) {
+        // Clone for cache
+        const cacheResponse = response.clone();
+        cacheResponse.headers.set('Cache-Control', `public, max-age=${options.ttl}`);
+        await cache.put(cacheKey, cacheResponse);
+      }
+    }
+
+    return response;
+  };
+}
+```
+
+## Optimized Bulk Fetching with Caching
+
+Minimize KV reads and database queries by aggregating cache misses and performing a single bulk database query.
+
+```typescript
+export async function getEntitiesByIdsCached(db: DB, kv: KVNamespace, ids: string[]) {
+  const results = [];
+  const missingIds = [];
+
+  // 1. Check cache for each ID
+  for (const id of ids) {
+    const cached = await kv.get(`entity:${id}`, 'json');
+    if (cached) results.push(cached);
+    else missingIds.push(id);
+  }
+
+  // 2. Bulk query missing IDs from DB
+  if (missingIds.length > 0) {
+    const dbResults = await db.entities.findMany({ where: { id: { in: missingIds } } });
+    for (const entity of dbResults) {
+      // 3. Back-fill cache
+      await kv.put(`entity:${entity.id}`, JSON.stringify(entity), { expirationTtl: 3600 });
+      results.push(entity);
+    }
+  }
+
+  return results;
+}
+```
+
+## Real-time Edge Metrics Tracking
+
+Use KV to record performance metrics (hit/miss ratios) directly from the edge.
+
+```typescript
+export async function recordCacheMetric(kv: KVNamespace, isHit: boolean) {
+  const date = new Date().toISOString().split('T')[0];
+  const key = `metrics:cache:${date}`;
+  const field = isHit ? 'hits' : 'misses';
+  
+  // Use atomic increments if supported, or periodic sync
+  // For high traffic, consider sharding or Durable Objects
+}
+```
+
 ## D1 Database Operations
 
 ```typescript
@@ -265,4 +363,42 @@ export class UserService {
     return result.success;
   }
 }
+```
+
+## Lazy Initialization with Proxy (Advanced)
+
+Use this pattern to safely access Cloudflare bindings in environments like TanStack Start where bindings are only available during request handling. This prevents "binding not available" errors during build/SSR module evaluation.
+
+```typescript
+import { env as rawEnv } from 'cloudflare:workers';
+import { AsyncLocalStorage } from 'node:async_hooks';
+
+// Request-scoped storage for environment bindings
+export const envStorage = new AsyncLocalStorage<Env>();
+
+/**
+ * Get the typed environment object
+ */
+export function getEnv(): Env {
+  // Try request-scoped storage first
+  const storedEnv = envStorage.getStore();
+  if (storedEnv) return storedEnv;
+
+  // Fallback to global env (works in some runtimes)
+  return (rawEnv as Env) || ({} as Env);
+}
+
+/**
+ * Create a lazy proxy for a binding (e.g., D1Database)
+ */
+export const db = new Proxy({} as D1Database, {
+  get(_target, prop) {
+    const env = getEnv();
+    if (!env.DB) {
+      throw new Error("DB binding not found. Ensure you are in a request context.");
+    }
+    const value = env.DB[prop as keyof D1Database];
+    return typeof value === 'function' ? value.bind(env.DB) : value;
+  }
+});
 ```

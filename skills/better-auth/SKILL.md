@@ -40,6 +40,75 @@ pnpm @better-auth/d1
 
 ## Configuration
 
+### Recommended: Factory Pattern for Workers
+
+In Cloudflare Workers, environment bindings are not available globally. Use a factory pattern to create the auth instance within the request context.
+
+```typescript
+// app/lib/auth.ts
+import { betterAuth } from "better-auth";
+import { d1Adapter } from "@better-auth/d1";
+
+/**
+ * Lazy-initialized auth instance using Proxy pattern.
+ * Safely handles TanStack Start SSR where bindings are only available during requests.
+ */
+let authInstance: ReturnType<typeof betterAuth> | null = null;
+
+export const getAuth = (env: Env) => {
+  if (authInstance) return authInstance;
+  
+  authInstance = betterAuth({
+    database: d1Adapter({
+      datasource: { db: env.DB },
+    }),
+    baseURL: env.BASE_URL,
+    secret: env.BETTER_AUTH_SECRET,
+  });
+  
+  return authInstance;
+};
+
+export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
+  get(_, prop) {
+    // Requires getEnv() from pattern above or similar request context helper
+    const instance = getAuth(getEnv());
+    const value = (instance as any)[prop];
+    return typeof value === 'function' ? value.bind(instance) : value;
+  }
+});
+```
+
+### SSR Session Loading (TanStack Start)
+
+Fetch the session during the initial SSR pass in the root route to prevent hydration flicker.
+
+```typescript
+// apps/dashboard/src/routes/__root.tsx
+import { createRootRouteWithContext } from '@tanstack/react-router'
+import { createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
+import { auth } from '../lib/auth'
+
+const getSession = createServerFn({ method: 'GET' })
+  .handler(async () => {
+    const request = getRequest()
+    if (!request) return null
+    
+    // Better Auth server API works with standard headers
+    return await auth.api.getSession({
+      headers: request.headers,
+    })
+  })
+
+export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async () => {
+    const session = await getSession()
+    return { session }
+  },
+})
+```
+
 ### Basic Setup
 
 ```typescript
@@ -96,6 +165,27 @@ export interface Env {
   // JWT secret
   BETTER_AUTH_SECRET: string;
 }
+```
+
+### MCP Plugin for AI Agent Auth
+
+Enable secure authentication for AI agents using the MCP plugin.
+
+```typescript
+// app/lib/auth.ts
+import { mcp } from "better-auth/plugins";
+
+export const auth = betterAuth({
+  plugins: [
+    mcp({
+      loginPage: '/sign-in',
+      resource: 'your-app-resource-id',
+      oidcConfig: {
+        scopes: ['read', 'write'],
+      },
+    }),
+  ],
+});
 ```
 
 ## Database Migration
