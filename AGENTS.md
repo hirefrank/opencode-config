@@ -329,7 +329,16 @@ See `skills/beads-workflow/` for detailed usage.
 
 **When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
 
-**MANDATORY WORKFLOW:**
+### 1. Distinguish between Knowledge and Code
+
+| Change Type   | Target Repo       | Workflow        | Why                                                                  |
+| ------------- | ----------------- | --------------- | -------------------------------------------------------------------- |
+| **Knowledge** | `opencode-config` | **Direct Push** | Skills/Patterns are global facts. Agents need them live immediately. |
+| **Code**      | Project Repos     | **Branch + PR** | Feature code requires review, tests, and CI/CD validation.           |
+
+**Knowledge updates** (modifying `.md` files in `skills/` or `agent/`) should NEVER use PRs unless explicitly requested by the user. Commit and push directly to the default or active branch.
+
+### 2. Mandatory Workflow
 
 1. **File issues for remaining work** - Create issues for anything that needs follow-up
 2. **Run quality gates** (if code changed) - Tests, linters, builds

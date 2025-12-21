@@ -209,47 +209,19 @@ After presenting the report, ask:
 
 **"What would you like to do with these findings?"**
 
-| Choice                         | Action                                                                                 |
-| ------------------------------ | -------------------------------------------------------------------------------------- |
-| **1. Apply skill changes**     | For improvements + new opportunities: modify skill files directly in `opencode-config` |
-| **2. Fix implementation gaps** | Create beads in the current repo for violations                                        |
-| **3. Both**                    | Do both of the above                                                                   |
-| **4. Export report**           | Save report to a file for later                                                        |
-| **5. Done**                    | End session                                                                            |
-
----
-
-## Examples
-
-### Self-assessment
-
-```
-/f-analyze-repo
-```
-
-Analyzes the current repo against global skills.
-
-### External repo
-
-```
-/f-analyze-repo cloudflare/workers-sdk
-```
-
-Clones and analyzes the specified repo.
-
-### Discovery
-
-```
-/f-analyze-repo --discover "cloudflare durable objects websocket"
-```
-
-Finds relevant repos on GitHub and analyzes them.
+| Choice                         | Action                                                                                        |
+| ------------------------------ | --------------------------------------------------------------------------------------------- |
+| **1. Apply skill changes**     | **LIVE UPDATE**: Modify skill files directly in `opencode-config` and push to remote. (No PR) |
+| **2. Fix implementation gaps** | **TASKED**: Create beads/issues in the current repo for violations. Do NOT auto-fix.          |
+| **3. Both**                    | Do both of the above                                                                          |
+| **4. Export report**           | Save report to a file for later                                                               |
+| **5. Done**                    | End session                                                                                   |
 
 ---
 
 ## Key Principles
 
-1. **All skill changes go to `opencode-config`** — changes are applied directly to skill files in the config repository (no PR).
-2. **Never auto-write** — report findings, let user decide what to act on.
-3. **Route correctly** — skill changes → `opencode-config`, implementation fixes → current repo.
-4. **Validate first** — confirm patterns against official docs before recommending.
+1.  **Live Knowledge Updates**: Skill changes are "hard facts" validated by MCP. They are applied directly to `opencode-config` and pushed immediately. This ensures the entire agent fleet has the latest guidance.
+2.  **No Project Auto-Fixes**: Never modify the target repository's code during analysis. High-fidelity analysis identifies gaps; remediation is a separate task tracked via beads.
+3.  **Centralized Intelligence**: All discovered patterns must be codified in `$OPENCODE_CONFIG_PATH`. Never create local-only skill overrides.
+4.  **Evidence-Based Codification**: Every pattern must include evidence (file:line) and validation (MCP docs/search).
