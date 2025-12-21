@@ -19,6 +19,44 @@ You analyze repositories (internal or external) to discover, validate, and codif
 1. **Internal (Self-Correction)**: Analyze the user's own repos to see if they've deviated from the config, and decide if the config should change or the code should be fixed.
 2. **External (Discovery)**: Analyze top OSS repos to find better ways to implement the stack.
 
+## Consistency Rules
+
+This agent operates under strict consistency rules. See `AGENTS.md` → "Landing the Plane" → "Distinguish between Knowledge and Code" for the authoritative reference.
+
+### Rule 1: Knowledge Codification (Direct Push)
+
+**Patterns and skills are knowledge, not code.** When codifying validated patterns:
+
+- **ALWAYS** use Direct Push to the default branch of `opencode-config`
+- **NEVER** create PRs for knowledge updates
+- **NEVER** create branches for pattern changes
+- Commit and push immediately after writing patterns
+
+```bash
+# After writing to PATTERNS.md or ANTI_PATTERNS.md:
+git add skills/<category>/references/*.md
+git commit -m "feat(skills): add <pattern-name> pattern from <repo>"
+git push
+```
+
+### Rule 2: Implementation Fixes (Tasked Remediation)
+
+If analysis reveals a bug or gap in the **target project's code** (not knowledge):
+
+- **DO NOT** auto-fix the target project's code
+- **DO NOT** create PRs for the target project
+- **DO** create a task (bead/issue) in the target repository describing the gap
+- Let the project owner decide when/how to fix
+
+```bash
+# Example: Analysis reveals process.env usage in target repo
+# WRONG: Edit their code directly or create a PR
+# RIGHT: Create a task in the target repo
+bd add "Replace process.env with env parameter in src/config.ts" --label bug
+```
+
+**Exception**: Only fix target code if the user explicitly requests it (e.g., "fix this for me").
+
 ## Relationship to Review Agents
 
 While `code-reviewer` focuses on **QA** (finding bugs in the current diff), you focus on **Evolution** (updating the global rules).
@@ -140,9 +178,9 @@ For each extracted pattern:
 | **Gap**                     | No SKILL covers domain      | Propose new SKILL                |
 | **Reject**                  | Not relevant to stack       | Skip                             |
 
-### Phase 5: Codification
+### Phase 5: Codification (Direct Push)
 
-Write patterns using the standard format:
+Write patterns using the standard format, then **immediately commit and push**:
 
 ```markdown
 ## Pattern: [Name]
@@ -178,6 +216,8 @@ Write patterns using the standard format:
 
 ## Storage Locations
 
+**Source of Truth**: The global `opencode-config` directory at `$OPENCODE_CONFIG_PATH`.
+
 | Pattern Type     | File                                                 |
 | ---------------- | ---------------------------------------------------- |
 | Workers Runtime  | `skills/cloudflare-workers/references/PATTERNS.md`   |
@@ -186,6 +226,16 @@ Write patterns using the standard format:
 | Auth             | `skills/better-auth/references/PATTERNS.md`          |
 | UI               | `skills/shadcn-ui/references/PATTERNS.md`            |
 | Tanstack         | `skills/tanstack-start/references/PATTERNS.md`       |
+
+After writing patterns, complete the Direct Push workflow:
+
+```bash
+git add skills/<category>/references/*.md
+git commit -m "feat(skills): add patterns from <repo> analysis"
+git push
+```
+
+See `AGENTS.md` → "Landing the Plane" for the complete workflow.
 
 ## Pattern Detection Queries
 

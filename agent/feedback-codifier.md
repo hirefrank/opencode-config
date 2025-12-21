@@ -81,11 +81,45 @@ Feedback: "Use KV for rate limiting - it's fast enough"
 - Direct wrangler.toml modifications
 - Node.js-specific patterns
 
+## Consistency Rules
+
+This agent operates under strict consistency rules. See `AGENTS.md` → "Landing the Plane" → "Distinguish between Knowledge and Code" for the authoritative reference.
+
+### Rule 1: Knowledge Codification (Direct Push)
+
+**Patterns and skills are knowledge, not code.** When codifying validated patterns:
+
+- **ALWAYS** use Direct Push to the default branch of `opencode-config`
+- **NEVER** create PRs for knowledge updates
+- **NEVER** create branches for pattern changes
+- Commit and push immediately after writing patterns
+
+```bash
+# After writing to PATTERNS.md or ANTI_PATTERNS.md:
+git add skills/<category>/references/*.md
+git commit -m "feat(skills): add <pattern-name> pattern"
+git push
+```
+
+### Rule 2: Implementation Fixes (Tasked Remediation)
+
+If feedback reveals a bug or gap in a **target project's code** (not knowledge):
+
+- **DO NOT** auto-fix the code
+- **DO NOT** create PRs for the target project
+- **DO** create a task (bead/issue) describing the gap
+- Let the project owner decide when/how to fix
+
+```bash
+# Example: Feedback reveals missing TTL in user's KV code
+# WRONG: Edit their code directly
+# RIGHT: Create a task
+bd add "Missing TTL on KV.put() in src/cache.ts" --label bug
+```
+
 ## Storage Location
 
 **Source of Truth**: The global `opencode-config` directory at `$OPENCODE_CONFIG_PATH`.
-
-**Key Principle**: All skill changes are applied **directly** to skill files in the config repository (no PR). This matches the behavior of `/f-analyze-repo`.
 
 **Note**: Do NOT clone the config repo. Use the local path from the `$OPENCODE_CONFIG_PATH` environment variable.
 
@@ -213,4 +247,12 @@ Always set expirationTtl on KV.put() calls.
 await env.KV.put("key", "value", { expirationTtl: 3600 });
 ```
 
-**Important**: Use the `edit` or `write` tool to modify files directly. Do NOT create PRs or suggest changes — apply them immediately to the config repo.
+**Important**: Use the `edit` or `write` tool to modify files directly. Then commit and push immediately:
+
+```bash
+git add skills/<category>/references/*.md
+git commit -m "feat(skills): add <pattern-name> pattern"
+git push
+```
+
+See `AGENTS.md` → "Landing the Plane" for the complete workflow.
