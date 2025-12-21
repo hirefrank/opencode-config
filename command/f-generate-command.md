@@ -4,7 +4,9 @@ description: Create a custom Claude Code slash command in .claude/commands/
 
 # Create a Custom Claude Code Command
 
-Create a new slash command in `.claude/commands/` for the requested task.
+Create a new slash command for the requested task.
+
+**Location:** Always create in the current project's `.claude/commands/[name].md` unless the user explicitly asks for a global command.
 
 ## Goal
 
@@ -13,21 +15,25 @@ Create a new slash command in `.claude/commands/` for the requested task.
 ## Key Capabilities to Leverage
 
 **File Operations:**
+
 - Read, Edit, Write - modify files precisely
 - Glob, Grep - search codebase
 - MultiEdit - atomic multi-part changes
 
 **Development:**
+
 - Bash - run commands (git, tests, linters)
 - Task - launch specialized agents for complex tasks
 - TodoWrite - track progress with todo lists
 
 **Web & APIs:**
+
 - WebFetch, WebSearch - research documentation
 - GitHub (gh cli) - PRs, issues, reviews
 - Puppeteer - browser automation, screenshots
 
 **Integrations:**
+
 - Platform-specific MCPs for account context and docs
 - shadcn/ui MCP - component documentation
 - Stripe, Todoist, Featurebase (if relevant)
@@ -98,7 +104,7 @@ Implement #$ARGUMENTS following these steps:
 
 4. Verify
    - Run tests:
-      - Local development: `npm test` or appropriate dev server
+     - Local development: `npm test` or appropriate dev server
      - TypeScript: `npm run typecheck` or `tsc --noEmit`
      - Unit tests: `vitest` or `jest`
    - Run linter:

@@ -23,9 +23,10 @@ This command analyzes your changes, generates a meaningful commit message follow
 
 ## Commit Message Override
 
-<commit_message_override> #$ARGUMENTS </commit_message_override>
+<commit_message_override> # </commit_message_override>
 
 **Usage**:
+
 - `/f-commit` - Auto-generate commit message from changes
 - `/f-commit "Custom message"` - Use provided message
 
@@ -111,6 +112,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 **Commit type selection**:
+
 - `feat:` - New features or capabilities
 - `fix:` - Bug fixes
 - `refactor:` - Code restructuring without behavior change
@@ -124,6 +126,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 **Message generation guidelines**:
 
 1. **Analyze file changes**:
+
    ```bash
    # Check which directories/files changed
    git diff --name-only HEAD
@@ -145,6 +148,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>
    - Reference related commands, agents, or SKILLs if relevant
 
 4. **Example generated message**:
+
    ```
    feat: Add automated commit workflow command
 
@@ -265,13 +269,16 @@ Final report showing what was committed and pushed
 **Remote**: origin/$CURRENT_BRANCH
 
 ### Changes Committed:
+
 - Added: $ADDED files
 - Modified: $MODIFIED files
 - Deleted: $DELETED files
 
 ### Commit Message:
 ```
+
 $COMMIT_MESSAGE
+
 ```
 
 ### Next Steps:
@@ -283,16 +290,19 @@ $COMMIT_MESSAGE
 ## Usage Examples
 
 ### Auto-generate commit message
+
 ```bash
 /f-commit
 ```
 
 ### Custom commit message
+
 ```bash
 /f-commit "fix: Resolve authentication timeout issue"
 ```
 
 ### With detailed custom message
+
 ```bash
 /f-commit "feat: Add Polar.sh billing integration
 
@@ -303,17 +313,20 @@ subscription middleware, and D1 database schema."
 ## Safety Features
 
 **Pre-commit checks**:
+
 - ✅ Verifies git repository exists
 - ✅ Shows status before committing
 - ✅ Validates changes exist
 - ✅ Confirms commit succeeded before pushing
 
 **Branch awareness**:
+
 - ✅ Always pushes to current branch (respects PR branches)
 - ✅ Sets upstream automatically if needed
 - ✅ Shows clear feedback on branch and remote
 
 **Message quality**:
+
 - ✅ Follows conventional commit standards
 - ✅ Includes Claude Code attribution
 - ✅ Provides detailed context from diff analysis
@@ -321,12 +334,14 @@ subscription middleware, and D1 database schema."
 ## Integration with Other Commands
 
 **Typical workflow**:
+
 1. Work on feature
 2. Run validation tools (`typecheck`, `check_workers`)
 3. `/f-commit` - Commit and push ← THIS COMMAND
 4. `gh pr create` - Create PR (if on feature branch)
 
 **Or for quick iterations**:
+
 1. Make changes
 2. `/f-commit` - Auto-commit with generated message
 3. Continue working
@@ -334,6 +349,7 @@ subscription middleware, and D1 database schema."
 ## Best Practices
 
 **Do's** ✅:
+
 - Run validation tools before committing
 - Review the generated commit message
 - Use custom messages for complex changes
@@ -341,6 +357,7 @@ subscription middleware, and D1 database schema."
 - Use on feature branches and main branch
 
 **Don'ts** ❌:
+
 - Don't commit secrets or credentials (command doesn't check)
 - Don't use for force pushes (not supported)
 - Don't amend commits (creates new commit)

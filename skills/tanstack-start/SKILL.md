@@ -111,6 +111,29 @@ export const Route = createFileRoute("/search")({
 });
 ```
 
+### 5. Cloudflare Workers Integration
+
+TanStack Start is optimized for Cloudflare Workers using the `@cloudflare/vite-plugin`. This allows for a full-stack React experience at the edge.
+
+**Key features:**
+
+- **Zero-config deployment**: Automatically detects Cloudflare environment.
+- **Wrangler integration**: Seamlessly uses `wrangler.toml` for bindings.
+- **Asset handling**: Static assets are automatically served from the edge.
+
+**Example Vite Config:**
+
+```typescript
+// vite.config.ts
+import { defineConfig } from "vite";
+import { tanstackStartVite } from "@tanstack/start-vite";
+import { cloudflare } from "@cloudflare/vite-plugin";
+
+export default defineConfig({
+  plugins: [tanstackStartVite(), cloudflare()],
+});
+```
+
 ## Best Practices
 
 ### Component Structure

@@ -83,6 +83,26 @@ className={`base-classes ${variant} ${size} ${className}`}
 - Respect font scale (text-sm, text-base, text-lg)
 - Maintain consistent spacing (p-4, m-2, gap-2)
 
+### 4. Monorepo Organization
+
+In monorepos, centralize the `cn()` utility to ensure consistent styling behavior across all applications and shared packages.
+
+```typescript
+// packages/utils/src/index.ts
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+Usage in components:
+
+```typescript
+import { cn } from "@monorepo/utils"; // Shared package import
+```
+
 ## Common Components
 
 ### Button

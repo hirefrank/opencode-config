@@ -104,6 +104,23 @@ const hash = await crypto.subtle.digest("SHA-256", data);
 Run `scripts/validate-runtime.js` to check for Node.js API usage.
 Run `scripts/check-bundle-size.js` to verify bundle size limits.
 
+## Infrastructure Auditing
+
+In growing monorepos, it's easy to lose track of orphaned Cloudflare resources (KV namespaces, R2 buckets, D1 databases) that are no longer bound to any active Worker. Regularly audit your infrastructure to minimize costs and security risks.
+
+### Auditing Pattern
+
+Use the Cloudflare API to list all resources and cross-reference them with your `wrangler.toml` configurations or active Worker bindings.
+
+**Key things to check:**
+
+1. **Unbound KV namespaces**: Namespaces with no active bindings.
+2. **Empty R2 buckets**: Buckets that are no longer used for storage.
+3. **Orphaned D1 databases**: Databases with no active migrations or connections.
+4. **Unused Queues**: Queues with no consumers or producers.
+
+See `scripts/audit-cloudflare-infrastructure.ts` in the main repository for an implementation example.
+
 ## Reference Materials
 
 See [references/PATTERNS.md](references/PATTERNS.md) for validated patterns.

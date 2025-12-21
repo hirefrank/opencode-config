@@ -148,6 +148,39 @@ wrangler d1 migrations apply YOUR_DATABASE_NAME
 wrangler d1 migrations create YOUR_DATABASE_NAME add_auth_tables
 ```
 
+## Custom Table Mapping
+
+In monorepos or complex projects, you may want to use custom table names to avoid collisions or match existing conventions. Better Auth supports mapping its internal model names to custom table names using the `schema` option in the `drizzleAdapter`.
+
+### Implementation
+
+```typescript
+// auth.ts
+import * as schema from "./db/schema";
+import { betterAuth } from "better-auth";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+
+export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "sqlite",
+    schema: {
+      ...schema,
+      // Map internal models to custom table definitions
+      user: schema.authUser,
+      session: schema.authSession,
+      account: schema.authAccount,
+    },
+  }),
+  // ... other config
+});
+```
+
+### Why use custom mapping?
+
+1. **Monorepo clarity**: Prefixing tables with `auth_` or using `authUser` makes it clear which tables belong to the authentication system.
+2. **Legacy compatibility**: If you're migrating to Better Auth and already have a `user` table, you can map Better Auth to `auth_user` instead.
+3. **Database organization**: Keeps related tables grouped together in database explorers and documentation.
+
 ## D1 Best Practices
 
 1. **Use INTEGER for timestamps** - D1 stores dates as Unix timestamps
