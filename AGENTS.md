@@ -1,4 +1,4 @@
-# f-train Development Guidelines
+# f-stack Development Guidelines
 
 This file defines the rules and conventions for AI agents working on this project.
 
@@ -6,7 +6,7 @@ This file defines the rules and conventions for AI agents working on this projec
 
 ## Project Overview
 
-**f-train** is a Cloudflare Workers-first development framework optimized for:
+**f-stack** is a Cloudflare Workers-first development framework optimized for:
 
 - Edge-first architecture (Workers, KV, R2, D1, Durable Objects)
 - Modern React stack (Tanstack Start, shadcn/ui, Tailwind 4)
@@ -405,7 +405,7 @@ mgrep --opencode "find rate limiting logic"
 
 ## Learning Loop: Pattern Discovery System
 
-The f-train has two complementary pattern discovery systems:
+The f-stack has two complementary pattern discovery systems:
 
 ### 1. Feedback Codifier (Reactive)
 

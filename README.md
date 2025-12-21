@@ -9,7 +9,7 @@
 export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 ```
 
-> **f-train**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
+> **f-stack**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
 
 ---
 

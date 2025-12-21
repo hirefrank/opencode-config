@@ -40,7 +40,7 @@
     },
     "f-analyze-repo": {
       "template": "command/f-analyze-repo.md",
-      "description": "Analyze external repositories to discover patterns for the f-train"
+      "description": "Analyze external repositories to discover patterns for the f-stack"
     }
   },
 

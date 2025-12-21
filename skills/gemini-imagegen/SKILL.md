@@ -259,4 +259,4 @@ This skill runs locally and can be used during development:
 
 - [Google Gemini API Documentation](https://ai.google.dev/docs)
 - [Gemini Image Generation Guide](https://ai.google.dev/docs/imagen)
-- f-train Plugin for deployment workflows
+- f-stack Plugin for deployment workflows

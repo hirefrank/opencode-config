@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The **Implementation Analyzer** is a proactive pattern discovery system that analyzes external repositories implementing the f-train (Tanstack Start, Cloudflare Workers, shadcn/ui, etc.) to:
+The **Implementation Analyzer** is a proactive pattern discovery system that analyzes external repositories implementing the f-stack (Tanstack Start, Cloudflare Workers, shadcn/ui, etc.) to:
 
 1. **Discover good patterns** → Add to SKILLS as validated patterns
 2. **Identify anti-patterns** → Add to SKILLS as warnings with fixes
@@ -386,7 +386,7 @@ description: Proactive pattern discovery from external repositories
 
 # Implementation Analyzer - Reverse Feedback Codifier
 
-You analyze external repositories to discover patterns for the f-train.
+You analyze external repositories to discover patterns for the f-stack.
 
 ## Core Workflow
 
@@ -422,7 +422,7 @@ Write patterns to skill reference files following the Pattern Format.
 
 ```markdown
 ---
-description: Analyze external repositories to discover patterns for the f-train
+description: Analyze external repositories to discover patterns for the f-stack
 ---
 
 # Repository Analysis Command
@@ -550,7 +550,7 @@ After generating the report, ask:
 ```markdown
 ---
 name: implementation-analyzer
-description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-train to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, or auditing implementations.
+description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-stack to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, or auditing implementations.
 triggers:
   - "analyze repo"
   - "discover patterns"
@@ -572,7 +572,7 @@ Proactively analyze external repositories to discover patterns that should be ad
 This SKILL activates when:
 - User wants to analyze an external repository
 - Discovering patterns from OSS implementations
-- Auditing a codebase for f-train compliance
+- Auditing a codebase for f-stack compliance
 - Learning from real-world implementations
 
 ## Workflow
@@ -687,7 +687,7 @@ Searching for repos with "cloudflare workers tanstack"...
 
 Found 5 relevant repos:
 1. user/tanstack-workers-template (87 stars)
-2. org/f-train-starter (45 stars)
+2. org/f-stack-starter (45 stars)
 3. dev/cf-tanstack-demo (23 stars)
 ...
 

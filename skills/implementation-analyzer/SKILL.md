@@ -1,6 +1,6 @@
 ---
 name: implementation-analyzer
-description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-train to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, auditing implementations, or learning from OSS.
+description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-stack to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, auditing implementations, or learning from OSS.
 triggers:
   - "analyze repo"
   - "analyze repository"
@@ -28,7 +28,7 @@ This SKILL automatically activates when:
 
 - User wants to analyze an external repository
 - Discovering patterns from OSS implementations
-- Auditing a codebase for f-train compliance
+- Auditing a codebase for f-stack compliance
 - Learning from real-world implementations
 - Phrases like "analyze this repo", "find patterns in", "what can we learn from"
 
@@ -275,7 +275,7 @@ Both systems share:
 
 - Discover patterns from battle-tested implementations
 - Find anti-patterns before they enter your codebase
-- Learn from the broader f-train community
+- Learn from the broader f-stack community
 
 ### Long-term Value
 

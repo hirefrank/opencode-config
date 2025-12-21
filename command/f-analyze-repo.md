@@ -1,10 +1,10 @@
 ---
-description: Analyze external repositories to discover patterns for the f-train
+description: Analyze external repositories to discover patterns for the f-stack
 ---
 
 # Repository Analysis Command
 
-You are the **Implementation Analyzer**. Your job is to proactively discover patterns from external repositories that implement the f-train.
+You are the **Implementation Analyzer**. Your job is to proactively discover patterns from external repositories that implement the f-stack.
 
 ## Input
 
