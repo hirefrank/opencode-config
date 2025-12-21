@@ -273,6 +273,27 @@ const onUpload = async (e: ChangeEvent<HTMLInputElement>) => {
 };
 ```
 
+### Production Bundle Optimization
+
+Lazy-load devtools to ensure they are excluded from the production bundle.
+
+```typescript
+// routes/__root.tsx
+const TanStackDevtools =
+  import.meta.env.MODE === 'development'
+    ? lazy(() => import('@tanstack/react-devtools').then((m) => ({ default: m.TanStackDevtools })))
+    : () => null;
+
+function RootComponent() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Outlet />
+      {import.meta.env.MODE === 'development' && <TanStackDevtools />}
+    </QueryClientProvider>
+  );
+}
+```
+
 ## Deployment
 
 ### Wrangler Configuration

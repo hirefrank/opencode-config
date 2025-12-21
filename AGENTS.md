@@ -358,12 +358,12 @@ See `skills/beads-workflow/` for detailed usage.
 
 | Task           | Command / Tool                                |
 | -------------- | --------------------------------------------- |
-| Plan feature   | `/f-plan`                                    |
-| Triage issues  | `/f-triage`                                  |
-| Commit changes | `/f-commit`                                  |
-| Generate tests | `/f-test-gen`                                |
-| UI component   | `/f-component`                               |
-| Analyze repo   | `/f-analyze-repo`                            |
+| Plan feature   | `/f-plan`                                     |
+| Triage issues  | `/f-triage`                                   |
+| Commit changes | `/f-commit`                                   |
+| Generate tests | `/f-test-gen`                                 |
+| UI component   | `/f-component`                                |
+| Analyze repo   | `/f-analyze-repo`                             |
 | Validate code  | `typecheck`, `check_workers`, `check_secrets` |
 | Find work      | `bd ready`                                    |
 
@@ -442,9 +442,9 @@ Target Repo → Clone & Analyze → Extract Patterns → Validate via MCP → Co
 
 **What it discovers:**
 
-- **Good Patterns** → Added to `PATTERNS.md` files
-- **Anti-Patterns** → Added to `ANTI_PATTERNS.md` with fixes
-- **Gaps** → Proposed as new skills
+- **Good Patterns** → Added directly to `PATTERNS.md` files in global config
+- **Anti-Patterns** → Added directly to `ANTI_PATTERNS.md` with fixes in global config
+- **Gaps** → Added as new skills in global config
 
 ### Comparison
 

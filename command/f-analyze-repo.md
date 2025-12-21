@@ -209,13 +209,13 @@ After presenting the report, ask:
 
 **"What would you like to do with these findings?"**
 
-| Choice                         | Action                                                                                      |
-| ------------------------------ | ------------------------------------------------------------------------------------------- |
-| **1. Create skill PRs**        | For improvements + new opportunities: create a plan or beads in `hirefrank/opencode-config` |
-| **2. Fix implementation gaps** | Create beads in the current repo for violations                                             |
-| **3. Both**                    | Do both of the above                                                                        |
-| **4. Export report**           | Save report to a file for later                                                             |
-| **5. Done**                    | End session                                                                                 |
+| Choice                         | Action                                                                                 |
+| ------------------------------ | -------------------------------------------------------------------------------------- |
+| **1. Apply skill changes**     | For improvements + new opportunities: modify skill files directly in `opencode-config` |
+| **2. Fix implementation gaps** | Create beads in the current repo for violations                                        |
+| **3. Both**                    | Do both of the above                                                                   |
+| **4. Export report**           | Save report to a file for later                                                        |
+| **5. Done**                    | End session                                                                            |
 
 ---
 
@@ -249,7 +249,7 @@ Finds relevant repos on GitHub and analyzes them.
 
 ## Key Principles
 
-1. **Never create local skills** — all skill changes go to `hirefrank/opencode-config`
-2. **Never auto-write** — report findings, let user decide what to act on
-3. **Route correctly** — skill changes → opencode-config, implementation fixes → current repo
-4. **Validate first** — confirm patterns against official docs before recommending
+1. **All skill changes go to `opencode-config`** — changes are applied directly to skill files in the config repository (no PR).
+2. **Never auto-write** — report findings, let user decide what to act on.
+3. **Route correctly** — skill changes → `opencode-config`, implementation fixes → current repo.
+4. **Validate first** — confirm patterns against official docs before recommending.
