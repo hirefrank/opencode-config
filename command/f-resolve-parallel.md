@@ -56,7 +56,7 @@ Spawn appropriate agents for each unresolved beads task in parallel:
 **Example:**
 If there are 5 beads tasks with different labels, spawn 5 agents in parallel:
 
-1. Task explore(bd-1: workers-runtime issue)
+1. Task explore(bd-1: workers-runtime task)
 2. Task frontend-ui-ux-engineer(bd-2: ui component)
 3. Task general(bd-3: refactoring task)
 4. Task oracle(bd-4: architecture decision)
