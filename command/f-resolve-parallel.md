@@ -1,96 +1,93 @@
 ---
-description: Resolve all TODOs and GitHub issues using parallel processing with multiple agents
+description: Resolve all beads tasks using parallel processing with multiple agents
 ---
 
-Resolve all TODO files and GitHub issues using parallel processing.
+Resolve all beads tasks using parallel processing with multiple agents.
 
 ## Workflow
 
 ### 1. Analyze
 
-Get all unresolved items from multiple sources:
+Get all unresolved beads tasks:
 
-**Beads (Persistent Tasks):**
+**Query Beads:**
 
 - Run `bd ready` to get all unblocked, persistent tasks
-- Run `bd show <id>` to understand task details and dependencies
-
-**TODO Files:**
-
-- Get all unresolved TODOs from the `/todos/*.md` directory
-
-**GitHub Issues:**
-
-- Fetch open GitHub issues via `gh issue list --json number,title,labels,body,url`
-- Parse and extract actionable items from issues
+- Run `bd show <id>` for each task to understand details and dependencies
+- Parse task metadata (priority, labels, dependencies)
 
 ### 2. Plan
 
-Create a TodoWrite list of all unresolved items grouped by source (Beads vs TODO files vs GitHub issues) and type.
+Create a TodoWrite list of all unresolved beads tasks grouped by:
+
+- **Priority**: P1 (critical) → P2 (important) → P3 (nice-to-have)
+- **Labels**: Category-based grouping (workers-runtime, bindings, security, etc.)
+- **Dependencies**: Tasks that block other tasks
 
 **Dependency Analysis:**
 
-- Look at dependencies that might occur and prioritize the ones needed by others
-- For example, if you need to change a name, you must wait to do the others
-- Consider cross-dependencies between Beads tasks, file TODOs and GitHub issues
+- Look at task dependencies and prioritize the ones needed by others
+- For example, if task B depends on task A, A must be completed first
+- Use dependency tree to determine execution order
 - Use `bd dep add` to document newly discovered dependencies
 
 **Visualization:**
 
 - Output a mermaid flow diagram showing the resolution flow
 - Can we do everything in parallel? Do we need to do one first that leads to others in parallel?
-- Put the items in the mermaid diagram flow-wise so the agent knows how to proceed in order
+- Put the tasks in the mermaid diagram flow-wise so the agent knows how to proceed in order
 
 ### 3. Implement (PARALLEL)
 
-Spawn appropriate agents for each unresolved item in parallel, using the right agent type for each source:
+Spawn appropriate agents for each unresolved beads task in parallel:
 
-**For Beads tasks:**
+**For each Beads task:**
 
-- Run `bd update <id> --status in_progress` to claim the task
-- Spawn the most appropriate agent for the task type
-
-**For TODO files:**
-
-- Spawn a pr-comment-resolver agent for each unresolved TODO item
-
-**For GitHub issues:**
-
-- Spawn a general-purpose agent for each issue
-- Pass issue number, title, and body to the agent
+1. Run `bd update <id> --status in_progress` to claim the task
+2. Spawn the most appropriate agent based on task labels:
+   - `workers-runtime` → use explore + librarian agents
+   - `bindings` → use cloudflare-workers skill
+   - `durable-objects` → use durable-objects skill
+   - `security` → use ubs scan + validation tools
+   - `performance` → use edge-performance-optimizer
+   - `ui` → delegate to frontend-ui-ux-engineer
+   - Default → use general agent
 
 **Example:**
-If there are 2 Beads tasks, 2 TODO items and 3 GitHub issues, spawn 7 agents in parallel:
+If there are 5 beads tasks with different labels, spawn 5 agents in parallel:
 
-1. Task appropriate-agent(beads1)
-2. Task appropriate-agent(beads2)
-3. Task pr-comment-resolver(todo1)
-4. Task pr-comment-resolver(todo2)
-5. Task general-purpose(issue1)
-6. Task general-purpose(issue2)
-7. Task general-purpose(issue3)
+1. Task explore(bd-1: workers-runtime issue)
+2. Task frontend-ui-ux-engineer(bd-2: ui component)
+3. Task general(bd-3: refactoring task)
+4. Task oracle(bd-4: architecture decision)
+5. Task explore(bd-5: performance optimization)
 
-Always run all in parallel subagents/Tasks for each item (respecting dependencies from Step 2).
+Always run all agents in parallel for independent tasks (respecting dependencies from Step 2).
 
 ### 4. Commit & Resolve
 
-**For Beads tasks:**
+**For each completed Beads task:**
 
-- Run `bd done <id>` to mark task as completed
-- Run `bd sync` to update the persistent state
-
-**For TODO files:**
-
-- Remove the TODO from the file and mark it as resolved
-
-**For GitHub issues:**
-
-- Close the issue via `gh issue close <number> --comment "Resolved in commit <sha>"`
-- Reference the commit that resolves the issue
+1. Verify work is complete (tests pass, code quality checks)
+2. Run `bd done <id>` to mark task as completed
+3. Run `bd sync` to update the persistent state
 
 **Final steps:**
 
 - Commit all changes with descriptive message
-- Run `bd sync` one last time
+- Run `bd sync` one last time to ensure all state is persisted
 - Push to remote repository
 - Ensure `git status` shows "up to date with origin"
+
+**Completion Summary:**
+
+```
+✅ Resolved N beads tasks in parallel
+📦 Tasks completed:
+  - bd-1: [title]
+  - bd-2: [title]
+  - bd-3: [title]
+  ...
+
+🔄 Next available work: `bd ready`
+```

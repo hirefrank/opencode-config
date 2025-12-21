@@ -15,11 +15,11 @@ description: Scaffold shadcn/ui components with distinctive design, accessibilit
 ## Prerequisites
 
 <requirements>
-- Tanstack Start project with Vue 3
+- Tanstack Start project with React 19
 - shadcn/ui component library installed
 - Tailwind 4 CSS configured with custom theme (or will be created)
 - (Optional) shadcn/ui MCP server for component API validation
-- (Optional) Existing `composables/useDesignSystem.ts` for consistent patterns
+- (Optional) Existing `hooks/useDesignSystem.ts` for consistent patterns
 </requirements>
 
 ## Command Usage
@@ -68,7 +68,7 @@ This ensures generated components match existing project aesthetics.
 <task_list>
 
 - [ ] Check for `tailwind.config.ts` and extract custom theme (fonts, colors, animations)
-- [ ] Check for `composables/useDesignSystem.ts` and extract existing variants
+- [ ] Check for `hooks/useDesignSystem.ts` and extract existing variants
 - [ ] Check for `app.config.ts` and extract shadcn/ui global customization
 - [ ] Scan existing components for naming conventions and structure patterns
 - [ ] Determine if design system is established or needs creation
@@ -79,12 +79,13 @@ This ensures generated components match existing project aesthetics.
 
 <summary_format>
 📦 **Project Context**:
+
 - Custom fonts: Found/Not Found (Inter ❌ or Custom ✅)
 - Brand colors: Found/Not Found (Purple ❌ or Custom ✅)
 - Design system composable: Exists/Missing
 - Component count: X components found
 - Naming convention: Detected pattern
-</summary_format>
+  </summary_format>
 
 ### 2. Validate Component Type with MCP (if available)
 
@@ -98,6 +99,7 @@ and get accurate props/slots before generating.
 <mcp_workflow>
 
 If shadcn/ui MCP available:
+
 1. Query `shadcn-ui.list_components()` to get available components
 2. Map component type to shadcn/ui component:
    - `button` → `Button`
@@ -110,6 +112,7 @@ If shadcn/ui MCP available:
 4. Use real props in generated component (prevent hallucination)
 
 If MCP not available:
+
 - Use documented shadcn/ui API
 - Include comment: "// TODO: Verify props with shadcn/ui docs"
 
@@ -122,7 +125,7 @@ Generate React component with:
 1. Distinctive typography (custom fonts, not Inter)
 2. Brand colors (custom palette, not purple)
 3. Rich animations (transitions, micro-interactions)
-4. Deep shadcn/ui customization (ui prop + utilities)
+4. Deep shadcn/ui customization (className + cn() utility)
 5. Accessibility features (ARIA, keyboard, focus states)
 6. Responsive design
 </thinking>
@@ -134,99 +137,102 @@ Generate React component with:
 <button_template>
 
 ```tsx
-<!-- app/components/PrimaryButton.tsx -->
-<script setup lang="ts">
-import { computed } from 'react';
+// app/components/PrimaryButton.tsx
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
-interface Props {
+interface PrimaryButtonProps {
   /** Button label */
   label?: string;
-  /** Icon name (Iconify format) */
-  icon?: string;
+  /** Icon component (Lucide React) */
+  icon?: React.ComponentType<{ className?: string }>;
   /** Loading state */
   loading?: boolean;
   /** Disabled state */
   disabled?: boolean;
   /** Button size */
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: "sm" | "md" | "lg" | "xl";
   /** Full width */
   fullWidth?: boolean;
+  /** Click handler */
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /** Children override label */
+  children?: React.ReactNode;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  label: '',
-  icon: '',
-  loading: false,
-  disabled: false,
-  size: 'lg',
-  fullWidth: false
-});
+export function PrimaryButton({
+  label,
+  icon: Icon,
+  loading = false,
+  disabled = false,
+  size = "lg",
+  fullWidth = false,
+  onClick,
+  children,
+}: PrimaryButtonProps) {
+  const sizeClasses = {
+    sm: "px-4 py-2 text-sm",
+    md: "px-6 py-3 text-base",
+    lg: "px-8 py-4 text-lg",
+    xl: "px-10 py-5 text-xl",
+  };
 
-const emit = defineEmits<{
-  click: [event: MouseEvent];
-}>();
+  return (
+    <Button
+      variant="default"
+      disabled={disabled || loading}
+      onClick={onClick}
+      className={cn(
+        "font-heading tracking-wide rounded-full shadow-lg hover:shadow-xl",
+        "transition-all duration-300 ease-out",
+        "hover:scale-105 hover:-rotate-1",
+        "active:scale-95 active:rotate-0",
+        "focus:outline-none",
+        "focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2",
+        "motion-safe:hover:scale-105",
+        "motion-reduce:hover:bg-primary-700",
+        sizeClasses[size],
+        fullWidth && "w-full",
+        "group",
+      )}
+    >
+      <span className="inline-flex items-center gap-2">
+        {children || label}
 
-const buttonClasses = computed(() => ({
-  'w-full': props.fullWidth
-}));
+        {/* Animated icon on hover */}
+        {Icon && !loading && (
+          <Icon className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+        )}
 
-  <Button
-    :color="primary"
-    :size="size"
-    loading={loading"
-    disabled={disabled || loading"
-    :icon="icon"
-    :ui="{
-      font: 'font-heading tracking-wide',
-      rounded: 'rounded-full',
-      padding: {
-        sm: 'px-4 py-2',
-        md: 'px-6 py-3',
-        lg: 'px-8 py-4',
-        xl: 'px-10 py-5'
-      },
-      shadow: 'shadow-lg hover:shadow-xl'
-    }"
-    :class="[
-      'transition-all duration-300 ease-out',
-      'hover:scale-105 hover:-rotate-1',
-      'active:scale-95 active:rotate-0',
-      'focus:outline-none',
-      'focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2',
-      'motion-safe:hover:scale-105',
-      'motion-reduce:hover:bg-primary-700',
-      buttonClasses
-    ]"
-    onClick={emit('click', $event)"
-  >
-    <span class="inline-flex items-center gap-2">
-      <slot>{ label}</slot>
-
-      <!-- Animated icon on hover -->
-      <Icon
-        {&& "icon && !loading"
-        :name="icon"
-        class="
-          transition-transform duration-300
-          group-hover:translate-x-1 group-hover:-translate-y-0.5
-        "
-      />
-    </span>
-  </Button>
+        {/* Loading spinner */}
+        {loading && <Loader2 className="animate-spin" />}
+      </span>
+    </Button>
+  );
+}
 ```
 
 **Usage Example**:
-```tsx
-const handleClick = () => {
-  console.log('Clicked!');
-};
 
-  <PrimaryButton
-    label="Get Started"
-    icon="i-heroicons-arrow-right"
-    size="lg"
-    onClick={handleClick"
-  />
+```tsx
+import { PrimaryButton } from "@/components/PrimaryButton";
+import { ArrowRight } from "lucide-react";
+
+export default function MyPage() {
+  const handleClick = () => {
+    console.log("Clicked!");
+  };
+
+  return (
+    <PrimaryButton
+      label="Get Started"
+      icon={ArrowRight}
+      size="lg"
+      onClick={handleClick}
+    />
+  );
+}
 ```
 
 </button_template>
@@ -236,116 +242,123 @@ const handleClick = () => {
 <card_template>
 
 ```tsx
-<!-- app/components/FeatureCard.tsx -->
-<script setup lang="ts">
-import { ref } from 'react';
+// app/components/FeatureCard.tsx
+import { useState } from "react";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
-interface Props {
+interface FeatureCardProps {
   /** Card title */
   title: string;
   /** Card description */
   description?: string;
-  /** Icon name */
-  icon?: string;
+  /** Icon component (Lucide React) */
+  icon?: React.ComponentType<{ className?: string }>;
   /** Enable hover effects */
   hoverable?: boolean;
   /** Card variant */
-  variant?: 'default' | 'elevated' | 'outlined';
+  variant?: "default" | "elevated" | "outlined";
+  /** Children for custom content */
+  children?: React.ReactNode;
+  /** Footer content */
+  footer?: React.ReactNode;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  description: '',
-  icon: '',
-  hoverable: true,
-  variant: 'elevated'
-});
+export function FeatureCard({
+  title,
+  description,
+  icon: Icon,
+  hoverable = true,
+  variant = "elevated",
+  children,
+  footer,
+}: FeatureCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
 
-const isHovered = ref(false);
+  return (
+    <Card
+      className={cn(
+        "bg-white dark:bg-brand-midnight rounded-2xl",
+        variant === "outlined" && "ring-1 ring-brand-coral/20",
+        variant === "elevated" ? "shadow-xl hover:shadow-2xl" : "shadow-md",
+        "transition-all duration-300",
+        hoverable && "hover:-translate-y-2 hover:rotate-1 cursor-pointer",
+        "motion-safe:hover:-translate-y-2",
+        "motion-reduce:hover:shadow-xl",
+      )}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <CardContent className="p-8 bg-gradient-to-br from-white to-gray-50 dark:from-brand-midnight dark:to-gray-900">
+        <div className="space-y-4">
+          {/* Icon */}
+          {Icon && (
+            <div
+              className={cn(
+                "inline-flex items-center justify-center",
+                "w-16 h-16 rounded-2xl",
+                "bg-gradient-to-br from-brand-coral to-brand-ocean",
+                "transition-transform duration-300",
+                isHovered && "scale-110 rotate-3",
+              )}
+            >
+              <Icon className="w-8 h-8 text-white" />
+            </div>
+          )}
 
-const cardUi = computed(() => ({
-  background: 'bg-white dark:bg-brand-midnight',
-  ring: props.variant === 'outlined' ? 'ring-1 ring-brand-coral/20' : '',
-  rounded: 'rounded-2xl',
-  shadow: props.variant === 'elevated' ? 'shadow-xl hover:shadow-2xl' : 'shadow-md',
-  body: {
-    padding: 'p-8',
-    background: 'bg-gradient-to-br from-white to-gray-50 dark:from-brand-midnight dark:to-gray-900'
-  }
-}));
+          {/* Title */}
+          <h3
+            className={cn(
+              "font-heading text-2xl",
+              "text-brand-midnight dark:text-white",
+              "transition-colors duration-300",
+              isHovered && "text-brand-coral",
+            )}
+          >
+            {title}
+          </h3>
 
-  <Card
-    :ui="cardUi"
-    :class="[
-      'transition-all duration-300',
-      hoverable && 'hover:-translate-y-2 hover:rotate-1 cursor-pointer',
-      'motion-safe:hover:-translate-y-2',
-      'motion-reduce:hover:shadow-xl'
-    ]"
-    onMouseEnter="isHovered = true"
-    onMouseLeave="isHovered = false"
-  >
-    <div class="space-y-4">
-      <!-- Icon -->
-      <div
-        {&& "icon"
-        :class="[
-          'inline-flex items-center justify-center',
-          'w-16 h-16 rounded-2xl',
-          'bg-gradient-to-br from-brand-coral to-brand-ocean',
-          'transition-transform duration-300',
-          isHovered && 'scale-110 rotate-3'
-        ]"
-      >
-        <Icon
-          :name="icon"
-          class="w-8 h-8 text-white"
-        />
-      </div>
+          {/* Description */}
+          {description && (
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
+              {description}
+            </p>
+          )}
 
-      <!-- Title -->
-      <h3
-        :class="[
-          'font-heading text-2xl',
-          'text-brand-midnight dark:text-white',
-          'transition-colors duration-300',
-          isHovered && 'text-brand-coral'
-        ]"
-      >
-        { title}
-      </h3>
+          {/* Custom content */}
+          {children}
+        </div>
+      </CardContent>
 
-      <!-- Description -->
-      <p
-        {&& "description"
-        class="text-gray-700 dark:text-gray-300 leading-relaxed"
-      >
-        { description}
-      </p>
-
-      <!-- Default slot for custom content -->
-      <div {&& "$slots.default">
-        <slot />
-      </div>
-
-      <!-- Footer slot -->
-      <div {&& "$slots.footer" class="pt-4 border-t border-gray-200 dark:border-gray-700">
-        <slot name="footer" />
-      </div>
-    </div>
-  </Card>
+      {/* Footer */}
+      {footer && (
+        <CardFooter className="pt-4 border-t border-gray-200 dark:border-gray-700">
+          {footer}
+        </CardFooter>
+      )}
+    </Card>
+  );
+}
 ```
 
 **Usage Example**:
+
 ```tsx
-  <FeatureCard
-    title="Fast Deployment"
-    description="Deploy to the edge in seconds with Cloudflare Workers"
-    icon="i-heroicons-rocket-launch"
-    hoverable
-  >
-    <template #footer>
-      <PrimaryButton label="Learn More" size="sm" />
-  </FeatureCard>
+import { FeatureCard } from "@/components/FeatureCard";
+import { PrimaryButton } from "@/components/PrimaryButton";
+import { Rocket } from "lucide-react";
+
+export default function MyPage() {
+  return (
+    <FeatureCard
+      title="Fast Deployment"
+      description="Deploy to the edge in seconds with Cloudflare Workers"
+      icon={Rocket}
+      hoverable
+      footer={<PrimaryButton label="Learn More" size="sm" />}
+    />
+  );
+}
 ```
 
 </card_template>
@@ -355,197 +368,212 @@ const cardUi = computed(() => ({
 <form_template>
 
 ```tsx
-<!-- app/components/ContactForm.tsx -->
-<script setup lang="ts">
-import { ref, reactive } from 'react';
-import { z } from 'zod';
-import type { FormSubmitEvent } from '#ui/types';
+// app/components/ContactForm.tsx
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { cn } from "@/lib/utils";
+import { User, Mail, Send, CheckCircle, XCircle, Loader2 } from "lucide-react";
 
 // Validation schema
 const schema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
-  message: z.string().min(10, 'Message must be at least 10 characters')
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
-type Schema = z.output<typeof schema>;
+type FormData = z.infer<typeof schema>;
 
-const formData = reactive<Schema>({
-  name: '',
-  email: '',
-  message: ''
-});
+export function ContactForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
-const isSubmitting = ref(false);
-const showSuccess = ref(false);
-const showError = ref(false);
-const errorMessage = ref('');
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
-const onSubmit = async (event: FormSubmitEvent<Schema>) => {
-  isSubmitting.value = true;
-  showSuccess.value = false;
-  showError.value = false;
+  const onSubmit = async (data: FormData) => {
+    setIsSubmitting(true);
+    setShowSuccess(false);
+    setShowError(false);
 
-  try {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    console.log('Form submitted:', event.data);
+      console.log("Form submitted:", data);
 
-    showSuccess.value = true;
+      setShowSuccess(true);
+      reset();
 
-    // Reset form
-    formData.name = '';
-    formData.email = '';
-    formData.message = '';
+      // Hide success message after 5 seconds
+      setTimeout(() => {
+        setShowSuccess(false);
+      }, 5000);
+    } catch (error) {
+      setShowError(true);
+      setErrorMessage("Failed to submit form. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-    // Hide success message after 5 seconds
-    setTimeout(() => {
-      showSuccess.value = false;
-    }, 5000);
-  } catch (error) {
-    showError.value = true;
-    errorMessage.value = 'Failed to submit form. Please try again.';
-  } finally {
-    isSubmitting.value = false;
-  }
-};
+  return (
+    <div className="space-y-6">
+      {/* Success Alert */}
+      {showSuccess && (
+        <Alert
+          className={cn(
+            "rounded-xl p-4 border-green-500 bg-green-50 dark:bg-green-950",
+            "animate-in slide-in-from-top duration-300",
+          )}
+        >
+          <CheckCircle className="h-4 w-4 text-green-600" />
+          <AlertTitle>Success!</AlertTitle>
+          <AlertDescription>
+            Your message has been sent successfully.
+          </AlertDescription>
+          <button
+            onClick={() => setShowSuccess(false)}
+            className="absolute top-4 right-4 text-green-600 hover:text-green-800"
+          >
+            ×
+          </button>
+        </Alert>
+      )}
 
-  <div class="space-y-6">
-    <!-- Success Alert -->
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 translate-y-2 scale-95"
-      enter-to-class="opacity-100 translate-y-0 scale-100"
-      leave-active-class="transition-all duration-200 ease-in"
-      leave-from-class="opacity-100"
-      leave-to-class="opacity-0"
-    >
-      <Alert
-        {&& "showSuccess"
-        color="green"
-        icon="i-heroicons-check-circle"
-        title="Success!"
-        description="Your message has been sent successfully."
-        :closable="true"
-        :ui="{ rounded: 'rounded-xl', padding: 'p-4' }"
-        onClose="showSuccess = false"
-      />
-    </Transition>
+      {/* Error Alert */}
+      {showError && (
+        <Alert
+          className={cn(
+            "rounded-xl p-4 border-red-500 bg-red-50 dark:bg-red-950",
+            "animate-in slide-in-from-top duration-300",
+          )}
+        >
+          <XCircle className="h-4 w-4 text-red-600" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>{errorMessage}</AlertDescription>
+          <button
+            onClick={() => setShowError(false)}
+            className="absolute top-4 right-4 text-red-600 hover:text-red-800"
+          >
+            ×
+          </button>
+        </Alert>
+      )}
 
-    <!-- Error Alert -->
-    <Transition
-      enter-active-class="transition-all duration-300 ease-out"
-      enter-from-class="opacity-0 translate-y-2"
-      enter-to-class="opacity-100 translate-y-0"
-    >
-      <Alert
-        {&& "showError"
-        color="red"
-        icon="i-heroicons-x-circle"
-        title="Error"
-        :description="errorMessage"
-        :closable="true"
-        onClose="showError = false"
-      />
-    </Transition>
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        {/* Name Field */}
+        <div className="space-y-2">
+          <Label htmlFor="name" className="font-medium text-sm">
+            Name <span className="text-red-500">*</span>
+          </Label>
+          <div className="relative">
+            <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+            <Input
+              id="name"
+              placeholder="Your name"
+              {...register("name")}
+              className={cn(
+                "pl-11 rounded-lg px-4 py-3",
+                "transition-all duration-200 focus:ring-2 focus:ring-brand-coral",
+                errors.name && "border-red-500",
+              )}
+            />
+          </div>
+          {errors.name && (
+            <p className="text-sm text-red-500">{errors.name.message}</p>
+          )}
+        </div>
 
-    <!-- Form -->
-    <UForm
-      :schema="schema"
-      :state="formData"
-      class="space-y-6"
-      onSubmit="onSubmit"
-    >
-      <!-- Name Field -->
-      <UFormGroup
-        label="Name"
-        name="name"
-        required
-        :ui="{ label: { base: 'font-medium text-sm' } }"
-      >
-        <Input
-          value="formData.name"
-          placeholder="Your name"
-          icon="i-heroicons-user"
-          :ui="{
-            rounded: 'rounded-lg',
-            padding: { sm: 'px-4 py-3' },
-            icon: { leading: { padding: { sm: 'ps-11' } } }
-          }"
-          class="transition-all duration-200 focus-within:ring-2 focus-within:ring-brand-coral"
-        />
-      </UFormGroup>
+        {/* Email Field */}
+        <div className="space-y-2">
+          <Label htmlFor="email" className="font-medium text-sm">
+            Email <span className="text-red-500">*</span>
+          </Label>
+          <div className="relative">
+            <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+            <Input
+              id="email"
+              type="email"
+              placeholder="your@email.com"
+              {...register("email")}
+              className={cn(
+                "pl-11 rounded-lg px-4 py-3",
+                "transition-all duration-200 focus:ring-2 focus:ring-brand-coral",
+                errors.email && "border-red-500",
+              )}
+            />
+          </div>
+          {errors.email && (
+            <p className="text-sm text-red-500">{errors.email.message}</p>
+          )}
+        </div>
 
-      <!-- Email Field -->
-      <UFormGroup
-        label="Email"
-        name="email"
-        required
-      >
-        <Input
-          value="formData.email"
-          type="email"
-          placeholder="your@email.com"
-          icon="i-heroicons-envelope"
-          :ui="{
-            rounded: 'rounded-lg',
-            padding: { sm: 'px-4 py-3' }
-          }"
-          class="transition-all duration-200 focus-within:ring-2 focus-within:ring-brand-coral"
-        />
-      </UFormGroup>
-
-      <!-- Message Field -->
-      <UFormGroup
-        label="Message"
-        name="message"
-        required
-      >
-        <UTextarea
-          value="formData.message"
-          placeholder="Your message..."
-          :rows="5"
-          :ui="{
-            rounded: 'rounded-lg',
-            padding: { sm: 'px-4 py-3' }
-          }"
-          class="transition-all duration-200 focus-within:ring-2 focus-within:ring-brand-coral"
-        />
-      </UFormGroup>
-
-      <!-- Submit Button -->
-      <Button
-        type="submit"
-        loading={isSubmitting"
-        disabled={isSubmitting"
-        color="primary"
-        size="lg"
-        :ui="{
-          font: 'font-heading',
-          rounded: 'rounded-full',
-          padding: { lg: 'px-8 py-4' }
-        }"
-        class="
-          w-full
-          transition-all duration-300
-          hover:scale-105 hover:shadow-xl
-          active:scale-95
-          motion-safe:hover:scale-105
-          motion-reduce:hover:bg-primary-700
-        "
-      >
-        <span class="inline-flex items-center gap-2">
-          <Icon
-            {&& "!isSubmitting"
-            name="i-heroicons-paper-airplane"
-            class="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5"
+        {/* Message Field */}
+        <div className="space-y-2">
+          <Label htmlFor="message" className="font-medium text-sm">
+            Message <span className="text-red-500">*</span>
+          </Label>
+          <Textarea
+            id="message"
+            placeholder="Your message..."
+            rows={5}
+            {...register("message")}
+            className={cn(
+              "rounded-lg px-4 py-3",
+              "transition-all duration-200 focus:ring-2 focus:ring-brand-coral",
+              errors.message && "border-red-500",
+            )}
           />
-          { isSubmitting ? 'Sending...' : 'Send Message'}
-        </span>
-      </Button>
-    </UForm>
-  </div>
+          {errors.message && (
+            <p className="text-sm text-red-500">{errors.message.message}</p>
+          )}
+        </div>
+
+        {/* Submit Button */}
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className={cn(
+            "w-full font-heading rounded-full px-8 py-4",
+            "transition-all duration-300",
+            "hover:scale-105 hover:shadow-xl",
+            "active:scale-95",
+            "motion-safe:hover:scale-105",
+            "motion-reduce:hover:bg-primary-700",
+            "group",
+          )}
+        >
+          <span className="inline-flex items-center gap-2">
+            {isSubmitting ? (
+              <Loader2 className="animate-spin" />
+            ) : (
+              <Send className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-0.5" />
+            )}
+            {isSubmitting ? "Sending..." : "Send Message"}
+          </span>
+        </Button>
+      </form>
+    </div>
+  );
+}
 ```
 
 </form_template>
@@ -555,9 +583,12 @@ const onSubmit = async (event: FormSubmitEvent<Schema>) => {
 <hero_template>
 
 ```tsx
-<!-- app/components/LandingHero.tsx -->
-<script setup lang="ts">
-interface Props {
+// app/components/LandingHero.tsx
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { Sparkles, ArrowRight } from "lucide-react";
+
+interface LandingHeroProps {
   /** Hero title */
   title: string;
   /** Hero subtitle */
@@ -566,144 +597,142 @@ interface Props {
   primaryCta?: string;
   /** Secondary CTA label */
   secondaryCta?: string;
+  /** Primary CTA click handler */
+  onPrimaryClick?: () => void;
+  /** Secondary CTA click handler */
+  onSecondaryClick?: () => void;
+  /** Additional content */
+  children?: React.ReactNode;
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  subtitle: '',
-  primaryCta: 'Get Started',
-  secondaryCta: 'Learn More'
-});
+export function LandingHero({
+  title,
+  subtitle,
+  primaryCta = "Get Started",
+  secondaryCta = "Learn More",
+  onPrimaryClick,
+  onSecondaryClick,
+  children,
+}: LandingHeroProps) {
+  return (
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Atmospheric Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-brand-cream via-white to-brand-ocean/10" />
 
-const emit = defineEmits<{
-  primaryClick: [];
-  secondaryClick: [];
-}>();
+      {/* Animated Gradient Orbs */}
+      <div
+        className="absolute top-20 left-20 w-96 h-96 bg-brand-coral/20 rounded-full blur-3xl animate-pulse"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-20 right-20 w-96 h-96 bg-brand-ocean/20 rounded-full blur-3xl animate-pulse"
+        style={{ animationDelay: "1s" }}
+        aria-hidden="true"
+      />
 
-  <div class="relative min-h-screen flex items-center justify-center overflow-hidden">
-    <!-- Atmospheric Background -->
-    <div class="absolute inset-0 bg-gradient-to-br from-brand-cream via-white to-brand-ocean/10" />
+      {/* Subtle Pattern Overlay */}
+      <div
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)",
+          backgroundSize: "20px 20px",
+        }}
+        aria-hidden="true"
+      />
 
-    <!-- Animated Gradient Orbs -->
-    <div
-      class="absolute top-20 left-20 w-96 h-96 bg-brand-coral/20 rounded-full blur-3xl animate-pulse"
-      aria-hidden="true"
-    />
-    <div
-      class="absolute bottom-20 right-20 w-96 h-96 bg-brand-ocean/20 rounded-full blur-3xl animate-pulse"
-      style="animation-delay: 1s;"
-      aria-hidden="true"
-    />
-
-    <!-- Subtle Pattern Overlay -->
-    <div
-      class="absolute inset-0 opacity-5"
-      style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 20px 20px;"
-      aria-hidden="true"
-    />
-
-    <!-- Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-      <div class="text-center space-y-8">
-        <!-- Animated Badge -->
-        <div
-          class="
-            inline-flex items-center gap-2
-            px-4 py-2 rounded-full
-            bg-brand-coral/10 border border-brand-coral/20
-            text-brand-coral font-medium
-            animate-in slide-in-from-top duration-500
-          "
-        >
-          <Icon name="i-heroicons-sparkles" class="w-4 h-4 animate-pulse" />
-          <span class="text-sm">New: Now on Cloudflare Workers</span>
-        </div>
-
-        <!-- Title -->
-        <h1
-          class="
-            font-heading text-6xl sm:text-7xl lg:text-8xl
-            tracking-tighter leading-none
-            text-brand-midnight dark:text-white
-            animate-in slide-in-from-top duration-700
-          "
-          style="animation-delay: 100ms;"
-        >
-          { title}
-        </h1>
-
-        <!-- Subtitle -->
-        <p
-          {&& "subtitle"
-          class="
-            max-w-2xl mx-auto
-            text-xl sm:text-2xl leading-relaxed
-            text-gray-700 dark:text-gray-300
-            animate-in slide-in-from-top duration-700
-          "
-          style="animation-delay: 200ms;"
-        >
-          { subtitle}
-        </p>
-
-        <!-- CTAs -->
-        <div
-          class="
-            flex flex-col sm:flex-row items-center justify-center gap-4
-            animate-in slide-in-from-top duration-700
-          "
-          style="animation-delay: 300ms;"
-        >
-          <Button
-            color="primary"
-            size="xl"
-            :ui="{
-              font: 'font-heading tracking-wide',
-              rounded: 'rounded-full',
-              padding: { xl: 'px-10 py-5' }
-            }"
-            class="
-              transition-all duration-300
-              hover:scale-110 hover:-rotate-2 hover:shadow-2xl
-              active:scale-95 active:rotate-0
-              motion-safe:hover:scale-110
-            "
-            onClick={emit('primaryClick')"
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="text-center space-y-8">
+          {/* Animated Badge */}
+          <div
+            className={cn(
+              "inline-flex items-center gap-2",
+              "px-4 py-2 rounded-full",
+              "bg-brand-coral/10 border border-brand-coral/20",
+              "text-brand-coral font-medium",
+              "animate-in slide-in-from-top duration-500",
+            )}
           >
-            <span class="inline-flex items-center gap-2">
-              { primaryCta}
-              <Icon
-                name="i-heroicons-arrow-right"
-                class="transition-transform duration-300 group-hover:translate-x-2"
-              />
-            </span>
-          </Button>
+            <Sparkles className="w-4 h-4 animate-pulse" />
+            <span className="text-sm">New: Now on Cloudflare Workers</span>
+          </div>
 
-          <Button
-            color="gray"
-            variant="outline"
-            size="xl"
-            :ui="{
-              font: 'font-sans',
-              rounded: 'rounded-full'
-            }"
-            class="
-              transition-all duration-300
-              hover:scale-105 hover:shadow-lg
-              active:scale-95
-            "
-            onClick={emit('secondaryClick')"
+          {/* Title */}
+          <h1
+            className={cn(
+              "font-heading text-6xl sm:text-7xl lg:text-8xl",
+              "tracking-tighter leading-none",
+              "text-brand-midnight dark:text-white",
+              "animate-in slide-in-from-top duration-700",
+            )}
+            style={{ animationDelay: "100ms" }}
           >
-            { secondaryCta}
-          </Button>
-        </div>
+            {title}
+          </h1>
 
-        <!-- Slot for additional content -->
-        <div {&& "$slots.default" class="mt-12">
-          <slot />
+          {/* Subtitle */}
+          {subtitle && (
+            <p
+              className={cn(
+                "max-w-2xl mx-auto",
+                "text-xl sm:text-2xl leading-relaxed",
+                "text-gray-700 dark:text-gray-300",
+                "animate-in slide-in-from-top duration-700",
+              )}
+              style={{ animationDelay: "200ms" }}
+            >
+              {subtitle}
+            </p>
+          )}
+
+          {/* CTAs */}
+          <div
+            className={cn(
+              "flex flex-col sm:flex-row items-center justify-center gap-4",
+              "animate-in slide-in-from-top duration-700",
+            )}
+            style={{ animationDelay: "300ms" }}
+          >
+            <Button
+              size="lg"
+              onClick={onPrimaryClick}
+              className={cn(
+                "font-heading tracking-wide rounded-full px-10 py-5",
+                "transition-all duration-300",
+                "hover:scale-110 hover:-rotate-2 hover:shadow-2xl",
+                "active:scale-95 active:rotate-0",
+                "motion-safe:hover:scale-110",
+                "group",
+              )}
+            >
+              <span className="inline-flex items-center gap-2">
+                {primaryCta}
+                <ArrowRight className="transition-transform duration-300 group-hover:translate-x-2" />
+              </span>
+            </Button>
+
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={onSecondaryClick}
+              className={cn(
+                "font-sans rounded-full",
+                "transition-all duration-300",
+                "hover:scale-105 hover:shadow-lg",
+                "active:scale-95",
+              )}
+            >
+              {secondaryCta}
+            </Button>
+          </div>
+
+          {/* Additional content */}
+          {children && <div className="mt-12">{children}</div>}
         </div>
       </div>
     </div>
-  </div>
+  );
+}
 ```
 
 </hero_template>
@@ -718,8 +747,8 @@ across all components.
 <design_system_composable>
 
 ```typescript
-// composables/useDesignSystem.ts
-import type { ButtonProps } from '#ui/types';
+// hooks/useDesignSystem.ts
+import { cn } from "@/lib/utils";
 
 export const useDesignSystem = () => {
   /**
@@ -727,36 +756,27 @@ export const useDesignSystem = () => {
    */
   const button = {
     primary: {
-      color: 'primary',
-      size: 'lg',
-      ui: {
-        font: 'font-heading tracking-wide',
-        rounded: 'rounded-full',
-        padding: { lg: 'px-8 py-4' },
-        shadow: 'shadow-lg hover:shadow-xl'
-      },
-      class: 'transition-all duration-300 hover:scale-105 hover:-rotate-1 active:scale-95 active:rotate-0'
-    } as ButtonProps,
+      className: cn(
+        "font-heading tracking-wide rounded-full px-8 py-4",
+        "shadow-lg hover:shadow-xl",
+        "transition-all duration-300 hover:scale-105 hover:-rotate-1",
+        "active:scale-95 active:rotate-0",
+      ),
+    },
 
     secondary: {
-      color: 'gray',
-      variant: 'outline',
-      size: 'md',
-      ui: {
-        font: 'font-sans',
-        rounded: 'rounded-lg'
-      },
-      class: 'transition-colors duration-200 hover:bg-gray-100 dark:hover:bg-gray-800'
-    } as ButtonProps,
+      variant: "outline" as const,
+      className: cn(
+        "font-sans rounded-lg",
+        "transition-colors duration-200",
+        "hover:bg-gray-100 dark:hover:bg-gray-800",
+      ),
+    },
 
     ghost: {
-      variant: 'ghost',
-      size: 'md',
-      ui: {
-        font: 'font-sans'
-      },
-      class: 'transition-colors duration-200'
-    } as ButtonProps
+      variant: "ghost" as const,
+      className: cn("font-sans", "transition-colors duration-200"),
+    },
   };
 
   /**
@@ -764,47 +784,55 @@ export const useDesignSystem = () => {
    */
   const card = {
     elevated: {
-      ui: {
-        background: 'bg-white dark:bg-brand-midnight',
-        rounded: 'rounded-2xl',
-        shadow: 'shadow-xl hover:shadow-2xl',
-        body: { padding: 'p-8' }
-      },
-      class: 'transition-all duration-300 hover:-translate-y-1'
+      className: cn(
+        "bg-white dark:bg-brand-midnight",
+        "rounded-2xl shadow-xl hover:shadow-2xl",
+        "p-8",
+        "transition-all duration-300 hover:-translate-y-1",
+      ),
     },
 
     outlined: {
-      ui: {
-        background: 'bg-white dark:bg-brand-midnight',
-        ring: 'ring-1 ring-brand-coral/20',
-        rounded: 'rounded-2xl',
-        body: { padding: 'p-8' }
-      },
-      class: 'transition-all duration-300 hover:ring-brand-coral/40'
-    }
+      className: cn(
+        "bg-white dark:bg-brand-midnight",
+        "ring-1 ring-brand-coral/20",
+        "rounded-2xl p-8",
+        "transition-all duration-300 hover:ring-brand-coral/40",
+      ),
+    },
   };
 
   /**
    * Animation Presets
    */
   const animations = {
-    fadeIn: 'animate-in fade-in duration-500',
-    slideUp: 'animate-in slide-in-from-bottom duration-500',
-    slideDown: 'animate-in slide-in-from-top duration-500',
-    scaleIn: 'animate-in zoom-in duration-300',
+    fadeIn: "animate-in fade-in duration-500",
+    slideUp: "animate-in slide-in-from-bottom duration-500",
+    slideDown: "animate-in slide-in-from-top duration-500",
+    scaleIn: "animate-in zoom-in duration-300",
     hover: {
-      scale: 'transition-transform duration-300 hover:scale-105',
-      lift: 'transition-all duration-300 hover:-translate-y-1',
-      shadow: 'transition-shadow duration-300 hover:shadow-xl'
-    }
+      scale: "transition-transform duration-300 hover:scale-105",
+      lift: "transition-all duration-300 hover:-translate-y-1",
+      shadow: "transition-shadow duration-300 hover:shadow-xl",
+    },
   };
 
   return {
     button,
     card,
-    animations
+    animations,
   };
 };
+
+// Usage example:
+// import { useDesignSystem } from '@/hooks/useDesignSystem'
+// import { Button } from '@/components/ui/button'
+//
+// export function MyComponent() {
+//   const { button } = useDesignSystem()
+//
+//   return <Button className={button.primary.className}>Click me</Button>
+// }
 ```
 
 </design_system_composable>
@@ -820,7 +848,7 @@ Create the actual files in the filesystem with proper naming and structure.
 <file_creation_steps>
 
 1. **Determine output path**:
-   - Default: `components/<ComponentName>.react`
+   - Default: `components/<ComponentName>.tsx`
    - Custom: User-specified `--output` path
 
 2. **Generate component file**:
@@ -830,15 +858,15 @@ Create the actual files in the filesystem with proper naming and structure.
    - Include JSDoc comments
    - Include usage examples in comments
 
-3. **Update or create design system composable** (if needed):
-   - Path: `composables/useDesignSystem.ts`
+3. **Update or create design system hook** (if needed):
+   - Path: `hooks/useDesignSystem.ts`
    - Add new variants if applicable
 
 4. **Generate Storybook story** (optional, if Storybook detected):
-   - Path: `components/<ComponentName>.stories.ts`
+   - Path: `components/<ComponentName>.stories.tsx`
 
 5. **Generate test file** (optional):
-   - Path: `components/<ComponentName>.spec.ts`
+   - Path: `components/<ComponentName>.test.tsx`
 
 </file_creation_steps>
 
@@ -873,12 +901,12 @@ Run validation to ensure generated component follows best practices.
 
 <output_format>
 
-```
+````
 ✅ Component Generated: <ComponentName>
 
 📁 Files Created:
 - app/components/<ComponentName>.tsx (primary component)
-- composables/useDesignSystem.ts (updated/created)
+- hooks/useDesignSystem.ts (updated/created)
 
 🎨 Design Features:
 ✅ Custom typography (font-heading)
@@ -902,14 +930,16 @@ import { <ComponentName> } from '#components';
     prop2="value2"
     onEvent="handleEvent"
   />
-```
+````
 
 🔍 Next Steps:
-1. Review generated component in `components/<ComponentName>.react`
+
+1. Review generated component in `components/<ComponentName>.tsx`
 2. Customize props/styles as needed
 3. Test accessibility with keyboard navigation
 4. Test animations with reduced motion preference
-5. Run `/f-design-review` to validate design patterns
+5. Run component in dev environment to verify
+
 ```
 
 </output_format>
@@ -941,3 +971,4 @@ After generating component:
 - Use **shadcn/ui MCP** (if available) to prevent prop hallucination
 - All generated components follow **WCAG 2.1 AA** accessibility standards
 - Generated components respect **user's reduced motion preference**
+```

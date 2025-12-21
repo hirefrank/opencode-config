@@ -105,10 +105,6 @@ Analyze the diff and generate a commit message following this format:
 <detailed description>
 
 <body with specifics>
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 
 **Commit type selection**:
@@ -165,10 +161,6 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
    Files added:
    - commands/f-commit.md (workflow automation command)
-
-   🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-   Co-Authored-By: Claude <noreply@anthropic.com>
    ```
 
 ### 4. Stage All Changes
@@ -194,14 +186,7 @@ Use heredoc for proper formatting.
 **If custom message provided**:
 
 ```bash
-git commit -m "$(cat <<'EOF'
-$CUSTOM_MESSAGE
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-EOF
-)"
+git commit -m "$CUSTOM_MESSAGE"
 ```
 
 **If auto-generated message**:
@@ -328,8 +313,8 @@ subscription middleware, and D1 database schema."
 **Message quality**:
 
 - ✅ Follows conventional commit standards
-- ✅ Includes Claude Code attribution
 - ✅ Provides detailed context from diff analysis
+- ✅ Clear, actionable commit messages
 
 ## Integration with Other Commands
 

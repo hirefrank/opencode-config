@@ -1,12 +1,17 @@
 ---
-description: Create a custom Claude Code slash command in .claude/commands/
+description: Create a custom OpenCode slash command
 ---
 
-# Create a Custom Claude Code Command
+# Create a Custom OpenCode Command
 
 Create a new slash command for the requested task.
 
-**Location:** Always create in the current project's `.claude/commands/[name].md` unless the user explicitly asks for a global command.
+**Location:**
+
+- **Project-specific**: `.opencode/command/[name].md` (current project only)
+- **Global**: `$OPENCODE_CONFIG_DIR/command/[name].md` (all projects)
+
+Default to project-specific unless the user explicitly asks for a global command.
 
 ## Goal
 
@@ -44,8 +49,8 @@ Create a new slash command for the requested task.
 2. **Break down complex tasks** - use step-by-step plans
 3. **Use examples** - reference existing code patterns
 4. **Include success criteria** - tests pass, linting clean, etc.
-5. **Think first** - use "think hard" or "plan" keywords for complex problems
-6. **Iterate** - guide the process step by step
+5. **Leverage skills** - reference global skills from `$OPENCODE_CONFIG_DIR/skills/`
+6. **Use agents** - delegate to specialized agents when appropriate
 
 ## Structure Your Command
 
@@ -78,44 +83,47 @@ Create a new slash command for the requested task.
 
 ## Tips for Effective Commands
 
-- **Use $ARGUMENTS** placeholder for dynamic inputs
-- **Reference PREFERENCES.md** for framework-specific patterns and guidelines
+- **Use {{PROMPT}}** placeholder for dynamic inputs (OpenCode convention)
+- **Reference AGENTS.md** for framework-specific patterns and guidelines
 - **Include verification steps** - tests, linting, visual checks
 - **Be explicit about constraints** - don't modify X, use pattern Y
 - **Use XML tags** for structured prompts: `<task>`, `<requirements>`, `<constraints>`
+- **Leverage MCP tools** - use shadcn MCP, context7, better-auth, etc. for ground truth
 
 ## Example Pattern
 
 ```markdown
-Implement #$ARGUMENTS following these steps:
+Implement {{PROMPT}} following these steps:
 
 1. Research existing patterns
-   - Search for similar code using Grep
+   - Search for similar code using Grep or mgrep (semantic search)
    - Read relevant files to understand approach
+   - Check global skills in `$OPENCODE_CONFIG_DIR/skills/` for best practices
 
 2. Plan the implementation
    - Think through edge cases and requirements
    - Consider test cases needed
+   - Identify which skills or agents to leverage
 
 3. Implement
    - Follow existing code patterns (reference specific files)
-   - Write tests first if doing TDD
-   - Ensure code follows CLAUDE.md conventions
+   - Follow AGENTS.md conventions (f-stack, Cloudflare Workers, etc.)
+   - Use MCP tools for ground truth (shadcn, context7, better-auth)
+   - Delegate UI work to frontend-ui-ux-engineer agent
 
 4. Verify
-   - Run tests:
-     - Local development: `npm test` or appropriate dev server
-     - TypeScript: `npm run typecheck` or `tsc --noEmit`
-     - Unit tests: `vitest` or `jest`
-   - Run linter:
-     - Rails: `bundle exec standardrb` or `bundle exec rubocop`
-     - TypeScript: `npm run lint` or `eslint .`
-     - Python: `ruff check .` or `flake8`
+   - Run validation tools:
+     - TypeScript: `typecheck` tool or `pnpm typecheck`
+     - Workers: `check_workers` tool
+     - Secrets: `check_secrets` tool
+     - UI: `validate_ui` tool
+   - Run tests: `pnpm test` or framework-specific command
+   - Run linter: `pnpm lint`
    - Check changes with git diff
 
-5. Commit (optional)
-   - Stage changes
-   - Write clear commit message
+5. Complete (if requested)
+   - Use `/f-commit` to commit and push changes
+   - Update beads tasks: `bd done <id>`
 ```
 
-Now create the command file at `.claude/commands/[name].md` with the structure above.
+Now create the command file at the appropriate location with the structure above.
