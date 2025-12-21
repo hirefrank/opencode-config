@@ -197,8 +197,8 @@ Evidence:
 - [Why confidence is high]
 
 ---
-Do you want to add this to the todo list?
-1. yes - create todo/issue
+Do you want to add this to Beads?
+1. yes - run bd add
 2. next - skip this finding
 3. custom - modify before creating
 ```
