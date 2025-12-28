@@ -28,15 +28,15 @@ Read skills from the global config at `$OPENCODE_CONFIG_PATH`:
 
 ```bash
 # Skills location
-$OPENCODE_CONFIG_PATH/skills/
+$OPENCODE_CONFIG_PATH/skill/
 ```
 
 Reference files to check:
 
-- `$OPENCODE_CONFIG_PATH/skills/cloudflare-workers/references/PATTERNS.md`
-- `$OPENCODE_CONFIG_PATH/skills/cloudflare-workers/references/ANTI_PATTERNS.md`
-- `$OPENCODE_CONFIG_PATH/skills/durable-objects/references/PATTERNS.md`
-- `$OPENCODE_CONFIG_PATH/skills/durable-objects/references/ANTI_PATTERNS.md`
+- `$OPENCODE_CONFIG_PATH/skill/cloudflare-workers/references/PATTERNS.md`
+- `$OPENCODE_CONFIG_PATH/skill/cloudflare-workers/references/ANTI_PATTERNS.md`
+- `$OPENCODE_CONFIG_PATH/skill/durable-objects/references/PATTERNS.md`
+- `$OPENCODE_CONFIG_PATH/skill/durable-objects/references/ANTI_PATTERNS.md`
 - etc.
 
 **Note:** Do NOT clone the config repo. Use the local path from the environment variable.

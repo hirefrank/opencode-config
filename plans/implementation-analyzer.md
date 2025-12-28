@@ -39,9 +39,9 @@ Unlike the reactive `feedback-codifier` (which processes chat feedback), the Imp
 │         ▼                   ▼                   ▼                            │
 │  ┌──────────────────────────────────────────────────────────────────────┐   │
 │  │                         CODIFICATION                                  │   │
-│  │  skills/cloudflare-workers/references/PATTERNS.md                     │   │
-│  │  skills/durable-objects/references/ANTI_PATTERNS.md                   │   │
-│  │  skills/[new-skill]/SKILL.md                                          │   │
+│  │  skill/cloudflare-workers/references/PATTERNS.md                     │   │
+│  │  skill/durable-objects/references/ANTI_PATTERNS.md                   │   │
+│  │  skill/[new-skill]/SKILL.md                                          │   │
 │  └──────────────────────────────────────────────────────────────────────┘   │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -360,12 +360,12 @@ PATTERN STATS       ANTI-PATTERN
 
 | Pattern Type | Storage Location |
 |--------------|-----------------|
-| Workers Runtime | `skills/cloudflare-workers/references/PATTERNS.md` |
-| Durable Objects | `skills/durable-objects/references/PATTERNS.md` |
-| DO Anti-Patterns | `skills/durable-objects/references/ANTI_PATTERNS.md` |
-| Auth Patterns | `skills/better-auth/references/PATTERNS.md` |
-| UI Patterns | `skills/shadcn-ui/references/PATTERNS.md` |
-| Tanstack Patterns | `skills/tanstack-start/references/PATTERNS.md` |
+| Workers Runtime | `skill/cloudflare-workers/references/PATTERNS.md` |
+| Durable Objects | `skill/durable-objects/references/PATTERNS.md` |
+| DO Anti-Patterns | `skill/durable-objects/references/ANTI_PATTERNS.md` |
+| Auth Patterns | `skill/better-auth/references/PATTERNS.md` |
+| UI Patterns | `skill/shadcn-ui/references/PATTERNS.md` |
+| Tanstack Patterns | `skill/tanstack-start/references/PATTERNS.md` |
 
 ---
 
@@ -495,8 +495,8 @@ context7_get_library_docs({ context7CompatibleLibraryID: "<library>", topic: "<p
 ### Step 5: Classification & Codification
 
 Based on validation:
-- **Good Pattern** → Add to `skills/<category>/references/PATTERNS.md`
-- **Anti-Pattern** → Add to `skills/<category>/references/ANTI_PATTERNS.md`
+- **Good Pattern** → Add to `skill/<category>/references/PATTERNS.md`
+- **Anti-Pattern** → Add to `skill/<category>/references/ANTI_PATTERNS.md`
 - **Gap** → Propose new skill in report
 
 ### Step 6: Report
@@ -526,8 +526,8 @@ Generate analysis report:
 - Missing error boundary patterns
 
 ## Actions Taken
-- Added 2 patterns to skills/cloudflare-workers/references/PATTERNS.md
-- Added 1 anti-pattern to skills/durable-objects/references/ANTI_PATTERNS.md
+- Added 2 patterns to skill/cloudflare-workers/references/PATTERNS.md
+- Added 1 anti-pattern to skill/durable-objects/references/ANTI_PATTERNS.md
 
 ## Recommendations
 - Consider adding rate-limiting skill
@@ -545,7 +545,7 @@ After generating the report, ask:
 
 ````
 
-#### 3. Skill: `skills/implementation-analyzer/SKILL.md`
+#### 3. Skill: `skill/implementation-analyzer/SKILL.md`
 
 ```markdown
 ---
@@ -671,7 +671,7 @@ Gaps:
 - No D1 usage patterns
 
 Actions:
-- Added 3 patterns to skills/hono/references/PATTERNS.md
+- Added 3 patterns to skill/hono/references/PATTERNS.md
 ```
 
 ### Example 2: Discover Repos by Topic
@@ -740,7 +740,7 @@ Both systems share:
 
 - [ ] Create `agent/implementation-analyzer.md`
 - [ ] Create `command/f-analyze-repo.md`
-- [ ] Create `skills/implementation-analyzer/SKILL.md`
+- [ ] Create `skill/implementation-analyzer/SKILL.md`
 - [ ] Update `opencode.jsonc`
 
 ### Phase 2: Pattern Extraction (Week 2)

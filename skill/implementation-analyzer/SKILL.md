@@ -107,14 +107,14 @@ const STACK_SIGNATURES = {
 
 **Storage Locations:**
 
-| Pattern Type     | File                                                 |
-| ---------------- | ---------------------------------------------------- |
-| Workers Runtime  | `skills/cloudflare-workers/references/PATTERNS.md`   |
-| Durable Objects  | `skills/durable-objects/references/PATTERNS.md`      |
-| DO Anti-Patterns | `skills/durable-objects/references/ANTI_PATTERNS.md` |
-| Auth             | `skills/better-auth/references/PATTERNS.md`          |
-| UI               | `skills/shadcn-ui/references/PATTERNS.md`            |
-| Tanstack         | `skills/tanstack-start/references/PATTERNS.md`       |
+| Pattern Type     | File                                                |
+| ---------------- | --------------------------------------------------- |
+| Workers Runtime  | `skill/cloudflare-workers/references/PATTERNS.md`   |
+| Durable Objects  | `skill/durable-objects/references/PATTERNS.md`      |
+| DO Anti-Patterns | `skill/durable-objects/references/ANTI_PATTERNS.md` |
+| Auth             | `skill/better-auth/references/PATTERNS.md`          |
+| UI               | `skill/shadcn-ui/references/PATTERNS.md`            |
+| Tanstack         | `skill/tanstack-start/references/PATTERNS.md`       |
 
 ---
 

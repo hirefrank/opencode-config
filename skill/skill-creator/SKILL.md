@@ -87,13 +87,7 @@ description: |
   1. Summarizes what the skill does (first sentence)
   2. Lists activation contexts (when to use)
   3. Contains searchable keywords for triggering
-triggers:
-  [
-    "keyword1",
-    "keyword2",
-    "phrase that triggers",
-    "action verb + noun",
-  ]
+triggers: ["keyword1", "keyword2", "phrase that triggers", "action verb + noun"]
 ---
 ```
 
@@ -102,6 +96,7 @@ triggers:
 The description is the **most important field** for skill activation. It serves as the primary trigger mechanism.
 
 **Structure**:
+
 ```
 [What it does]. [When it activates]. [Key capabilities].
 ```
@@ -112,7 +107,7 @@ The description is the **most important field** for skill activation. It serves 
 # Validator skill
 description: Validates Cloudflare Workers runtime compatibility by checking for Node.js API usage, process.env access, and forbidden imports. Automatically activates when writing Worker code, before deployments, or when debugging runtime errors.
 
-# Generator skill  
+# Generator skill
 description: Generates production-ready Cloudflare Workers code with proper bindings, runtime compatibility, and TypeScript types. Automatically activates when creating new Workers, adding endpoints, or generating Worker code.
 
 # Orchestrator skill
@@ -146,14 +141,13 @@ An array of keywords/phrases that activate the skill. These supplement the descr
 **Example**:
 
 ```yaml
-triggers:
-  [
-    "create worker",          # Action + noun
-    "new worker",             # Synonym
-    "generate worker",        # Synonym
-    "cloudflare worker",      # Domain term
-    "add endpoint",           # Related action
-    "worker code",            # Partial match
+triggers: [
+    "create worker", # Action + noun
+    "new worker", # Synonym
+    "generate worker", # Synonym
+    "cloudflare worker", # Domain term
+    "add endpoint", # Related action
+    "worker code", # Partial match
   ]
 ```
 
@@ -167,33 +161,47 @@ triggers:
 # [Skill Name] SKILL
 
 ## Activation Patterns
+
 When this skill activates (human-readable)
 
 ## Expertise Provided
+
 What knowledge/capabilities this skill offers
 
 ## Validation Rules (for validator skills)
+
 ### P1 - Critical (Block Operations)
+
 ### P2 - Important (Warn)
+
 ### P3 - Suggestions (Inform)
 
 ## Workflow (for procedural skills)
+
 ### Step 1: ...
+
 ### Step 2: ...
 
 ## Code Examples
+
 ### Good Patterns ✅
+
 ### Bad Patterns ❌
 
 ## Integration Points
+
 ### Complementary Components
+
 ### Escalation Triggers
 
 ## Benefits
+
 ### Immediate Impact
+
 ### Long-term Value
 
 ## Usage Examples
+
 Concrete examples of skill in action
 ```
 
@@ -205,20 +213,24 @@ For skills that validate code or configuration:
 ## Validation Rules
 
 ### P1 - Critical (Block Operations)
+
 Issues that MUST be fixed before proceeding.
 
 **Rule Name**:
+
 - ✅ Correct pattern: `description`
 - ❌ Incorrect pattern: `description`
 - ✅ Required: `specific requirement`
 
 ### P2 - Important (Warn)
+
 Issues that should be addressed but don't block.
 
 - ⚠️ Warning condition
 - ⚠️ Another warning
 
 ### P3 - Suggestions (Inform)
+
 Recommendations for improvement.
 
 - ℹ️ Suggestion
@@ -229,28 +241,36 @@ Recommendations for improvement.
 
 For skills that guide procedures:
 
-```markdown
+````markdown
 ## Workflow
 
 ### Step 1: Context Gathering
+
 **What to check**:
+
 - Item 1
 - Item 2
 
 **Commands**:
+
 ```bash
 command example
 ```
+````
 
 ### Step 2: Analysis
+
 ...
 
 ### Step 3: Action
+
 ...
 
 ### Step 4: Verification
+
 ...
-```
+
+````
 
 ### Code Examples Pattern
 
@@ -263,13 +283,15 @@ Always show both correct and incorrect patterns:
 ```typescript
 // WRONG - explanation of why
 const bad = problematicCode();
-```
+````
 
 ### ✅ Correct Patterns
+
 ```typescript
 // CORRECT - explanation of why
 const good = properCode();
 ```
+
 ```
 
 ---
@@ -287,17 +309,19 @@ Create reference resources when:
 ### Directory Structure
 
 ```
-skills/
-  my-skill/
-    SKILL.md              # Main skill file (Tier 2)
-    examples/             # Example implementations (Tier 3)
-      basic-example.md
-      advanced-example.md
-    scripts/              # Executable scripts (Tier 3)
-      validate.ts
-      generate.ts
-    README.md             # Optional: detailed documentation
-```
+
+skill/
+my-skill/
+SKILL.md # Main skill file (Tier 2)
+examples/ # Example implementations (Tier 3)
+basic-example.md
+advanced-example.md
+scripts/ # Executable scripts (Tier 3)
+validate.ts
+generate.ts
+README.md # Optional: detailed documentation
+
+````
 
 ### Referencing External Content
 
@@ -315,7 +339,7 @@ See `examples/` directory for detailed implementations:
 **Advanced Patterns:** `examples/advanced-example.md`
 - Description of advanced usage
 - Prerequisites
-```
+````
 
 ---
 
@@ -326,6 +350,7 @@ See `examples/` directory for detailed implementations:
 **Purpose**: Check code/config for correctness.
 
 **Key Sections**:
+
 - Validation Rules (P1/P2/P3)
 - Good/Bad code examples
 - Auto-fix suggestions
@@ -337,6 +362,7 @@ See `examples/` directory for detailed implementations:
 **Purpose**: Create code from templates/requirements.
 
 **Key Sections**:
+
 - Generation workflow
 - Template patterns
 - Customization options
@@ -348,6 +374,7 @@ See `examples/` directory for detailed implementations:
 **Purpose**: Coordinate multiple agents/skills.
 
 **Key Sections**:
+
 - Swarm architecture diagram
 - Worker dispatch logic
 - Finding synthesis
@@ -359,6 +386,7 @@ See `examples/` directory for detailed implementations:
 **Purpose**: Provide deep knowledge in a specific area.
 
 **Key Sections**:
+
 - Core concepts
 - Best practices
 - Common pitfalls
@@ -370,6 +398,7 @@ See `examples/` directory for detailed implementations:
 **Purpose**: Guide usage of external tools.
 
 **Key Sections**:
+
 - Setup instructions
 - Command reference
 - Integration examples
@@ -388,11 +417,13 @@ Skills often work together:
 ## Integration Points
 
 ### Complementary Components
+
 - **related-validator SKILL**: Validates output from this skill
 - **f-command command**: Uses this skill's patterns
 - **related-agent agent**: Handles complex cases
 
 ### Escalation Triggers
+
 - Complex scenarios → `@expert-agent` agent
 - Deep analysis → `@specialist-agent` agent
 ```
@@ -401,17 +432,21 @@ Skills often work together:
 
 Skills can be invoked by commands:
 
-```markdown
+````markdown
 ## Usage
 
 ### Via Command
+
 ```bash
 /f-my-command
 ```
+````
 
 ### Direct Activation
+
 Phrases that trigger: "validate my...", "create a...", "check the..."
-```
+
+````
 
 ---
 
@@ -448,12 +483,12 @@ Before finalizing a skill, verify:
 ### 1. Create Directory
 
 ```bash
-mkdir -p skills/my-new-skill
-```
+mkdir -p skill/my-new-skill
+````
 
 ### 2. Create SKILL.md
 
-```markdown
+````markdown
 ---
 name: my-new-skill
 description: [What it does]. Activates when [contexts]. [Key capabilities].
@@ -470,6 +505,7 @@ triggers:
 ## Activation Patterns
 
 This SKILL automatically activates when:
+
 - Context 1
 - Context 2
 - Phrases like "...", "...", "..."
@@ -477,24 +513,30 @@ This SKILL automatically activates when:
 ## Expertise Provided
 
 ### Capability 1
+
 - Detail
 - Detail
 
 ### Capability 2
+
 - Detail
 - Detail
 
 ## Validation Rules / Workflow / Patterns
+
 [Appropriate section for skill type]
 
 ## Code Examples
 
 ### ❌ Anti-Patterns
+
 ```typescript
 // Wrong approach
 ```
+````
 
 ### ✅ Correct Patterns
+
 ```typescript
 // Right approach
 ```
@@ -502,22 +544,27 @@ This SKILL automatically activates when:
 ## Integration Points
 
 ### Complementary Components
+
 - **related-skill SKILL**: Description
 - **related-command command**: Description
 
 ### Escalation Triggers
+
 - Complex scenario → `@expert-agent` agent
 
 ## Benefits
 
 ### Immediate Impact
+
 - Benefit 1
 - Benefit 2
 
 ### Long-term Value
+
 - Benefit 3
 - Benefit 4
-```
+
+````
 
 ### 3. Add to Index (if applicable)
 
@@ -537,58 +584,74 @@ Verify the skill triggers correctly by using its keywords in conversation.
 ```yaml
 # BAD
 description: Helps with stuff
-```
+````
 
 **Missing Activation Context**:
+
 ```yaml
 # BAD - doesn't say WHEN to use
 description: Validates code for errors
 ```
 
 **Overloaded Skills**:
+
 ```markdown
 # BAD - tries to do everything
+
 ## This skill validates, generates, reviews, and deploys...
 ```
 
 **No Code Examples**:
+
 ```markdown
 # BAD - tells but doesn't show
+
 This skill checks for bad patterns.
 ```
 
 **Flat Structure**:
+
 ```markdown
 # BAD - no progressive disclosure
+
 [All content at same level with no hierarchy]
 ```
 
 ### ✅ Skill Best Practices
 
 **Clear, Searchable Descriptions**:
+
 ```yaml
 description: Validates authentication security patterns including password hashing, cookie configuration, and CSRF protection. Automatically activates when auth files change, session config is modified, or before deployment.
 ```
 
 **Focused Scope**:
+
 ```markdown
 # GOOD - single responsibility
+
 ## This skill focuses specifically on KV optimization patterns
 ```
 
 **Rich Code Examples**:
-```markdown
+
+````markdown
 # GOOD - shows both patterns
+
 ### ❌ Wrong
+
 ```typescript
-code
+code;
 ```
+````
 
 ### ✅ Correct
+
 ```typescript
-code
+code;
 ```
-```
+
+````
 
 **Tiered Structure**:
 ```markdown
@@ -596,7 +659,7 @@ code
 ## Quick Reference (scan first)
 ## Detailed Patterns (read when needed)
 ## Examples (load on demand)
-```
+````
 
 ---
 

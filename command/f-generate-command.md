@@ -49,7 +49,7 @@ Default to project-specific unless the user explicitly asks for a global command
 2. **Break down complex tasks** - use step-by-step plans
 3. **Use examples** - reference existing code patterns
 4. **Include success criteria** - tests pass, linting clean, etc.
-5. **Leverage skills** - reference global skills from `$OPENCODE_CONFIG_DIR/skills/`
+5. **Leverage skills** - reference global skills from `$OPENCODE_CONFIG_DIR/skill/`
 6. **Use agents** - delegate to specialized agents when appropriate
 
 ## Structure Your Command
@@ -98,7 +98,7 @@ Implement {{PROMPT}} following these steps:
 1. Research existing patterns
    - Search for similar code using Grep or mgrep (semantic search)
    - Read relevant files to understand approach
-   - Check global skills in `$OPENCODE_CONFIG_DIR/skills/` for best practices
+   - Check global skills in `$OPENCODE_CONFIG_DIR/skill/` for best practices
 
 2. Plan the implementation
    - Think through edge cases and requirements

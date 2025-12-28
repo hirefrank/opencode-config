@@ -169,7 +169,7 @@ interface Env {
 - ❌ className="" with no customization
 - ✅ Deep customization via cn() utility
 
-See `skills/component-aesthetic-checker/` for complete design patterns.
+See `skill/component-aesthetic-checker/` for complete design patterns.
 
 ---
 
@@ -321,7 +321,7 @@ bd list                   # All tasks
 bd dep add bd-b bd-a       # B depends on A
 ```
 
-See `skills/beads-workflow/` for detailed usage.
+See `skill/beads-workflow/` for detailed usage.
 
 ---
 
@@ -336,7 +336,7 @@ See `skills/beads-workflow/` for detailed usage.
 | **Knowledge** | `opencode-config` | **Direct Push** | Skills/Patterns are global facts. Agents need them live immediately. |
 | **Code**      | Project Repos     | **Branch + PR** | Feature code requires review, tests, and CI/CD validation.           |
 
-**Knowledge updates** (modifying `.md` files in `skills/` or `agent/`) should NEVER use PRs unless explicitly requested by the user. Commit and push directly to the default or active branch.
+**Knowledge updates** (modifying `.md` files in `skill/` or `agent/`) should NEVER use PRs unless explicitly requested by the user. Commit and push directly to the default or active branch.
 
 ### 2. Mandatory Workflow
 
@@ -431,7 +431,7 @@ Feedback: "Always set TTL when writing to KV"
 1. Query MCP: context7 → "KV put TTL best practices"
 2. Docs confirm: "Set expirationTtl on all writes"
 3. Pattern MATCHES ✓
-4. Write to skills/cloudflare-workers/references/PATTERNS.md
+4. Write to skill/cloudflare-workers/references/PATTERNS.md
 ```
 
 ### 2. Implementation Analyzer (Proactive)
@@ -471,11 +471,11 @@ Patterns are stored in skill reference files:
 
 | Category            | Location                                |
 | ------------------- | --------------------------------------- |
-| Cloudflare patterns | `skills/cloudflare-workers/references/` |
-| Durable Objects     | `skills/durable-objects/references/`    |
-| UI patterns         | `skills/shadcn-ui/references/`          |
-| TanStack patterns   | `skills/tanstack-start/references/`     |
-| Auth patterns       | `skills/better-auth/references/`        |
+| Cloudflare patterns | `skill/cloudflare-workers/references/` |
+| Durable Objects     | `skill/durable-objects/references/`    |
+| UI patterns         | `skill/shadcn-ui/references/`          |
+| TanStack patterns   | `skill/tanstack-start/references/`     |
+| Auth patterns       | `skill/better-auth/references/`        |
 
 **Note**: This learning loop is unique to our stack - oh-my-opencode has no equivalent.
 
@@ -487,7 +487,7 @@ Patterns are stored in skill reference files:
 agent/           # Custom agents (feedback-codifier, implementation-analyzer)
 command/         # Slash commands
 tool/            # MCP tools (auto-registered)
-skills/          # Knowledge packages (trigger-based)
+skill/          # Knowledge packages (trigger-based)
 plugin/          # Hooks and extensions (beads-sync)
 opencode.jsonc   # Main configuration
 ```

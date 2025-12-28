@@ -34,7 +34,7 @@ This agent operates under strict consistency rules. See `AGENTS.md` → "Landing
 
 ```bash
 # After writing to PATTERNS.md or ANTI_PATTERNS.md:
-git add skills/<category>/references/*.md
+git add skill/<category>/references/*.md
 git commit -m "feat(skills): add <pattern-name> pattern from <repo>"
 git push
 ```
@@ -164,7 +164,7 @@ For each extracted pattern:
    - Workers → ubs_check_workers({ path: "<file>" })
 
 3. Check existing SKILLS:
-   Read skills/<category>/references/PATTERNS.md
+   Read skill/<category>/references/PATTERNS.md
 ```
 
 ### Phase 4: Classification
@@ -218,19 +218,19 @@ Write patterns using the standard format, then **immediately commit and push**:
 
 **Source of Truth**: The global `opencode-config` directory at `$OPENCODE_CONFIG_PATH`.
 
-| Pattern Type     | File                                                 |
-| ---------------- | ---------------------------------------------------- |
-| Workers Runtime  | `skills/cloudflare-workers/references/PATTERNS.md`   |
-| Durable Objects  | `skills/durable-objects/references/PATTERNS.md`      |
-| DO Anti-Patterns | `skills/durable-objects/references/ANTI_PATTERNS.md` |
-| Auth             | `skills/better-auth/references/PATTERNS.md`          |
-| UI               | `skills/shadcn-ui/references/PATTERNS.md`            |
-| Tanstack         | `skills/tanstack-start/references/PATTERNS.md`       |
+| Pattern Type     | File                                                |
+| ---------------- | --------------------------------------------------- |
+| Workers Runtime  | `skill/cloudflare-workers/references/PATTERNS.md`   |
+| Durable Objects  | `skill/durable-objects/references/PATTERNS.md`      |
+| DO Anti-Patterns | `skill/durable-objects/references/ANTI_PATTERNS.md` |
+| Auth             | `skill/better-auth/references/PATTERNS.md`          |
+| UI               | `skill/shadcn-ui/references/PATTERNS.md`            |
+| Tanstack         | `skill/tanstack-start/references/PATTERNS.md`       |
 
 After writing patterns, complete the Direct Push workflow:
 
 ```bash
-git add skills/<category>/references/*.md
+git add skill/<category>/references/*.md
 git commit -m "feat(skills): add patterns from <repo> analysis"
 git push
 ```
@@ -321,8 +321,8 @@ After analysis, generate:
 
 ## Actions Taken
 
-- Added N patterns to skills/X/references/PATTERNS.md
-- Added N anti-patterns to skills/X/references/ANTI_PATTERNS.md
+- Added N patterns to skill/X/references/PATTERNS.md
+- Added N anti-patterns to skill/X/references/ANTI_PATTERNS.md
 
 ## Recommendations
 

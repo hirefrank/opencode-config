@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "@opencode-ai/plugin": "1.0.203"
+    "@opencode-ai/plugin": "1.0.206",
+    "oh-my-opencode": "^2.7.1"
   },
   "type": "module"
 }

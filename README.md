@@ -20,7 +20,7 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 | Primitive    | Purpose                                             | Example                                     |
 | ------------ | --------------------------------------------------- | ------------------------------------------- |
 | **tool/**    | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings    |
-| **skills/**  | Reference knowledge for specific domains            | `cloudflare-workers/` documents KV patterns |
+| **skill/**  | Reference knowledge for specific domains            | `cloudflare-workers/` documents KV patterns |
 | **command/** | Slash commands for workflows                        | `/f-plan` triggers planning workflow       |
 | **agent/**   | Custom agent definitions                            | `feedback-codifier` (learning loop)         |
 | **plugin/**  | OpenCode plugins (if needed)                        | Custom hooks, extensions                    |
@@ -133,7 +133,7 @@ bd done <id>      # Mark complete
 bd sync           # Sync with git
 ```
 
-See `skills/beads-workflow/` for detailed usage.
+See `skill/beads-workflow/` for detailed usage.
 
 ---
 
@@ -146,7 +146,7 @@ opencode-config/
 ├── agent/                 # Custom agents (feedback-codifier only)
 ├── command/               # Slash commands (/f-*)
 ├── tool/                  # MCP tools (auto-registered)
-├── skills/                # Knowledge packages (trigger-based)
+├── skill/                # Knowledge packages (trigger-based)
 └── plugin/                # Hooks and extensions (beads-sync)
 ```
 
@@ -155,10 +155,10 @@ opencode-config/
 | I want to...                              | Use                               |
 | ----------------------------------------- | --------------------------------- |
 | Run validation, return structured results | `tool/*.ts`                       |
-| Inject knowledge about a domain           | `skills/*/SKILL.md`               |
+| Inject knowledge about a domain           | `skill/*/SKILL.md`               |
 | Create a workflow command                 | `command/*.md` + `opencode.jsonc` |
 | Define a custom agent                     | `agent/*.md` + `opencode.jsonc`   |
-| Add reference docs for a skill            | `skills/*/references/*.md`        |
+| Add reference docs for a skill            | `skill/*/references/*.md`        |
 
 ---
 

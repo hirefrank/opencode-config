@@ -31,7 +31,7 @@ Feedback: "Always set TTL when writing to KV"
 1. Query: context7 → "KV put TTL best practices"
 2. Official docs: "Set expirationTtl on all writes"
 3. Pattern MATCHES ✓
-4. Direct-write to $OPENCODE_CONFIG_PATH/skills/cloudflare-workers/references/PATTERNS.md
+4. Direct-write to $OPENCODE_CONFIG_PATH/skill/cloudflare-workers/references/PATTERNS.md
 ```
 
 ### Example: Rejected Pattern
@@ -96,7 +96,7 @@ This agent operates under strict consistency rules. See `AGENTS.md` → "Landing
 
 ```bash
 # After writing to PATTERNS.md or ANTI_PATTERNS.md:
-git add skills/<category>/references/*.md
+git add skill/<category>/references/*.md
 git commit -m "feat(skills): add <pattern-name> pattern"
 git push
 ```
@@ -127,13 +127,13 @@ bd add "Missing TTL on KV.put() in src/cache.ts" --label bug
 
 Validated patterns go to skill reference files using absolute paths:
 
-| Category        | Path                                                                   |
-| --------------- | ---------------------------------------------------------------------- |
-| Workers/Runtime | `$OPENCODE_CONFIG_PATH/skills/cloudflare-workers/references/`          |
-| Durable Objects | `$OPENCODE_CONFIG_PATH/skills/durable-objects/references/`             |
-| UI/Components   | `$OPENCODE_CONFIG_PATH/skills/component-aesthetic-checker/references/` |
-| TanStack        | `$OPENCODE_CONFIG_PATH/skills/tanstack-start/references/`              |
-| Authentication  | `$OPENCODE_CONFIG_PATH/skills/better-auth/references/`                 |
+| Category        | Path                                                                  |
+| --------------- | --------------------------------------------------------------------- |
+| Workers/Runtime | `$OPENCODE_CONFIG_PATH/skill/cloudflare-workers/references/`          |
+| Durable Objects | `$OPENCODE_CONFIG_PATH/skill/durable-objects/references/`             |
+| UI/Components   | `$OPENCODE_CONFIG_PATH/skill/component-aesthetic-checker/references/` |
+| TanStack        | `$OPENCODE_CONFIG_PATH/skill/tanstack-start/references/`              |
+| Authentication  | `$OPENCODE_CONFIG_PATH/skill/better-auth/references/`                 |
 
 ### Reference Files
 
@@ -229,7 +229,7 @@ When codifying a validated pattern, **direct-write** to the appropriate skill re
 
 ```bash
 # Example: Add KV pattern to cloudflare-workers skill
-# File: $OPENCODE_CONFIG_PATH/skills/cloudflare-workers/references/PATTERNS.md
+# File: $OPENCODE_CONFIG_PATH/skill/cloudflare-workers/references/PATTERNS.md
 
 ## Pattern: KV TTL Required
 
@@ -250,7 +250,7 @@ await env.KV.put("key", "value", { expirationTtl: 3600 });
 **Important**: Use the `edit` or `write` tool to modify files directly. Then commit and push immediately:
 
 ```bash
-git add skills/<category>/references/*.md
+git add skill/<category>/references/*.md
 git commit -m "feat(skills): add <pattern-name> pattern"
 git push
 ```
