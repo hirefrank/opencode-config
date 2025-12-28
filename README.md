@@ -20,8 +20,8 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 | Primitive    | Purpose                                             | Example                                     |
 | ------------ | --------------------------------------------------- | ------------------------------------------- |
 | **tool/**    | Execute code, return structured data (MCP protocol) | `ubs.ts` runs bug scan, returns findings    |
-| **skill/**  | Reference knowledge for specific domains            | `cloudflare-workers/` documents KV patterns |
-| **command/** | Slash commands for workflows                        | `/f-plan` triggers planning workflow       |
+| **skill/**   | Reference knowledge for specific domains            | `cloudflare-workers/` documents KV patterns |
+| **command/** | Slash commands for workflows                        | `/f-plan` triggers planning workflow        |
 | **agent/**   | Custom agent definitions                            | `feedback-codifier` (learning loop)         |
 | **plugin/**  | OpenCode plugins (if needed)                        | Custom hooks, extensions                    |
 
@@ -68,7 +68,26 @@ After cloning, install these dependencies for full functionality:
 ```bash
 # Install plugin dependencies (for MCP tools)
 cd ~/Projects/opencode-config && npm install
+
+# Create symlink for skill discovery (OpenCode v1.0.190+)
+ln -s ~/Projects/opencode-config/skill ~/.config/opencode/skill
 ```
+
+**Important**: OpenCode v1.0.190+ requires skills to be in `~/.config/opencode/skill/` for global discovery. The symlink above makes skills from this repo discoverable without duplicating files.
+
+### Skill Frontmatter (OpenCode v1.0.190+)
+
+OpenCode natively loads skills from `.opencode/skill/` (project-local) or `~/.config/opencode/skill/` (global).
+
+**Recognized frontmatter fields:**
+
+- `name` (required) - Skill identifier in kebab-case
+- `description` (required) - **Used for activation matching** - must contain relevant keywords
+- `license` (optional) - License type (e.g., MIT)
+- `compatibility` (optional) - Requirements and dependencies
+- `metadata` (optional) - String-to-string map for custom fields
+
+**Unknown fields are silently ignored.** This repo previously used a non-standard `triggers:` field - it was removed as OpenCode only uses `description` for skill activation.
 
 ### oh-my-opencode
 
@@ -155,17 +174,17 @@ opencode-config/
 | I want to...                              | Use                               |
 | ----------------------------------------- | --------------------------------- |
 | Run validation, return structured results | `tool/*.ts`                       |
-| Inject knowledge about a domain           | `skill/*/SKILL.md`               |
+| Inject knowledge about a domain           | `skill/*/SKILL.md`                |
 | Create a workflow command                 | `command/*.md` + `opencode.jsonc` |
 | Define a custom agent                     | `agent/*.md` + `opencode.jsonc`   |
-| Add reference docs for a skill            | `skill/*/references/*.md`        |
+| Add reference docs for a skill            | `skill/*/references/*.md`         |
 
 ---
 
 ## Commands
 
-| Command                | Description                                  |
-| ---------------------- | -------------------------------------------- |
+| Command               | Description                                  |
+| --------------------- | -------------------------------------------- |
 | `/f-plan`             | Plan with architectural guidance             |
 | `/f-triage`           | Triage findings to beads                     |
 | `/f-commit`           | Stage changes, generate commit message, push |
