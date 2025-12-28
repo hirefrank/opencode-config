@@ -7,20 +7,6 @@ metadata:
   version: "1.0"
 compatibility: Requires Resend account, Cloudflare Workers, React Email
 allowed-tools: Bash(pnpm:*) Bash(wrangler:*) Read Write
-triggers:
-  - "email"
-  - "resend"
-  - "transactional"
-  - "newsletter"
-  - "verification email"
-  - "password reset"
-  - "welcome email"
-  - "react email"
-  - "email template"
-  - "send email"
-  - "batch email"
-  - "notification"
-  - "mail"
 ---
 
 # Resend Email Integration
@@ -51,17 +37,17 @@ wrangler secret put RESEND_API_KEY
 ### Simple Email (Server Function)
 
 ```typescript
-import { createServerFn } from '@tanstack/start';
-import { Resend } from 'resend';
+import { createServerFn } from "@tanstack/start";
+import { Resend } from "resend";
 
 export const sendEmail = createServerFn(
-  { method: 'POST' },
+  { method: "POST" },
   async (data: { to: string; subject: string; html: string }, context) => {
     const { env } = context.cloudflare;
     const resend = new Resend(env.RESEND_API_KEY);
 
     const { data: result, error } = await resend.emails.send({
-      from: 'hello@yourdomain.com',
+      from: "hello@yourdomain.com",
       to: data.to,
       subject: data.subject,
       html: data.html,
@@ -72,18 +58,18 @@ export const sendEmail = createServerFn(
     }
 
     return { success: true, id: result.id };
-  }
+  },
 );
 ```
 
 ### With React Email Template
 
 ```typescript
-import { Resend } from 'resend';
-import { WelcomeEmail } from '@/emails/welcome';
+import { Resend } from "resend";
+import { WelcomeEmail } from "@/emails/welcome";
 
 const { data, error } = await resend.emails.send({
-  from: 'welcome@yourdomain.com',
+  from: "welcome@yourdomain.com",
   to: user.email,
   subject: `Welcome, ${user.name}!`,
   react: WelcomeEmail({ name: user.name }),
@@ -105,7 +91,7 @@ import {
   Html,
   Preview,
   Text,
-} from '@react-email/components';
+} from "@react-email/components";
 
 interface WelcomeEmailProps {
   name: string;
@@ -117,17 +103,19 @@ export function WelcomeEmail({ name, loginUrl }: WelcomeEmailProps) {
     <Html>
       <Head />
       <Preview>Welcome to our platform!</Preview>
-      <Body style={{ fontFamily: 'sans-serif', backgroundColor: '#f4f4f4' }}>
-        <Container style={{ padding: '20px', backgroundColor: '#ffffff' }}>
+      <Body style={{ fontFamily: "sans-serif", backgroundColor: "#f4f4f4" }}>
+        <Container style={{ padding: "20px", backgroundColor: "#ffffff" }}>
           <Heading>Welcome, {name}!</Heading>
-          <Text>Thanks for signing up. We're excited to have you on board.</Text>
+          <Text>
+            Thanks for signing up. We're excited to have you on board.
+          </Text>
           <Button
             href={loginUrl}
             style={{
-              backgroundColor: '#007bff',
-              color: 'white',
-              padding: '10px 20px',
-              borderRadius: '4px',
+              backgroundColor: "#007bff",
+              color: "white",
+              padding: "10px 20px",
+              borderRadius: "4px",
             }}
           >
             Get Started
@@ -145,7 +133,7 @@ export function WelcomeEmail({ name, loginUrl }: WelcomeEmailProps) {
 
 ```typescript
 export const sendVerificationEmail = createServerFn(
-  { method: 'POST' },
+  { method: "POST" },
   async (data: { email: string; token: string; name: string }, context) => {
     const { env } = context.cloudflare;
     const resend = new Resend(env.RESEND_API_KEY);
@@ -153,18 +141,18 @@ export const sendVerificationEmail = createServerFn(
     const verificationUrl = `${env.APP_URL}/verify?token=${data.token}`;
 
     const { error } = await resend.emails.send({
-      from: 'auth@yourdomain.com',
+      from: "auth@yourdomain.com",
       to: data.email,
-      subject: 'Verify your email address',
+      subject: "Verify your email address",
       react: VerifyEmailTemplate({
         verificationUrl,
         userName: data.name,
       }),
     });
 
-    if (error) throw new Error('Failed to send verification email');
+    if (error) throw new Error("Failed to send verification email");
     return { success: true };
-  }
+  },
 );
 ```
 
@@ -172,7 +160,7 @@ export const sendVerificationEmail = createServerFn(
 
 ```typescript
 export const sendPasswordResetEmail = createServerFn(
-  { method: 'POST' },
+  { method: "POST" },
   async (data: { email: string; token: string; name: string }, context) => {
     const { env } = context.cloudflare;
     const resend = new Resend(env.RESEND_API_KEY);
@@ -180,15 +168,15 @@ export const sendPasswordResetEmail = createServerFn(
     const resetUrl = `${env.APP_URL}/reset-password?token=${data.token}`;
 
     const { error } = await resend.emails.send({
-      from: 'auth@yourdomain.com',
+      from: "auth@yourdomain.com",
       to: data.email,
-      subject: 'Reset your password',
+      subject: "Reset your password",
       react: PasswordResetEmail({ resetUrl, userName: data.name }),
     });
 
-    if (error) throw new Error('Failed to send password reset email');
+    if (error) throw new Error("Failed to send password reset email");
     return { success: true };
-  }
+  },
 );
 ```
 
@@ -196,23 +184,29 @@ export const sendPasswordResetEmail = createServerFn(
 
 ```typescript
 export const sendBatchNotifications = createServerFn(
-  { method: 'POST' },
-  async (data: { recipients: Array<{ email: string; name: string }>; message: string }, context) => {
+  { method: "POST" },
+  async (
+    data: {
+      recipients: Array<{ email: string; name: string }>;
+      message: string;
+    },
+    context,
+  ) => {
     const { env } = context.cloudflare;
     const resend = new Resend(env.RESEND_API_KEY);
 
     const batchEmails = data.recipients.map((r) => ({
-      from: 'notifications@yourdomain.com',
+      from: "notifications@yourdomain.com",
       to: r.email,
-      subject: 'Notification',
+      subject: "Notification",
       react: NotificationTemplate({ name: r.name, message: data.message }),
     }));
 
     const { data: result, error } = await resend.batch.send(batchEmails);
 
-    if (error) throw new Error('Batch send failed');
+    if (error) throw new Error("Batch send failed");
     return { success: true, count: batchEmails.length };
-  }
+  },
 );
 ```
 
@@ -220,15 +214,15 @@ export const sendBatchNotifications = createServerFn(
 
 ```typescript
 export const sendEmailWithRetry = createServerFn(
-  { method: 'POST' },
+  { method: "POST" },
   async (data: { email: string; name: string }, context) => {
     const { env } = context.cloudflare;
     const resend = new Resend(env.RESEND_API_KEY);
 
     const { data: result, error } = await resend.emails.send({
-      from: 'welcome@yourdomain.com',
+      from: "welcome@yourdomain.com",
       to: data.email,
-      subject: 'Welcome!',
+      subject: "Welcome!",
       react: WelcomeEmail({ name: data.name }),
     });
 
@@ -236,14 +230,16 @@ export const sendEmailWithRetry = createServerFn(
       // Store failed email for retry
       await env.DB.prepare(
         `INSERT INTO failed_emails (email, template, error, created_at)
-         VALUES (?, ?, ?, datetime('now'))`
-      ).bind(data.email, 'welcome', error.message).run();
+         VALUES (?, ?, ?, datetime('now'))`,
+      )
+        .bind(data.email, "welcome", error.message)
+        .run();
 
-      return { success: false, error: 'Email queued for retry' };
+      return { success: false, error: "Email queued for retry" };
     }
 
     return { success: true, id: result.id };
-  }
+  },
 );
 ```
 
@@ -275,6 +271,7 @@ APP_URL=http://localhost:3000
 ## Forbidden Alternatives
 
 **Never use these** - Resend is the required email provider:
+
 - ❌ SendGrid
 - ❌ Mailgun
 - ❌ AWS SES
@@ -285,6 +282,7 @@ APP_URL=http://localhost:3000
 ## Validation Tools
 
 Run `scripts/validate-email-config.js` to verify:
+
 - API key is set
 - Domain is verified
 - Templates render correctly

@@ -1,19 +1,6 @@
 ---
 name: gemini-imagegen
 description: Generate, edit, and compose images using Google's Gemini AI API for design workflows and visual content creation. Activates when creating marketing assets, UI mockups, illustrations, or image compositions.
-triggers:
-  [
-    "image generation",
-    "visual content",
-    "AI art",
-    "image editing",
-    "design automation",
-    "generate image",
-    "create image",
-    "edit image",
-    "compose images",
-    "gemini image",
-  ]
 ---
 
 # Gemini ImageGen SKILL

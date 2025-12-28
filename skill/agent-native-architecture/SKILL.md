@@ -1,19 +1,6 @@
 ---
 name: agent-native-architecture
 description: Build AI agents on Cloudflare's edge using prompt-native architecture where features are defined in prompts, not code. Use when creating autonomous agents with Durable Objects, designing Workers services, implementing self-modifying systems, or adopting the "trust the agent's intelligence" philosophy on the edge.
-triggers:
-  [
-    "agent architecture",
-    "autonomous agent",
-    "prompt-native",
-    "agent-native",
-    "durable objects agent",
-    "self-modifying agent",
-    "ai agent design",
-    "multi-agent system",
-    "agent state management",
-    "edge agent",
-  ]
 ---
 
 <essential_principles>

@@ -1,18 +1,6 @@
 ---
 name: component-aesthetic-checker
 description: Validates shadcn/ui component customization depth, ensuring components aren't used with default props and checking for consistent design system implementation across Tanstack Start applications. Activates when using shadcn/ui components, customizing props, or applying design tokens.
-triggers:
-  [
-    "shadcn ui component usage",
-    "component prop changes",
-    "design token updates",
-    "className customization",
-    "cn() utility usage",
-    "default props",
-    "ui prop",
-    "component customization",
-    "design system consistency",
-  ]
 note: "Updated for Tanstack Start (React) + shadcn/ui. Code examples use React/TSX with className and cn() utility for styling."
 ---
 

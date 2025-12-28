@@ -1,18 +1,6 @@
 ---
 name: work-executor
 description: Analyzes work documents (plans, specifications, Markdown files) and systematically executes tasks until completion. Automatically activates when starting work on a plan, implementing a specification, or executing a structured document. Creates comprehensive todo lists, sets up development environments with worktrees, and validates each task with platform-specific agents.
-triggers:
-  [
-    "start work",
-    "execute plan",
-    "implement spec",
-    "work on",
-    "begin implementation",
-    "start implementing",
-    "execute tasks",
-    "work document",
-    "follow plan",
-  ]
 ---
 
 # Work Executor SKILL

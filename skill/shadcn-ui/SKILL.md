@@ -7,24 +7,6 @@ metadata:
   version: "1.0"
 compatibility: Requires React, TypeScript, Tailwind CSS
 allowed-tools: Read Write Bash(npm:*) Bash(pnpm:*) Bash(npx:*)
-triggers:
-  - "component"
-  - "button"
-  - "form"
-  - "modal"
-  - "dialog"
-  - "dropdown"
-  - "shadcn"
-  - "radix"
-  - "ui"
-  - "design system"
-  - "input"
-  - "card"
-  - "table"
-  - "navigation"
-  - "sidebar"
-  - "toast"
-  - "alert"
 ---
 
 # shadcn/ui Development

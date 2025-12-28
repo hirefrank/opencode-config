@@ -7,21 +7,6 @@ metadata:
   version: "1.0"
 compatibility: Requires wrangler CLI, Cloudflare account
 allowed-tools: Bash(wrangler:*) Read Write
-triggers:
-  - "worker"
-  - "workers"
-  - "cloudflare"
-  - "edge"
-  - "serverless"
-  - "kv"
-  - "r2"
-  - "d1"
-  - "binding"
-  - "wrangler"
-  - "deploy"
-  - "fetch handler"
-  - "env"
-  - "environment"
 ---
 
 # Cloudflare Workers Development

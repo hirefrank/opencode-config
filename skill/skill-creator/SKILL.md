@@ -1,17 +1,6 @@
 ---
 name: skill-creator
 description: Guide for creating well-structured SKILL.md files that follow the tiered documentation pattern. Activates when creating new skills, documenting capabilities, or establishing agent knowledge packages. Ensures proper frontmatter, trigger design, and progressive disclosure structure.
-triggers:
-  [
-    "create skill",
-    "new skill",
-    "add skill",
-    "skill template",
-    "SKILL.md",
-    "skill documentation",
-    "skill structure",
-    "define skill",
-  ]
 ---
 
 # Skill Creator SKILL

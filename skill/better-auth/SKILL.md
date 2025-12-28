@@ -7,23 +7,6 @@ metadata:
   version: "1.0"
 compatibility: Requires better-auth, D1, Cloudflare Workers
 allowed-tools: Bash(npm:*) Bash(pnpm:*) Read Write
-triggers:
-  - "auth"
-  - "authentication"
-  - "login"
-  - "logout"
-  - "signup"
-  - "sign up"
-  - "oauth"
-  - "session"
-  - "jwt"
-  - "user"
-  - "password"
-  - "register"
-  - "better-auth"
-  - "social login"
-  - "google auth"
-  - "github auth"
 ---
 
 # Better Auth with D1 in Cloudflare Workers
@@ -57,7 +40,7 @@ let authInstance: ReturnType<typeof betterAuth> | null = null;
 
 export const getAuth = (env: Env) => {
   if (authInstance) return authInstance;
-  
+
   authInstance = betterAuth({
     database: d1Adapter({
       datasource: { db: env.DB },
@@ -65,7 +48,7 @@ export const getAuth = (env: Env) => {
     baseURL: env.BASE_URL,
     secret: env.BETTER_AUTH_SECRET,
   });
-  
+
   return authInstance;
 };
 
@@ -74,8 +57,8 @@ export const auth = new Proxy({} as ReturnType<typeof betterAuth>, {
     // Requires getEnv() from pattern above or similar request context helper
     const instance = getAuth(getEnv());
     const value = (instance as any)[prop];
-    return typeof value === 'function' ? value.bind(instance) : value;
-  }
+    return typeof value === "function" ? value.bind(instance) : value;
+  },
 });
 ```
 
@@ -85,28 +68,27 @@ Fetch the session during the initial SSR pass in the root route to prevent hydra
 
 ```typescript
 // apps/dashboard/src/routes/__root.tsx
-import { createRootRouteWithContext } from '@tanstack/react-router'
-import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
-import { auth } from '../lib/auth'
+import { createRootRouteWithContext } from "@tanstack/react-router";
+import { createServerFn } from "@tanstack/react-start";
+import { getRequest } from "@tanstack/react-start/server";
+import { auth } from "../lib/auth";
 
-const getSession = createServerFn({ method: 'GET' })
-  .handler(async () => {
-    const request = getRequest()
-    if (!request) return null
-    
-    // Better Auth server API works with standard headers
-    return await auth.api.getSession({
-      headers: request.headers,
-    })
-  })
+const getSession = createServerFn({ method: "GET" }).handler(async () => {
+  const request = getRequest();
+  if (!request) return null;
+
+  // Better Auth server API works with standard headers
+  return await auth.api.getSession({
+    headers: request.headers,
+  });
+});
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async () => {
-    const session = await getSession()
-    return { session }
+    const session = await getSession();
+    return { session };
   },
-})
+});
 ```
 
 ### Basic Setup
@@ -178,10 +160,10 @@ import { mcp } from "better-auth/plugins";
 export const auth = betterAuth({
   plugins: [
     mcp({
-      loginPage: '/sign-in',
-      resource: 'your-app-resource-id',
+      loginPage: "/sign-in",
+      resource: "your-app-resource-id",
       oidcConfig: {
-        scopes: ['read', 'write'],
+        scopes: ["read", "write"],
       },
     }),
   ],

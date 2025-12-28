@@ -7,19 +7,6 @@ metadata:
   version: "1.0"
 compatibility: Requires beads (bd) CLI and git
 allowed-tools: Bash(bd:*) Bash(git:*) Read
-triggers:
-  - "beads"
-  - "bd"
-  - "task"
-  - "issue"
-  - "todo"
-  - "backlog"
-  - "workflow"
-  - "track"
-  - "sync"
-  - "ready"
-  - "done"
-  - "in progress"
 ---
 
 # Beads Workflow Management

@@ -1,21 +1,6 @@
 ---
 name: code-reviewer
 description: Orchestrates comprehensive code reviews using swarm-based multi-agent analysis with parallel worker agents for security, performance, Cloudflare patterns, and design. Automatically activates for PR reviews, code review requests, or when analyzing changed files. Synthesizes findings with confidence scoring (80+ threshold) and creates actionable todos.
-triggers:
-  - "code review"
-  - "PR review"
-  - "review changes"
-  - "review PR"
-  - "review code"
-  - "review my"
-  - "analyze changes"
-  - "check code quality"
-  - "pre-commit review"
-  - "pull request"
-  - "diff"
-  - "security review"
-  - "performance review"
-  - "review the"
 ---
 
 # Code Reviewer SKILL

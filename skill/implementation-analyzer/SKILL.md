@@ -1,19 +1,6 @@
 ---
 name: implementation-analyzer
 description: Proactive pattern discovery from external repositories. Analyzes codebases implementing the f-stack to find good patterns, anti-patterns, and gaps. Activates when analyzing repos, discovering patterns, auditing implementations, or learning from OSS.
-triggers:
-  - "analyze repo"
-  - "analyze repository"
-  - "discover patterns"
-  - "pattern discovery"
-  - "audit implementation"
-  - "reverse feedback"
-  - "learn from repo"
-  - "implementation audit"
-  - "find patterns"
-  - "extract patterns"
-  - "repo analysis"
-  - "codebase analysis"
 ---
 
 # Implementation Analyzer SKILL

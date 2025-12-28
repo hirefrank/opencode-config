@@ -1,19 +1,6 @@
 ---
 name: edge-performance-optimizer
 description: Automatically optimizes Cloudflare Workers performance during development, focusing on cold starts, bundle size, edge caching, and global latency. Activates when adding dependencies, detecting heavy imports, or identifying parallelization opportunities.
-triggers:
-  [
-    "bundle size changes",
-    "fetch calls",
-    "storage operations",
-    "dependency additions",
-    "sequential operations",
-    "cold start",
-    "heavy dependency",
-    "edge caching",
-    "parallel operations",
-    "Promise.all",
-  ]
 ---
 
 # Edge Performance Optimizer SKILL

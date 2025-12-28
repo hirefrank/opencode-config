@@ -1,18 +1,6 @@
 ---
 name: kv-optimization-advisor
 description: Automatically optimizes Cloudflare KV storage patterns, suggesting parallel operations, caching strategies, and storage choice guidance. Activates when detecting KV access patterns, sequential operations, or storage performance opportunities.
-triggers:
-  [
-    "KV operations",
-    "storage access patterns",
-    "sequential storage calls",
-    "large data patterns",
-    "KV get",
-    "KV put",
-    "Promise.all",
-    "parallel operations",
-    "storage optimization",
-  ]
 ---
 
 # KV Optimization Advisor SKILL

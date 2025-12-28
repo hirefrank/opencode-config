@@ -7,23 +7,6 @@ metadata:
   version: "1.0"
 compatibility: Requires Cloudflare Workers, Durable Objects enabled
 allowed-tools: Bash(wrangler:*) Read Write
-triggers:
-  - "rate limit"
-  - "rate limiting"
-  - "durable object"
-  - "websocket"
-  - "realtime"
-  - "real-time"
-  - "coordination"
-  - "state machine"
-  - "singleton"
-  - "actor model"
-  - "strong consistency"
-  - "distributed lock"
-  - "concurrent"
-  - "atomic"
-  - "chat room"
-  - "collaboration"
 ---
 
 # Durable Objects Development

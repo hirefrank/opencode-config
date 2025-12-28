@@ -1,17 +1,6 @@
 ---
 name: worker-generator
 description: Generates production-ready Cloudflare Workers code with proper bindings, runtime compatibility, and TypeScript types. Automatically activates when creating new Workers, adding endpoints, or generating Worker code. Analyzes wrangler.toml for available bindings and generates code that uses them correctly.
-triggers:
-  [
-    "create worker",
-    "new worker",
-    "generate worker",
-    "add endpoint",
-    "worker code",
-    "create api",
-    "new api endpoint",
-    "cloudflare worker",
-  ]
 ---
 
 # Worker Generator SKILL
