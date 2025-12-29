@@ -5,5 +5,12 @@
     "Sisyphus": { "model": "anthropic/claude-sonnet-4-5" },
     "oracle": { "model": "opencode/gpt-5.2" }
   },
-  "disabled_mcps": ["context7", "polar"]
+  "claude_code": {
+    "mcp": false,
+    "commands": false,
+    "skills": false,
+    "agents": false,
+    "hooks": false,
+    "plugins": false
+  }
 }
