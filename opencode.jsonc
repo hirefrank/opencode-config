@@ -14,6 +14,10 @@
       "template": "command/f-plan.md",
       "description": "Plan Cloudflare Workers projects with architectural guidance"
     },
+    "f-review": {
+      "template": "command/f-review.md",
+      "description": "Comprehensive code review with swarm-based multi-agent analysis"
+    },
     "f-triage": {
       "template": "command/f-triage.md",
       "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
