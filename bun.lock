@@ -4,6 +4,7 @@
   "workspaces": {
     "": {
       "dependencies": {
+        "@ast-grep/napi": "^0.40.3",
         "@opencode-ai/plugin": "1.0.223",
         "oh-my-opencode": "^2.10.0",
       },

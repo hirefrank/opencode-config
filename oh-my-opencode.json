@@ -39,6 +39,11 @@
       "command": ["typescript-language-server", "--stdio"],
       "extensions": [".ts", ".tsx", ".js", ".jsx"],
       "priority": 10
+    },
+    "tailwindcss-language-server": {
+      "command": ["tailwindcss-language-server", "--stdio"],
+      "extensions": [".tsx", ".jsx", ".html"],
+      "priority": 9
     }
   },
   "claude_code": {
