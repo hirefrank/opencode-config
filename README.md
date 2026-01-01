@@ -244,6 +244,185 @@ User Feedback → Extract Pattern → Validate via MCP → Accept/Reject → Upd
 
 ---
 
+## Ralph Loop: Self-Improving Knowledge Base
+
+**Ralph Loop** is oh-my-opencode's self-referential development system that monitors pattern usage and automatically improves your skill documentation based on real-world effectiveness.
+
+### How It Works
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ 1. Feedback Codifier extracts pattern from user feedback    │
+│    ↓                                                         │
+│ 2. Validates pattern against MCP/docs                       │
+│    ↓                                                         │
+│ 3. Writes pattern to skill references                       │
+│    ↓                                                         │
+│ 4. Ralph Loop monitors pattern usage across sessions        │
+│    ↓                                                         │
+│ 5. Tracks success/failure rates                             │
+│    ↓                                                         │
+│ 6. Auto-refines patterns (Option B: Active Learning)        │
+│    ↓                                                         │
+│ 7. Notifies you via daily digest + git commits              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Confidence-Based Auto-Approval
+
+Ralph uses a tiered system to decide when to apply changes automatically:
+
+| Confidence          | Action                   | Review Required            |
+| ------------------- | ------------------------ | -------------------------- |
+| **High (85-100%)**  | ✅ Auto-apply + commit   | No - just notify in digest |
+| **Medium (65-84%)** | ⏸️ Stage change          | Yes - approval required    |
+| **Low (<65%)**      | 🚫 Flag for human review | Yes - don't apply          |
+
+**Why this works:**
+
+- High-confidence changes are validated against official MCP documentation
+- You only review uncertain changes (~20% of suggestions)
+- Full audit trail via git commits
+- Easy rollback with `git revert`
+
+### Daily Workflow
+
+**Morning (2 minutes):**
+
+1. Check `RALPH_DIGEST.md` for overnight changes
+2. Review auto-applied commits (if any)
+3. Approve/reject pending medium-confidence changes
+
+**Weekly:**
+
+- Review flagged low-confidence suggestions in beads
+- Check git log: `git log --oneline --author="ralph-loop"`
+
+**Monthly:**
+
+- Audit pattern usage statistics
+- Review archived unused patterns
+
+### Review Commands
+
+```bash
+# Approve a pending change
+/f-pattern-approve abc123
+
+# Reject a change with reasoning
+/f-pattern-reject abc123 "reason: better approach is X"
+
+# Revert an auto-applied change
+git revert <commit-hash>
+```
+
+### Safety Mechanisms
+
+1. **MCP Validation Required** - All high-confidence changes must pass MCP validation
+2. **Never Delete** - Ralph only adds/refines, never removes patterns
+3. **Revert Limit** - Auto-apply pauses after 3 reverts in a week
+4. **Usage Tracking** - Unused patterns auto-archive after 30 days
+5. **Breaking Change Detection** - Contradictions always flagged for review
+
+### Git Workflow
+
+Each Ralph change = one atomic commit:
+
+```bash
+# View Ralph's recent changes
+git log --oneline --author="ralph-loop"
+
+abc1234 ralph: Add R2 cache-control pattern (95% confidence)
+def5678 ralph: Add DO ID anti-pattern (88% confidence)
+ghi9012 ralph: Update KV TTL guidance (91% confidence)
+
+# Revert specific change
+git revert abc1234
+```
+
+### Monitored Skills
+
+Ralph monitors these skills for pattern effectiveness:
+
+- `skill/cloudflare-workers/` - Workers, KV, R2, D1 patterns
+- `skill/durable-objects/` - Stateful coordination patterns
+- `skill/better-auth/` - Authentication patterns
+- `skill/tanstack-start/` - React framework patterns
+- `skill/shadcn-ui/` - UI component patterns
+- `skill/polar-billing/` - Payment integration patterns
+
+### Configuration
+
+Ralph Loop is configured in `oh-my-opencode.json`:
+
+```json
+{
+  "ralph_loop": {
+    "enabled": true,
+    "auto_apply_threshold": 85, // High confidence auto-apply
+    "require_approval_threshold": 65, // Medium needs approval
+    "review": {
+      "digest_file": "RALPH_DIGEST.md",
+      "digest_frequency": "daily",
+      "git_commit_per_change": true
+    },
+    "safety": {
+      "require_mcp_validation": true,
+      "never_delete_patterns": true,
+      "pause_after_reverts": 3
+    }
+  }
+}
+```
+
+### Example Digest
+
+```markdown
+# Ralph Loop Daily Digest - Jan 1, 2026
+
+## Auto-Applied Changes (High Confidence)
+
+✅ skill/cloudflare-workers/references/PATTERNS.md
+
+- Added: "Always set cache-control headers on R2 responses"
+- Confidence: 95% (validated via context7 Cloudflare docs)
+- Commit: abc1234
+
+## Pending Your Review (Medium Confidence)
+
+⏸️ skill/better-auth/references/SCHEMA.md
+
+- Proposed: "Add index on user.email for faster lookups"
+- Confidence: 72%
+- Approve: /f-pattern-approve abc123
+
+## Flagged for Discussion (Low Confidence)
+
+🚫 skill/tanstack-start/references/ROUTING.md
+
+- Suggested: "Use file-based routing over programmatic routing"
+- Confidence: 45%
+- Action: Manual investigation needed
+```
+
+### Why Ralph Loop?
+
+**Traditional approach:**
+
+- Patterns written once, never updated
+- Outdated patterns cause confusion
+- No feedback on what works
+
+**With Ralph Loop:**
+
+- Patterns continuously improve based on usage
+- Dead patterns automatically archived
+- High-quality knowledge base that stays current
+
+**Trust the system** - Ralph validates against official docs and only auto-applies changes with 85%+ confidence.
+
+---
+
 ## Credits
 
 | Source                                                                           | What We Use                                      |

@@ -5,6 +5,42 @@
     "Sisyphus": { "model": "anthropic/claude-sonnet-4-5" },
     "oracle": { "model": "opencode/gpt-5.2" }
   },
+  "experimental": {
+    "dcp_for_compaction": true
+  },
+  "ralph_loop": {
+    "enabled": true,
+    "auto_apply_threshold": 85,
+    "require_approval_threshold": 65,
+    "flag_below": 65,
+    "review": {
+      "digest_file": "RALPH_DIGEST.md",
+      "digest_frequency": "daily",
+      "notification": "file",
+      "git_commit_per_change": true
+    },
+    "safety": {
+      "require_mcp_validation": true,
+      "never_delete_patterns": true,
+      "pause_after_reverts": 3,
+      "archive_unused_after_days": 30
+    },
+    "scope": [
+      "skill/cloudflare-workers",
+      "skill/durable-objects",
+      "skill/better-auth",
+      "skill/tanstack-start",
+      "skill/shadcn-ui",
+      "skill/polar-billing"
+    ]
+  },
+  "lsp": {
+    "typescript-language-server": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"],
+      "priority": 10
+    }
+  },
   "claude_code": {
     "mcp": false,
     "commands": false,

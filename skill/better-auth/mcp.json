@@ -1,0 +1,7 @@
+{
+  "better-auth": {
+    "type": "remote",
+    "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
+    "enabled": true
+  }
+}

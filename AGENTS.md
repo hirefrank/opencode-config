@@ -414,9 +414,9 @@ mgrep --opencode "find rate limiting logic"
 
 ## Learning Loop: Pattern Discovery System
 
-The f-stack has two complementary pattern discovery systems:
+The f-stack has a three-tier pattern discovery and refinement system:
 
-### 1. Feedback Codifier (Reactive)
+### 1. Feedback Codifier (Reactive Discovery)
 
 The `@feedback-codifier` agent extracts and validates patterns from **chat feedback and code reviews**.
 
@@ -434,7 +434,7 @@ Feedback: "Always set TTL when writing to KV"
 4. Write to skill/cloudflare-workers/references/PATTERNS.md
 ```
 
-### 2. Implementation Analyzer (Proactive)
+### 2. Implementation Analyzer (Proactive Discovery)
 
 The `@implementation-analyzer` agent **proactively scans external repositories** to discover patterns from real-world implementations.
 
@@ -455,29 +455,63 @@ Target Repo → Clone & Analyze → Extract Patterns → Validate via MCP → Co
 - **Anti-Patterns** → Added directly to `ANTI_PATTERNS.md` with fixes in global config
 - **Gaps** → Added as new skills in global config
 
+### 3. Ralph Loop (Continuous Refinement)
+
+**Ralph Loop** monitors pattern effectiveness and **auto-improves** documentation based on real-world usage.
+
+```
+Codifier writes pattern → Ralph monitors usage → Tracks success rate → Auto-refines pattern
+```
+
+**How it works:**
+
+1. Feedback Codifier or Implementation Analyzer adds pattern to skill
+2. Ralph Loop monitors when pattern is used in sessions
+3. Tracks success/failure rates (did following the pattern work?)
+4. If pattern consistently fails or needs refinement → auto-improves
+5. High confidence changes (85%+) → auto-apply + commit
+6. Medium confidence (65-84%) → request approval via `RALPH_DIGEST.md`
+7. Low confidence (<65%) → flag for manual review
+
+**Safety mechanisms:**
+
+- MCP validation required for all auto-applied changes
+- Never deletes patterns (only adds/refines)
+- Atomic git commits for easy rollback
+- Pauses after 3 reverts in a week
+
+**Review workflow:**
+
+- **Daily** (~2 min): Check `RALPH_DIGEST.md` for changes
+- **Weekly** (~15 min): Review pending approvals and flagged items
+- **Monthly**: Audit pattern usage statistics
+
+See `RALPH_DIGEST.md` for current status and `README.md` for full Ralph Loop documentation.
+
 ### Comparison
 
-| Aspect     | Feedback Codifier      | Implementation Analyzer |
-| ---------- | ---------------------- | ----------------------- |
-| Trigger    | Reactive (chat)        | Proactive (command)     |
-| Input      | User feedback          | External repositories   |
-| Discovery  | Patterns in discussion | Patterns in code        |
-| Validation | Same (MCP)             | Same (MCP)              |
-| Output     | Same (SKILL files)     | Same (SKILL files)      |
+| Aspect       | Feedback Codifier      | Implementation Analyzer | Ralph Loop            |
+| ------------ | ---------------------- | ----------------------- | --------------------- |
+| Trigger      | Reactive (chat)        | Proactive (command)     | Continuous (monitor)  |
+| Input        | User feedback          | External repositories   | Pattern usage data    |
+| Discovery    | Patterns in discussion | Patterns in code        | Pattern effectiveness |
+| Validation   | MCP docs               | MCP docs                | MCP + usage stats     |
+| Output       | New patterns           | New patterns            | Refined patterns      |
+| Human Review | Always                 | Always                  | Only medium/low conf  |
 
 ### Storage Locations
 
 Patterns are stored in skill reference files:
 
-| Category            | Location                                |
-| ------------------- | --------------------------------------- |
+| Category            | Location                               |
+| ------------------- | -------------------------------------- |
 | Cloudflare patterns | `skill/cloudflare-workers/references/` |
 | Durable Objects     | `skill/durable-objects/references/`    |
 | UI patterns         | `skill/shadcn-ui/references/`          |
 | TanStack patterns   | `skill/tanstack-start/references/`     |
 | Auth patterns       | `skill/better-auth/references/`        |
 
-**Note**: This learning loop is unique to our stack - oh-my-opencode has no equivalent.
+**Note**: This three-tier learning system is unique to our stack - oh-my-opencode provides Ralph Loop, we built the discovery layers on top.
 
 ---
 

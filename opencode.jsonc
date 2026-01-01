@@ -11,40 +11,40 @@
   ],
   "command": {
     "f-plan": {
-      "template": "command/f-plan.md",
+      "template": "command/planning/f-plan.md",
       "description": "Plan Cloudflare Workers projects with architectural guidance"
     },
-    "f-review": {
-      "template": "command/f-review.md",
-      "description": "Comprehensive code review with swarm-based multi-agent analysis"
-    },
     "f-triage": {
-      "template": "command/f-triage.md",
+      "template": "command/planning/f-triage.md",
       "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
     },
-    "f-resolve-parallel": {
-      "template": "command/f-resolve-parallel.md",
-      "description": "Resolve multiple tasks and issues in parallel"
-    },
-    "f-commit": {
-      "template": "command/f-commit.md",
-      "description": "Staged changes, generate commit message, and push"
-    },
-    "f-test-gen": {
-      "template": "command/f-test-gen.md",
-      "description": "Generate Playwright tests for a feature"
-    },
     "f-component": {
-      "template": "command/f-component.md",
+      "template": "command/development/f-component.md",
       "description": "Create shadcn/ui component"
     },
-    "f-generate-command": {
-      "template": "command/f-generate-command.md",
-      "description": "Generate new slash command"
+    "f-test-gen": {
+      "template": "command/development/f-test-gen.md",
+      "description": "Generate Playwright tests for a feature"
+    },
+    "f-commit": {
+      "template": "command/workflow/f-commit.md",
+      "description": "Staged changes, generate commit message, and push"
+    },
+    "f-resolve-parallel": {
+      "template": "command/workflow/f-resolve-parallel.md",
+      "description": "Resolve multiple tasks and issues in parallel"
+    },
+    "f-review": {
+      "template": "command/workflow/f-review.md",
+      "description": "Comprehensive code review with swarm-based multi-agent analysis"
     },
     "f-analyze-repo": {
-      "template": "command/f-analyze-repo.md",
+      "template": "command/analysis/f-analyze-repo.md",
       "description": "Analyze external repositories to discover patterns for the f-stack"
+    },
+    "f-generate-command": {
+      "template": "command/analysis/f-generate-command.md",
+      "description": "Generate new slash command"
     }
   },
 
@@ -59,21 +59,6 @@
     "mgrep": {
       "type": "local",
       "command": ["mgrep", "mcp"],
-      "enabled": true
-    },
-    "shadcn": {
-      "type": "local",
-      "command": ["npx", "shadcn@latest", "mcp"],
-      "enabled": true
-    },
-    "better-auth": {
-      "type": "remote",
-      "url": "https://mcp.chonkie.ai/better-auth/better-auth-builder/mcp",
-      "enabled": true
-    },
-    "playwright": {
-      "type": "local",
-      "command": ["npx", "@playwright/mcp@latest"],
       "enabled": true
     },
     "package-registry": {
