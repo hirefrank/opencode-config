@@ -59,6 +59,72 @@ source ~/.bashrc && opencode doctor
 
 ---
 
+## Architecture & How OPENCODE_CONFIG_DIR Works
+
+### What OPENCODE_CONFIG_DIR Does
+
+When you set `export OPENCODE_CONFIG_DIR=~/Projects/opencode-config`:
+
+- OpenCode loads **this repo's `opencode.jsonc`** as the global config file
+- `~/.config/opencode/opencode.json` is **completely ignored** and can be deleted
+- All global settings (commands, MCP servers, agents, etc.) come from this repo
+
+### What Gets Loaded From This Repo
+
+| Component    | Loaded From             | Notes                                       |
+| ------------ | ----------------------- | ------------------------------------------- |
+| Main config  | `opencode.jsonc`        | Commands, MCP servers, plugins, agents      |
+| Instructions | `AGENTS.md`             | Global agent behavior instructions          |
+| Skills       | `skill/` via symlink    | Must symlink to `~/.config/opencode/skill/` |
+| Tools        | `tool/*.ts`             | Auto-registered MCP tools                   |
+| Commands     | Templates in `command/` | Registered in `opencode.jsonc`              |
+
+### Known Limitations
+
+**❌ Environment Variable Syntax in Commands Does NOT Work**
+
+```jsonc
+// ❌ BROKEN - OpenCode parser bug
+"f-plan": {
+  "template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-plan.md"
+}
+
+// ✅ REQUIRED - Must use absolute paths
+"f-plan": {
+  "template": "/home/frank/Projects/opencode-config/command/planning/f-plan.md"
+}
+```
+
+**Why?** OpenCode resolves `{env:OPENCODE_CONFIG_DIR}` to the absolute path, then incorrectly re-parses it as a command input, causing errors like "Command /home not found".
+
+**Current Workaround:** Use hardcoded absolute paths in command templates. TODO filed: [opencode issue needed]
+
+### File Structure
+
+```
+~/Projects/opencode-config/          # OPENCODE_CONFIG_DIR points here
+├── opencode.jsonc                   # Main config (loaded globally)
+├── AGENTS.md                        # Global instructions
+├── command/                         # Command templates
+│   ├── planning/f-plan.md
+│   └── workflow/f-commit.md
+├── tool/                            # MCP tools (auto-registered)
+│   ├── ubs.ts
+│   └── ui-validator.ts
+├── skill/                           # Skill definitions
+│   └── cloudflare-workers/
+└── agent/                           # Custom agents
+    └── feedback-codifier.md
+
+~/.config/opencode/
+├── skill/  -> ~/Projects/opencode-config/skill/  # Symlink required
+└── oh-my-opencode.json              # Agent model overrides (optional)
+```
+
+**Note:** `~/.config/opencode/opencode.json` should NOT exist when using `OPENCODE_CONFIG_DIR`.
+
+---
+
 ## Setup
 
 After cloning, install these dependencies for full functionality:

@@ -19,6 +19,54 @@ This file defines the rules and conventions for AI agents working on this projec
 
 ---
 
+## CRITICAL: Repository Architecture
+
+### This Repo IS the Global Config
+
+**NEVER FORGET:** This repository at `/home/frank/Projects/opencode-config` is the global OpenCode configuration because `OPENCODE_CONFIG_DIR` points here.
+
+```bash
+export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
+```
+
+### What This Means
+
+| File Location                      | Status      | Purpose                                        |
+| ---------------------------------- | ----------- | ---------------------------------------------- |
+| **THIS REPO's `opencode.jsonc`**   | ✅ Active   | **Primary config** loaded by OpenCode          |
+| `~/.config/opencode/opencode.json` | ❌ Unused   | **NOT loaded** when OPENCODE_CONFIG_DIR is set |
+| `~/.config/opencode/skill/`        | ✅ Required | **Symlink** to this repo's `skill/` directory  |
+
+### Command Template Paths: Known Bug
+
+**NEVER use environment variable syntax in command templates:**
+
+```jsonc
+// ❌ BROKEN - Parser bug in OpenCode
+"template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-plan.md"
+
+// ✅ REQUIRED - Use absolute paths
+"template": "/home/frank/Projects/opencode-config/command/planning/f-plan.md"
+```
+
+**Why it breaks:** OpenCode resolves `{env:OPENCODE_CONFIG_DIR}` to `/home/frank/Projects/opencode-config`, then mistakenly re-parses the resolved path as a new command, causing "Command /home not found" errors.
+
+**Current workaround:** All command templates in this repo's `opencode.jsonc` must use hardcoded absolute paths.
+
+### File Changes: Where to Edit
+
+When modifying global configuration:
+
+- **Commands** → Edit THIS repo's `opencode.jsonc`
+- **MCP tools** → Edit THIS repo's `tool/*.ts`
+- **Skills** → Edit THIS repo's `skill/*/SKILL.md`
+- **Instructions** → Edit THIS repo's `AGENTS.md`
+- **Agent overrides** → Edit `~/.config/opencode/oh-my-opencode.json` (not in this repo)
+
+**NEVER edit `~/.config/opencode/opencode.json`** - it's ignored when OPENCODE_CONFIG_DIR is set and should be deleted if it exists.
+
+---
+
 ## Framework Preferences (STRICT)
 
 ### UI Framework

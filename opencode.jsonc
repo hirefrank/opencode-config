@@ -9,41 +9,44 @@
   "instructions": [
     "AGENTS.md"
   ],
+  // TODO: Switch back to {env:OPENCODE_CONFIG_DIR} once OpenCode core
+  // properly handles env var resolution without re-parsing resolved paths as commands
+  // Bug is in OpenCode parser, not oh-my-opencode
   "command": {
     "f-plan": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-plan.md",
+      "template": "/home/frank/Projects/opencode-config/command/planning/f-plan.md",
       "description": "Plan Cloudflare Workers projects with architectural guidance"
     },
     "f-triage": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-triage.md",
+      "template": "/home/frank/Projects/opencode-config/command/planning/f-triage.md",
       "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
     },
     "f-component": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/development/f-component.md",
+      "template": "/home/frank/Projects/opencode-config/command/development/f-component.md",
       "description": "Create shadcn/ui component"
     },
     "f-test-gen": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/development/f-test-gen.md",
+      "template": "/home/frank/Projects/opencode-config/command/development/f-test-gen.md",
       "description": "Generate Playwright tests for a feature"
     },
     "f-commit": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/workflow/f-commit.md",
+      "template": "/home/frank/Projects/opencode-config/command/workflow/f-commit.md",
       "description": "Staged changes, generate commit message, and push"
     },
     "f-resolve-parallel": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/workflow/f-resolve-parallel.md",
+      "template": "/home/frank/Projects/opencode-config/command/workflow/f-resolve-parallel.md",
       "description": "Resolve multiple tasks and issues in parallel"
     },
     "f-review": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/workflow/f-review.md",
+      "template": "/home/frank/Projects/opencode-config/command/workflow/f-review.md",
       "description": "Comprehensive code review with swarm-based multi-agent analysis"
     },
     "f-analyze-repo": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/analysis/f-analyze-repo.md",
+      "template": "/home/frank/Projects/opencode-config/command/analysis/f-analyze-repo.md",
       "description": "Analyze external repositories to discover patterns for the f-stack"
     },
     "f-generate-command": {
-      "template": "{env:OPENCODE_CONFIG_DIR}/command/analysis/f-generate-command.md",
+      "template": "/home/frank/Projects/opencode-config/command/analysis/f-generate-command.md",
       "description": "Generate new slash command"
     }
   },
