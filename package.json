@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "@ast-grep/napi": "^0.40.3",
+    "@ast-grep/napi": "^0.40.4",
     "@opencode-ai/plugin": "1.1.2",
-    "oh-my-opencode": "^2.10.0"
+    "oh-my-opencode": "^2.13.0"
   },
   "type": "module"
 }
