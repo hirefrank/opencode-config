@@ -79,25 +79,28 @@ When you set `export OPENCODE_CONFIG_DIR=~/Projects/opencode-config`:
 | Tools        | `tool/*.ts`             | Auto-registered MCP tools                   |
 | Commands     | Templates in `command/` | Registered in `opencode.jsonc`              |
 
-### Known Limitations
+### Command Template Path Resolution
 
-**❌ Environment Variable Syntax in Commands Does NOT Work**
+**✅ Use Relative Paths** (resolved from OPENCODE_CONFIG_DIR):
 
 ```jsonc
-// ❌ BROKEN - OpenCode parser bug
+// ✅ CORRECT - Relative paths work
+"f-plan": {
+  "template": "command/planning/f-plan.md"
+}
+
+// ❌ DON'T USE - Environment variables don't work
 "f-plan": {
   "template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-plan.md"
 }
 
-// ✅ REQUIRED - Must use absolute paths
+// ⚠️ AVOID - Absolute paths work but aren't portable
 "f-plan": {
   "template": "/home/frank/Projects/opencode-config/command/planning/f-plan.md"
 }
 ```
 
-**Why?** OpenCode resolves `{env:OPENCODE_CONFIG_DIR}` to the absolute path, then incorrectly re-parses it as a command input, causing errors like "Command /home not found".
-
-**Current Workaround:** Use hardcoded absolute paths in command templates. TODO filed: [opencode issue needed]
+**How it works:** When `OPENCODE_CONFIG_DIR` is set, OpenCode resolves relative paths in command templates from that directory.
 
 ### File Structure
 
