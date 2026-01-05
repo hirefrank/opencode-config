@@ -415,6 +415,8 @@ See `skill/beads-workflow/` for detailed usage.
 | Generate tests | `/f-test-gen`                                 |
 | UI component   | `/f-component`                                |
 | Analyze repo   | `/f-analyze-repo`                             |
+| Code review    | `/f-review`                                   |
+| Cleanup repo   | `/f-cleanup`                                  |
 | Validate code  | `typecheck`, `check_workers`, `check_secrets` |
 | Find work      | `bd ready`                                    |
 

@@ -37,6 +37,9 @@
     },
     "f-generate-command": {
       "template": "command/f-generate-command.md"
+    },
+    "f-cleanup": {
+      "template": "command/f-cleanup.md"
     }
   },
 

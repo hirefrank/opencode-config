@@ -251,7 +251,10 @@ opencode-config/
 | `/f-test-gen`         | Generate Playwright tests                    |
 | `/f-component`        | Create shadcn/ui component                   |
 | `/f-resolve-parallel` | Resolve multiple tasks in parallel           |
+| `/f-review`           | Comprehensive code review with swarm agents  |
+| `/f-analyze-repo`     | Analyze repos for patterns and anti-patterns |
 | `/f-generate-command` | Create new slash command                     |
+| `/f-cleanup`          | Clean and organize repository files          |
 
 ---
 
