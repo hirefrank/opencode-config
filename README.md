@@ -2,11 +2,11 @@
 
 **Global OpenCode configuration** for Edge-first development.
 
-> This repo is set as `OPENCODE_CONFIG_DIR` and applies to **all** OpenCode sessions across all projects.
+> This repo is symlinked to `~/.config/opencode` and applies to **all** OpenCode sessions across all projects.
 
 ```bash
-# ~/.bashrc or ~/.zshrc
-export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
+# Symlink this repo as OpenCode config directory
+ln -s ~/Projects/opencode-config ~/.config/opencode
 ```
 
 > **f-stack**: Cloudflare Workers-first development with TanStack Start, shadcn/ui, and token-efficient AI workflows.
@@ -48,101 +48,92 @@ export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
 # Clone
 git clone https://github.com/hirefrank/opencode-config ~/Projects/opencode-config
 
-# Add to ~/.bashrc or ~/.zshrc
-export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
+# Symlink as OpenCode config directory
+ln -s ~/Projects/opencode-config ~/.config/opencode
 
-# Reload shell and verify
-source ~/.bashrc && opencode doctor
+# Verify setup
+bunx oh-my-opencode doctor
 ```
 
-**Note**: `OPENCODE_CONFIG_DIR` makes this config global - it applies everywhere you run `opencode`.
+**Note**: Symlinking to `~/.config/opencode` makes this config global - it applies everywhere you run `opencode`.
 
 ---
 
-## Architecture & How OPENCODE_CONFIG_DIR Works
+## Architecture & How Symlinking Works
 
-### What OPENCODE_CONFIG_DIR Does
+### Why Symlink Instead of OPENCODE_CONFIG_DIR?
 
-When you set `export OPENCODE_CONFIG_DIR=~/Projects/opencode-config`:
+**Better tool compatibility** - All OpenCode tools expect config at `~/.config/opencode/`
+**Simpler paths** - Relative paths work everywhere without environment variables
+**Less documentation** - Standard location, no special setup needed
+
+### What This Symlink Does
+
+When you symlink `~/Projects/opencode-config` to `~/.config/opencode`:
 
 - OpenCode loads **this repo's `opencode.jsonc`** as the global config file
-- `~/.config/opencode/opencode.json` is **completely ignored** and can be deleted
 - All global settings (commands, MCP servers, agents, etc.) come from this repo
+- You still edit files in `~/Projects/opencode-config/` and commit/push as normal
+- Skills are discovered automatically (no separate symlink needed)
 
 ### What Gets Loaded From This Repo
 
-| Component    | Loaded From             | Notes                                       |
-| ------------ | ----------------------- | ------------------------------------------- |
-| Main config  | `opencode.jsonc`        | Commands, MCP servers, plugins, agents      |
-| Instructions | `AGENTS.md`             | Global agent behavior instructions          |
-| Skills       | `skill/` via symlink    | Must symlink to `~/.config/opencode/skill/` |
-| Tools        | `tool/*.ts`             | Auto-registered MCP tools                   |
-| Commands     | Templates in `command/` | Registered in `opencode.jsonc`              |
+| Component    | Loaded From             | Notes                                  |
+| ------------ | ----------------------- | -------------------------------------- |
+| Main config  | `opencode.jsonc`        | Commands, MCP servers, plugins, agents |
+| Instructions | `AGENTS.md`             | Global agent behavior instructions     |
+| Skills       | `skill/`                | Automatically discovered               |
+| Tools        | `tool/*.ts`             | Auto-registered MCP tools              |
+| Commands     | Templates in `command/` | Registered in `opencode.jsonc`         |
 
-### Command Template Path Resolution
+### Command Template Paths
 
-**✅ Use Relative Paths** (resolved from OPENCODE_CONFIG_DIR):
+**Simply use relative paths** - they work because the config is loaded from the symlinked directory:
 
 ```jsonc
-// ✅ CORRECT - Relative paths work
+// ✅ CORRECT - Relative paths (recommended)
 "f-plan": {
   "template": "command/planning/f-plan.md"
 }
-
-// ❌ DON'T USE - Environment variables don't work
-"f-plan": {
-  "template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-plan.md"
-}
-
-// ⚠️ AVOID - Absolute paths work but aren't portable
-"f-plan": {
-  "template": "/home/frank/Projects/opencode-config/command/planning/f-plan.md"
-}
 ```
 
-**How it works:** When `OPENCODE_CONFIG_DIR` is set, OpenCode resolves relative paths in command templates from that directory.
+**How it works:** OpenCode resolves relative paths in command templates from `~/.config/opencode/` (which is symlinked to this repo).
 
 ### File Structure
 
 ```
-~/Projects/opencode-config/          # OPENCODE_CONFIG_DIR points here
-├── opencode.jsonc                   # Main config (loaded globally)
-├── AGENTS.md                        # Global instructions
-├── command/                         # Command templates
-│   ├── planning/f-plan.md
-│   └── workflow/f-commit.md
-├── tool/                            # MCP tools (auto-registered)
-│   ├── ubs.ts
-│   └── ui-validator.ts
-├── skill/                           # Skill definitions
-│   └── cloudflare-workers/
-└── agent/                           # Custom agents
-    └── feedback-codifier.md
-
-~/.config/opencode/
-├── skill/  -> ~/Projects/opencode-config/skill/  # Symlink required
-└── oh-my-opencode.json              # Agent model overrides (optional)
+~/.config/opencode/  -> ~/Projects/opencode-config/  # Symlink
+    ├── opencode.jsonc                   # Main config (loaded globally)
+    ├── AGENTS.md                        # Global instructions
+    ├── command/                         # Command templates
+    │   ├── planning/f-plan.md
+    │   └── workflow/f-commit.md
+    ├── tool/                            # MCP tools (auto-registered)
+    │   ├── ubs.ts
+    │   └── ui-validator.ts
+    ├── skill/                           # Skill definitions
+    │   └── cloudflare-workers/
+    ├── agent/                           # Custom agents
+    │   └── feedback-codifier.md
+    └── oh-my-opencode.json              # Agent model overrides (optional)
 ```
 
-**Note:** `~/.config/opencode/opencode.json` should NOT exist when using `OPENCODE_CONFIG_DIR`.
+**Note:** You edit files in `~/Projects/opencode-config/` and they're automatically reflected in OpenCode.
 
 ---
 
 ## Setup
 
-After cloning, install these dependencies for full functionality:
+After cloning and symlinking, install these dependencies for full functionality:
 
 ### Required
 
 ```bash
 # Install plugin dependencies (for MCP tools)
 cd ~/Projects/opencode-config && npm install
-
-# Create symlink for skill discovery (OpenCode v1.0.190+)
-ln -s ~/Projects/opencode-config/skill ~/.config/opencode/skill
 ```
 
-**Important**: OpenCode v1.0.190+ requires skills to be in `~/.config/opencode/skill/` for global discovery. The symlink above makes skills from this repo discoverable without duplicating files.
+**Note**: With the symlink approach, skills are automatically discovered from `~/.config/opencode/skill/` - no separate skill symlink needed!
 
 ### Skill Frontmatter (OpenCode v1.0.190+)
 
@@ -168,7 +159,7 @@ npm install -g oh-my-opencode
 
 Already configured in `opencode.jsonc` via `"plugin": ["oh-my-opencode"]`.
 
-To override agent models, create `~/.config/opencode/oh-my-opencode.json`:
+To override agent models, create `oh-my-opencode.json` in this repo:
 
 ```json
 {

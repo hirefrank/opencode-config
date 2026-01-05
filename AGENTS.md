@@ -23,36 +23,29 @@ This file defines the rules and conventions for AI agents working on this projec
 
 ### This Repo IS the Global Config
 
-**NEVER FORGET:** This repository at `/home/frank/Projects/opencode-config` is the global OpenCode configuration because `OPENCODE_CONFIG_DIR` points here.
+**NEVER FORGET:** This repository at `/home/frank/Projects/opencode-config` is symlinked to `~/.config/opencode` and serves as the global OpenCode configuration.
 
 ```bash
-export OPENCODE_CONFIG_DIR=~/Projects/opencode-config
+ln -s ~/Projects/opencode-config ~/.config/opencode
 ```
 
 ### What This Means
 
-| File Location                      | Status      | Purpose                                        |
-| ---------------------------------- | ----------- | ---------------------------------------------- |
-| **THIS REPO's `opencode.jsonc`**   | ✅ Active   | **Primary config** loaded by OpenCode          |
-| `~/.config/opencode/opencode.json` | ❌ Unused   | **NOT loaded** when OPENCODE_CONFIG_DIR is set |
-| `~/.config/opencode/skill/`        | ✅ Required | **Symlink** to this repo's `skill/` directory  |
+| File Location                    | Status    | Purpose                               |
+| -------------------------------- | --------- | ------------------------------------- |
+| **THIS REPO's `opencode.jsonc`** | ✅ Active | **Primary config** loaded by OpenCode |
+| **THIS REPO's `skill/`**         | ✅ Active | Skills automatically discovered       |
 
 ### Command Template Path Resolution
 
 **Use relative paths in command templates:**
 
 ```jsonc
-// ✅ CORRECT - Relative paths resolved from OPENCODE_CONFIG_DIR
+// ✅ CORRECT - Relative paths (recommended)
 "template": "command/planning/f-plan.md"
-
-// ❌ DON'T USE - Environment variable syntax doesn't work
-"template": "{env:OPENCODE_CONFIG_DIR}/command/planning/f-plan.md"
-
-// ⚠️ AVOID - Absolute paths work but aren't portable
-"template": "/home/frank/Projects/opencode-config/command/planning/f-plan.md"
 ```
 
-**How it works:** When `OPENCODE_CONFIG_DIR` is set, OpenCode resolves relative template paths from that directory automatically.
+**How it works:** OpenCode resolves relative template paths from `~/.config/opencode/` (which is symlinked to this repo).
 
 ### File Changes: Where to Edit
 
@@ -62,9 +55,9 @@ When modifying global configuration:
 - **MCP tools** → Edit THIS repo's `tool/*.ts`
 - **Skills** → Edit THIS repo's `skill/*/SKILL.md`
 - **Instructions** → Edit THIS repo's `AGENTS.md`
-- **Agent overrides** → Edit `~/.config/opencode/oh-my-opencode.json` (not in this repo)
+- **Agent overrides** → Edit THIS repo's `oh-my-opencode.json`
 
-**NEVER edit `~/.config/opencode/opencode.json`** - it's ignored when OPENCODE_CONFIG_DIR is set and should be deleted if it exists.
+**All edits are made in `~/Projects/opencode-config/`** - changes are automatically reflected via the symlink.
 
 ---
 

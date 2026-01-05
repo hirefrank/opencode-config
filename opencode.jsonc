@@ -9,42 +9,34 @@
   "instructions": [
     "AGENTS.md"
   ],
+
   "command": {
     "f-plan": {
-      "template": "command/planning/f-plan.md",
-      "description": "Plan Cloudflare Workers projects with architectural guidance"
+      "template": "command/f-plan.md"
     },
     "f-triage": {
-      "template": "command/planning/f-triage.md",
-      "description": "Triage findings and decisions to add to the Beads (bd) persistent task system"
-    },
-    "f-component": {
-      "template": "command/development/f-component.md",
-      "description": "Create shadcn/ui component"
-    },
-    "f-test-gen": {
-      "template": "command/development/f-test-gen.md",
-      "description": "Generate Playwright tests for a feature"
+      "template": "command/f-triage.md"
     },
     "f-commit": {
-      "template": "command/workflow/f-commit.md",
-      "description": "Staged changes, generate commit message, and push"
+      "template": "command/f-commit.md"
+    },
+    "f-test-gen": {
+      "template": "command/f-test-gen.md"
+    },
+    "f-component": {
+      "template": "command/f-component.md"
     },
     "f-resolve-parallel": {
-      "template": "command/workflow/f-resolve-parallel.md",
-      "description": "Resolve multiple tasks and issues in parallel"
+      "template": "command/f-resolve-parallel.md"
     },
     "f-review": {
-      "template": "command/workflow/f-review.md",
-      "description": "Comprehensive code review with swarm-based multi-agent analysis"
+      "template": "command/f-review.md"
     },
     "f-analyze-repo": {
-      "template": "command/analysis/f-analyze-repo.md",
-      "description": "Analyze external repositories to discover patterns for the f-stack"
+      "template": "command/f-analyze-repo.md"
     },
     "f-generate-command": {
-      "template": "command/analysis/f-generate-command.md",
-      "description": "Generate new slash command"
+      "template": "command/f-generate-command.md"
     }
   },
 
