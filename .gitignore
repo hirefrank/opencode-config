@@ -26,3 +26,8 @@ npm-debug.log*
 
 # Bun
 bun-debug.log*
+
+# Package Manager Lock Files (use npm only)
+bun.lock
+pnpm-lock.yaml
+yarn.lock
